@@ -1,0 +1,22 @@
+keyboard reaches each control, keeps focus visible, and leaves section logic unchanged
+Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+[32m- Expected  - 3[39m
+[31m+ Received  + 3[39m
+
+[2m  Array [[22m
+[2m    "Hindi",[22m
+[2m    "Urdu",[22m
+[2m    "Dashboard",[22m
+[2m    "Market",[22m
+[31m+   "DEX",[39m
+[31m+   "Wallets",[39m
+[2m    "Predictions",[22m
+[31m+   "Paper",[39m
+[2m    "Search",[22m
+[2m    "Checklist",[22m
+[32m-   "Bugs",[39m
+[32m-   "Admin",[39m
+[32m-   "Open layout sample",[39m
+[2m  ][22m
+failure-keyboard-reaches-each-control,-keeps-focus-visible,-and-leaves-section-logic-unchanged.png

@@ -1,0 +1,23 @@
+# 0047 — Spot label definitions
+
+Status: accepted for Spot horizons, mid-price labels, and a stored point-in-time cutoff. Fees and slippage are not applied. No prediction score is calculated.
+
+## Context
+
+TASK 11.A.01 asks for explicit forecast horizons, a target return, a neutral dead zone, and an observation window. The label version and the point-in-time cutoff are stored. The test window is not used to tune the definition. Fixtures must cover rise, fall, and neutral boundaries and timestamp alignment.
+
+Design page 8 says the label is the future mid-price return after fees and slippage, together with a dead zone, and that overlapping windows and look-ahead leakage stop. Design page 11 sets the starting Spot horizons to 1m, 5m, 15m, and 1h, and it says a stale feature is vetoed rather than treated as neutral. Futures horizons stay separate. The source names no dead-zone width and no observation length. TASK 11.A.02 owns fees, spread, and slippage, so this version does not subtract them.
+
+## Decision
+
+`services/label-definitions.mjs` stores immutable Spot label versions in memory. A version names the four horizons in that order, the target return `future mid-price return`, a caller-supplied dead zone, an observation window, and a test window. The version cutoff is the observation-window end. The windows are closed and must not share an instant. A missing horizon, dead zone, observation window, or test window is rejected and stores nothing.
+
+A label row uses one horizon. The start book time must equal the decision cutoff. The outcome book time must equal the cutoff plus that horizon: 60000 ms, 300000 ms, 900000 ms, or 3600000 ms. Any other clock is `timestamp is not aligned` and stores no class. A start time after the cutoff is `lookahead window`. The mid price is the best ask plus the best bid, and the return is the future mid minus the start mid, divided by the start mid. A non-positive spread leaves the mid missing. The return is a decimal string, or a reduced fraction when it does not terminate. Comparison uses scaled integers.
+
+A return greater than the dead zone is `rise`. A return less than the negative dead zone is `fall`. A return equal to either boundary, or between them, is `neutral`. Dead zone `0` keeps an exact zero return neutral. Forecast intervals for one version and one horizon are half-open, so the next label may start at the previous outcome time and an interior cutoff is `overlapping window`. A different horizon is a separate target. An unhealthy source, including `stale stream` and `degraded`, is vetoed and the class stays null.
+
+Registering the same version again with the same definition is idempotent. A different dead zone is `label version is already registered` and the first dead zone remains. A replacement whose observation window meets the stored test window is `test window is not for tuning`. Labeling a cutoff inside the test window uses the stored dead zone and does not write a new one. `costsApplied` stays false. The module does not calculate `S_spot`, a probability, or a direction. No PostgreSQL table was added. Decision 0048 calculates executable cost assumptions and does not change these labels.
+
+## Evidence
+
+`pnpm test:label-definitions` passed 3/3, duration_ms 167.122753. Version `fixture-label-1` uses dead zone `0.01`. The observation window and the test window are one-day fixtures separated by one millisecond, and the version cutoff is the observation end. Start bid `99` and ask `101` give mid `100`. Future bid `100` and ask `102` give return `0.01` and label `neutral`. The opposite book gives `-0.01` and `neutral`. The same book gives return `0` and `neutral`. Future bid `100.2` and ask `102.2` give `0.012` and `rise`. Future bid `97.8` and ask `99.8` give `-0.012` and `fall`. Dead zone `0` labels return `0.01` as `rise` and return `-0.01` as `fall`. Two calls at cutoff `1499865549590` match, and the 1m outcome time is `1499865609590`. The 5m, 15m, and 1h outcome times are exactly one horizon later. A one-millisecond late outcome and an early start are `timestamp is not aligned`. A start after the cutoff is `lookahead window`. Reason `stale stream` is vetoed and the result has no `neutral` class. An interior 1m cutoff is `overlapping window`; the next cutoff at the previous outcome time is kept. Horizon `4h` is `horizon is not supported` and is not echoed. A second definition that moves the observation window onto the test window is `test window is not for tuning`, and the stored dead zone stays `0.01`. A label inside the test window still uses `0.01`. `pnpm health` returned `{"status":"ok","liveTrading":"OFF","liveOrdersLocked":true}`.

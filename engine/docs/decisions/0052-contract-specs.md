@@ -1,0 +1,21 @@
+# 0052 — Contract specifications
+
+Status: accepted for an in-memory contract specification. Linear and inverse PnL stay separate. The futures signed score is not calculated. No order is placed.
+
+## Context
+
+TASK 12.A.01 asks to represent linear, inverse, perpetual, and dated contracts with a multiplier, a settlement currency, tick and lot size, mark and index sources, and a funding schedule. Fixtures must validate units and PnL conversions. Unknown contract data must block scoring.
+
+Design page 6 names an instrument as canonical symbol, venue symbol, base, quote, contract type, tick size, lot size, multiplier, expiry, and funding interval. Design page 8 says perpetual and dated futures, and linear and inverse contracts, are modeled with separate multipliers and PnL. It writes `S_fut` on that page and does not write the PnL algebra, a tick, a lot, a multiplier, a settlement currency, or a funding interval. Decision 0027 parses Binance USD-M metadata and mark and index prices. It does not represent an inverse contract and does not convert PnL. Decision 0049 calculates the Spot score only. TASK 12.B.01 is the futures baseline and is not this task.
+
+## Decision
+
+`services/contract-specs.mjs` exports `createContractStore`, `registerContract`, `readContract`, `convertContractPnl`, and `readContractScore`. A contract is one style, `linear` or `inverse`, and one tenor, `perpetual` or `dated`. Registration stores the caller symbol, base, quote, multiplier, settlement currency, tick size, lot size, mark source, and index source. A perpetual has no expiry and requires a positive funding-interval decimal. A dated contract requires an expiry and stores a null funding interval when none is supplied. The same id and body registers once. A different body for that id is rejected. Records are frozen.
+
+The source does not write the PnL algebra. The conversion uses the payoff those contract words name, and it does not add a fee, a funding payment, or an FX rate. Linear PnL is `side * (exit - entry) * quantity * multiplier`, in the settlement currency. Inverse PnL is `side * quantity * multiplier * (1/entry - 1/exit)`, in the settlement currency. Quantity for a linear contract is the base asset. Quantity for an inverse contract is `contract`, because the USD-M base-asset quantity rule does not cover the inverse contract. Prices must fall on the tick and quantity must fall on the lot. Comparison and division use scaled integers. A non-terminating ratio stays a reduced fraction.
+
+`readContractScore` does not calculate `S_fut`. A stored contract returns a null score and does not block. A missing contract, a missing multiplier, settlement currency, tick, lot, mark source, index source, perpetual funding interval, or dated expiry returns `BLOCKED`, a null score, and a null PnL. An unknown field is `unsupported field` and is not echoed. The module does not place an order and does not enable live trading. No PostgreSQL table was added. Decision 0053 records the derivatives features and does not change this contract.
+
+## Evidence
+
+`pnpm test:contract-specs` passed 3/3, duration_ms 210.438667. A linear perpetual with multiplier `1`, entry `100`, exit `110`, and quantity `2` converts to `20` in settlement currency `USDT`, with price unit `USDT` and quantity unit `BTC`. The same move on an inverse perpetual converts to `1/550` in settlement currency `BTC`, and the short side converts to `-1/550`. A linear dated short with multiplier `0.01` converts to `-0.2`. An inverse dated long with multiplier `10`, entry `100`, and exit `125` converts to `0.02`. Equal entry and exit convert to `0`. A repeated call through `structuredClone` matches. A known contract leaves the score null and `blocked` null. A missing contract blocks the score and the PnL. A blank multiplier, settlement currency, tick, lot, mark source, or index source is not stored. A perpetual expiry and a dated contract without expiry are rejected. A price off the tick and a quantity off the lot leave PnL null. `pnpm health` returned `{"status":"ok","liveTrading":"OFF","liveOrdersLocked":true}`. Currency codes, the funding interval `8`, and the symbol ids are fixtures and are NOT IN SOURCE. The interval is not an 8 hour schedule.

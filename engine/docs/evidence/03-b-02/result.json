@@ -1,0 +1,267 @@
+{
+  "themeNote": "The source does not name a theme. theme 'current' is the user-agent Canvas presentation.",
+  "contrastGate": "Rendered text and background must differ. No contrast ratio is named in the source.",
+  "failures": [],
+  "matrix": [
+    {
+      "language": "English",
+      "lang": "en",
+      "dir": "ltr",
+      "theme": "current",
+      "viewport": "desktop",
+      "contrast": [
+        {
+          "selector": ".layout-mark",
+          "color": "rgb(8, 121, 92)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 5.048600195019956,
+          "fontFamily": "Manrope, sans-serif"
+        },
+        {
+          "selector": ".layout-sample-label",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "[data-language-sample]",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": ".layout-language button",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(252, 253, 252)",
+          "ratio": 16.39414624629006,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "nav[aria-label='Sections'] button",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(18, 63, 52)",
+          "ratio": 11.756084497643645,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "h1",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "Manrope, sans-serif"
+        }
+      ],
+      "screenshot": "en-desktop.png"
+    },
+    {
+      "language": "Hindi",
+      "lang": "hi",
+      "dir": "ltr",
+      "theme": "current",
+      "viewport": "desktop",
+      "contrast": [
+        {
+          "selector": ".layout-mark",
+          "color": "rgb(8, 121, 92)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 5.048600195019956,
+          "fontFamily": "Manrope, sans-serif"
+        },
+        {
+          "selector": ".layout-sample-label",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "[data-language-sample]",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": ".layout-language button",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(248, 252, 250)",
+          "ratio": 16.156150797670485,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "nav[aria-label='Sections'] button",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(18, 63, 52)",
+          "ratio": 11.756084497643645,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "h1",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "Manrope, sans-serif"
+        }
+      ],
+      "screenshot": "hi-desktop.png"
+    },
+    {
+      "language": "Urdu",
+      "lang": "ur",
+      "dir": "rtl",
+      "theme": "current",
+      "viewport": "desktop",
+      "contrast": [
+        {
+          "selector": ".layout-mark",
+          "color": "rgb(8, 121, 92)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 5.048600195019956,
+          "fontFamily": "Manrope, sans-serif"
+        },
+        {
+          "selector": ".layout-sample-label",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "[data-language-sample]",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": ".layout-language button",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 16.71665327781622,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "nav[aria-label='Sections'] button",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(18, 63, 52)",
+          "ratio": 11.756084497643645,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "h1",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "Manrope, sans-serif"
+        }
+      ],
+      "screenshot": "ur-desktop.png"
+    },
+    {
+      "language": "Urdu",
+      "lang": "ur",
+      "dir": "rtl",
+      "theme": "current",
+      "viewport": "tablet",
+      "contrast": [
+        {
+          "selector": ".layout-mark",
+          "color": "rgb(8, 121, 92)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 5.048600195019956,
+          "fontFamily": "Manrope, sans-serif"
+        },
+        {
+          "selector": ".layout-sample-label",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "[data-language-sample]",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": ".layout-language button",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 16.71665327781622,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "nav[aria-label='Sections'] button",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(18, 63, 52)",
+          "ratio": 11.756084497643645,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "h1",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "Manrope, sans-serif"
+        }
+      ],
+      "screenshot": "ur-tablet.png"
+    },
+    {
+      "language": "Urdu",
+      "lang": "ur",
+      "dir": "rtl",
+      "theme": "current",
+      "viewport": "mobile",
+      "contrast": [
+        {
+          "selector": ".layout-mark",
+          "color": "rgb(8, 121, 92)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 5.048600195019956,
+          "fontFamily": "Manrope, sans-serif"
+        },
+        {
+          "selector": ".layout-sample-label",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "[data-language-sample]",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": ".layout-language button",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 16.71665327781622,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "nav[aria-label='Sections'] button",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(18, 63, 52)",
+          "ratio": 11.756084497643645,
+          "fontFamily": "\"DM Sans\", system-ui, sans-serif"
+        },
+        {
+          "selector": "h1",
+          "color": "rgb(21, 32, 29)",
+          "background": "rgb(246, 248, 247)",
+          "ratio": 15.67274348901177,
+          "fontFamily": "Manrope, sans-serif"
+        }
+      ],
+      "screenshot": "ur-mobile.png"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+# 0050 — Walk-forward evaluation
+
+Status: accepted for a pinned, time-ordered walk-forward report. Brier, log loss, drawdown, and uncertainty stay uncalculated. No order is placed.
+
+## Context
+
+TASK 11.C.01 asks for time-ordered walk-forward splits, transaction costs, regimes, and leakage checks. The report must include Brier score, log loss, calibration bins, net performance, drawdown, and sample sizes. It must be reproducible from a pinned dataset and model manifest, and the metrics must include uncertainty and benchmark comparisons.
+
+Design page 1 says a walk-forward test is judged by calibration and net-of-cost results against a baseline, and that accuracy alone is not sufficient. It also says a prediction is rebuilt from the raw-data window, feature version, and model version. Design page 8 names walk-forward folds, Brier score, log loss, reliability, precision at coverage, net return after costs, and drawdown. It does not give the fold count, an embargo length, the Brier or log-loss arithmetic, the drawdown arithmetic, or an uncertainty statistic. Decision 0044 already records that the Brier and log-loss arithmetic is not in the source. Decision 0049 keeps calibrated probability null. Phase 8 of the design asks for unseen folds and a net-of-cost benchmark report. The source names no benchmark series and no regime taxonomy.
+
+## Decision
+
+`services/walk-forward.mjs` exports `pinWalkForwardManifest` and `evaluateWalkForward`. The manifest pins the dataset id, model version, feature version, label version, horizon, raw-data window, folds, and rows. The checksum is SHA-256 of the canonical JSON, the same algorithm already used for a pinned snapshot, because the source names a checksum and no algorithm. A mismatched checksum returns `manifest checksum does not match` and writes no label.
+
+Each fold's test start is strictly after its train end. The caller supplies those boundaries. The source names no embargo length. Overlapping test ranges return `overlapping window`. A row outside its fold returns `row is outside the folds`. Rows must be strictly time-ordered. Leakage uses `checkFeatureQuality`. A vetoed row is excluded from the net and is not labeled. The signed score comes from the registered baseline. `calibratedProbability` stays null, so calibration bins stay empty with the note `calibrated probability is not available`.
+
+The net is the stored label return plus the execution-cost net return. The label record stays `costsApplied` false. An uncertain cost leaves the net null and does not publish a partial sum. Regime labels are caller-supplied and are grouped with their sample size and net. A missing regime or benchmark fails closed. The benchmark comparison is the evaluated net total minus the supplied benchmark total. That subtraction is the comparison arithmetic; it is not a significance test. Uncertainty on every metric is null and its formula is `NOT IN SOURCE`. Brier, log loss, and drawdown are reported with formula `NOT IN SOURCE` and a null value. The module does not place an order. No PostgreSQL table was added. Decision 0051 records the model registry and does not change this report.
+
+## Evidence
+
+`pnpm test:walk-forward` passed 3/3, duration_ms 244.154089. Two included rows use the label return `0.01` and the decision 0034 book at quantity `3` and fee rate `0.001`, whose execution net is `-1051/25500`. Each row nets `-199/6375`. The two-row total is `-398/6375` and the mean is `-199/6375`. The supplied benchmark `0` leaves the difference `-398/6375`. Both scores are `100` and both calibrated probabilities are null. A second call through `structuredClone` matches, including the checksum. A lookahead row is excluded, the leaked benchmark `7` is not copied, and the remaining net stays `-199/6375`. Quantity `5` returns note `depth is not sufficient`, a null net, and no partial `-199/6375`. A train end equal to the test start is `fold is not unseen`. A changed benchmark with the old checksum does not score. `pnpm health` returned `{"status":"ok","liveTrading":"OFF","liveOrdersLocked":true}`. Dataset id `fixture-dataset`, feature version `fixture-features`, regime names, the zero benchmark, fee rate `0.001`, and lag threshold `1000` are fixtures and are NOT IN SOURCE.

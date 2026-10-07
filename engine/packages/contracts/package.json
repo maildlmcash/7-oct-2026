@@ -1,0 +1,19 @@
+{
+  "name": "@crypto-prediction-engine/contracts",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/view-state.d.ts",
+      "default": "./src/view-state.mjs"
+    },
+    "./roles": {
+      "types": "./src/roles.d.ts",
+      "default": "./src/roles.mjs"
+    },
+    "./trader-input": {
+      "types": "./src/trader-input.d.ts",
+      "default": "./src/trader-input.mjs"
+    }
+  }
+}

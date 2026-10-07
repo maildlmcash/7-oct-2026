@@ -1,0 +1,119 @@
+/* Structural layout only. The source names no color, type, or spacing scale. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  max-width: 100%;
+  /* The source names no palette. Canvas and CanvasText are the user-agent colors. */
+  color: CanvasText;
+  background: Canvas;
+}
+
+.layout-shell,
+.layout-panel,
+.layout-nav,
+.layout-table,
+.layout-samples,
+.layout-state,
+.layout-heading,
+.layout-mark,
+.layout-language,
+.layout-sample,
+.layout-sample-block,
+.layout-charts,
+.layout-chart,
+.layout-chart-controls {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.layout-shell {
+  padding: 1rem;
+}
+
+.layout-mark,
+.layout-heading,
+.layout-state,
+.layout-dialog,
+.layout-sample,
+.layout-chart,
+.layout-table caption,
+.layout-table th,
+.layout-table td {
+  overflow-wrap: anywhere;
+}
+
+.layout-nav,
+.layout-language,
+.layout-sample,
+.layout-table-pages,
+.layout-samples,
+.layout-chart-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.layout-charts,
+.layout-chart {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.layout-samples,
+.layout-panel {
+  flex-direction: column;
+}
+
+.layout-panel {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.layout-heading {
+  margin: 0;
+}
+
+.layout-shell button,
+.layout-dialog {
+  max-width: 100%;
+  color: CanvasText;
+  background: Canvas;
+  border: 1px solid currentColor;
+}
+
+.layout-shell button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.layout-table table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.layout-table th,
+.layout-table td,
+.layout-table caption {
+  text-align: start;
+}
+
+.layout-dialog {
+  width: min(32rem, calc(100% - 2rem));
+  max-width: calc(100% - 2rem);
+  max-height: calc(100% - 2rem);
+  margin: auto;
+  padding: 1rem;
+  overflow: auto;
+  border: 1px solid currentColor;
+}

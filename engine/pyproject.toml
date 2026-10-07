@@ -1,0 +1,4 @@
+# Root file named in the design, section 19.
+# Python dependency versions are NOT IN SOURCE.
+# No Python packages are declared, so there is no Python lockfile.
+# JavaScript dependencies are locked in pnpm-lock.yaml.

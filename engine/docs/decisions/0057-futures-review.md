@@ -1,0 +1,25 @@
+# 0057 — Futures model and risk review
+
+Status: accepted as a prepared gate. Two distinct approvers are required. Absent approval stays BLOCKED. Futures paper execution stays disabled. No order is placed.
+
+## Context
+
+TASK 12.C.02 asks to prepare a model card, a risk review, an evaluation report, and a rollback record before enabling futures paper execution. The approval checklist needs distinct model and risk approvers. Absent approval remains BLOCKED.
+
+Design page 8 names the futures score. Decision 0054 records that formula. Design page 9 names the caps and the feed faults that withhold futures use. Decisions 0055 and 0056 record those checks and do not enable paper execution. Design page 11 says production weights are versioned and a stale feature is vetoed. Design page 14 names an audit shape of actor, before, after, reason, approval, timestamp, and checksum. Decision 0051 already uses that shape for the Spot model registry. This gate prepares a futures rollback record. It does not execute a Spot rollback.
+
+## Decision
+
+`services/futures-review.mjs` exports `createFuturesReviewStore`, `registerFuturesReview`, `approveFuturesReview`, and `readFuturesReview`. The prepared documents are `docs/model-cards/futures-baseline.md` and `docs/risk-reviews/futures-baseline.md`. Any other path is `unsupported field` and is not echoed.
+
+Registration requires a same-tenant Admin, the futures model card, the futures risk review, a successful futures walk-forward report, and a rollback record. The model card must contain the futures formula and the phrase `Live trading stays OFF`. The risk review must contain `NO_TRADE` and every suppressing fault name from the futures fault check. The report product must be `futures`. Its contract family, model version, feature version, dataset, label version, horizon, and duration must match the review. Its formula must be the futures formula, its net formula must be the futures net, its checksum must be SHA-256, and its sample size must be at least one. A Spot report or another product is `evaluation does not match the model` and is not stored. The stored review keeps the evaluation checksum and the sample size. It does not keep the report body.
+
+The rollback record may name no prior paper version when `priorVersionId` is null and the reason is filled. A prior id equal to the review version, or a blank reason, is `rollback record is not configured`. The record is prepared. It does not call Spot rollback and it does not change a current model.
+
+Approval reuses the existing maker-checker rule. The proposer cannot approve, and that denial is `maker cannot approve`. The model slot and the risk slot require two different same-tenant Admin ids. The same actor in both slots returns `approvers are not distinct` and does not fill the second slot. A Customer or a cross-tenant Admin receives `role scope denied`. An unknown approval value is `unsupported field` and is not echoed.
+
+A review with no model approver stays BLOCKED with `model approval is not configured`. A review with only the model approver stays BLOCKED with `risk approval is not configured`. When both approvers are present and distinct, the checklist is accepted and `blocked` is null. `paperExecution`, `enabled`, and `ordersSubmitted` stay false. The module does not start futures paper execution, does not place an order, does not change the futures score, and does not add a PostgreSQL table. Decision 0058 records deterministic event replay and does not change this gate.
+
+## Evidence
+
+`pnpm test:futures-review` passed 3/3, duration_ms 201.576182. The stored evaluation is a real `evaluateFuturesWalkForward` report for the linear fixture. Its net is `-541/25500`, its formula is the futures formula, and its sample size is at least one. A second evaluation call returns the same report. The futures score object recorded before registration matches the score object recorded after the accepted checklist. The maker cannot approve, and the model slot stays empty. A second Admin fills only the model slot, and the read stays BLOCKED with `risk approval is not configured`. That same Admin cannot fill the risk slot. A third Admin fills the risk slot. The accepted checklist names both approver ids, sets `distinctApprovers` true, and still has `paperExecution` false, `enabled` false, and `ordersSubmitted` false. A stuffed spot-bid marker, a stuffed spot-score marker, and the book bid `0.0025` are absent from that result. A product `spot` report is `evaluation does not match the model` and is not stored. The Spot model-card path is `unsupported field` and `spot-baseline` is not echoed. A prior version id equal to the review version is `rollback record is not configured`. Customer and cross-tenant reads are `role scope denied`. Approval `guessed` is `unsupported field` and is not echoed. `pnpm health` returned `{"status":"ok","liveTrading":"OFF","liveOrdersLocked":true}`. Approver ids, version ids, horizon `fixture-horizon`, duration `60000`, and changedAt `2026-10-06T00:00:00Z` are fixtures and are NOT IN SOURCE.

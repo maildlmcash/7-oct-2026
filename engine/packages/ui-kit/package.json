@@ -1,0 +1,15 @@
+{
+  "name": "@crypto-prediction-engine/ui-kit",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./layout.css": "./src/layout.css"
+  },
+  "peerDependencies": {
+    "react": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "react": "^19.3.0"
+  }
+}
