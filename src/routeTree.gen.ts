@@ -30,6 +30,7 @@ import { Route as ApiKucoinPublicRouteImport } from './routes/api/kucoin/public'
 import { Route as ApiMexcPublicRouteImport } from './routes/api/mexc/public'
 import { Route as ApiOkxTickerRouteImport } from './routes/api/okx/ticker'
 import { Route as ApiSpotBookRouteImport } from './routes/api/spot/book'
+import { Route as ApiSpotSymbolsRouteImport } from './routes/api/spot/symbols'
 import { Route as ApiUpbitPublicRouteImport } from './routes/api/upbit/public'
 import { Route as ApiWalletsActivityRouteImport } from './routes/api/wallets/activity'
 
@@ -138,6 +139,11 @@ const ApiSpotBookRoute = ApiSpotBookRouteImport.update({
   path: '/api/spot/book',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSpotSymbolsRoute = ApiSpotSymbolsRouteImport.update({
+  id: '/api/spot/symbols',
+  path: '/api/spot/symbols',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiUpbitPublicRoute = ApiUpbitPublicRouteImport.update({
   id: '/api/upbit/public',
   path: '/api/upbit/public',
@@ -171,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/api/mexc/public': typeof ApiMexcPublicRoute
   '/api/okx/ticker': typeof ApiOkxTickerRoute
   '/api/spot/book': typeof ApiSpotBookRoute
+  '/api/spot/symbols': typeof ApiSpotSymbolsRoute
   '/api/upbit/public': typeof ApiUpbitPublicRoute
   '/api/wallets/activity': typeof ApiWalletsActivityRoute
 }
@@ -196,6 +203,7 @@ export interface FileRoutesByTo {
   '/api/mexc/public': typeof ApiMexcPublicRoute
   '/api/okx/ticker': typeof ApiOkxTickerRoute
   '/api/spot/book': typeof ApiSpotBookRoute
+  '/api/spot/symbols': typeof ApiSpotSymbolsRoute
   '/api/upbit/public': typeof ApiUpbitPublicRoute
   '/api/wallets/activity': typeof ApiWalletsActivityRoute
 }
@@ -222,6 +230,7 @@ export interface FileRoutesById {
   '/api/mexc/public': typeof ApiMexcPublicRoute
   '/api/okx/ticker': typeof ApiOkxTickerRoute
   '/api/spot/book': typeof ApiSpotBookRoute
+  '/api/spot/symbols': typeof ApiSpotSymbolsRoute
   '/api/upbit/public': typeof ApiUpbitPublicRoute
   '/api/wallets/activity': typeof ApiWalletsActivityRoute
 }
@@ -249,6 +258,7 @@ export interface FileRouteTypes {
     | '/api/mexc/public'
     | '/api/okx/ticker'
     | '/api/spot/book'
+    | '/api/spot/symbols'
     | '/api/upbit/public'
     | '/api/wallets/activity'
   fileRoutesByTo: FileRoutesByTo
@@ -274,6 +284,7 @@ export interface FileRouteTypes {
     | '/api/mexc/public'
     | '/api/okx/ticker'
     | '/api/spot/book'
+    | '/api/spot/symbols'
     | '/api/upbit/public'
     | '/api/wallets/activity'
   id:
@@ -299,6 +310,7 @@ export interface FileRouteTypes {
     | '/api/mexc/public'
     | '/api/okx/ticker'
     | '/api/spot/book'
+    | '/api/spot/symbols'
     | '/api/upbit/public'
     | '/api/wallets/activity'
   fileRoutesById: FileRoutesById
@@ -325,6 +337,7 @@ export interface RootRouteChildren {
   ApiMexcPublicRoute: typeof ApiMexcPublicRoute
   ApiOkxTickerRoute: typeof ApiOkxTickerRoute
   ApiSpotBookRoute: typeof ApiSpotBookRoute
+  ApiSpotSymbolsRoute: typeof ApiSpotSymbolsRoute
   ApiUpbitPublicRoute: typeof ApiUpbitPublicRoute
   ApiWalletsActivityRoute: typeof ApiWalletsActivityRoute
 }
@@ -478,6 +491,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSpotBookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/spot/symbols': {
+      id: '/api/spot/symbols'
+      path: '/api/spot/symbols'
+      fullPath: '/api/spot/symbols'
+      preLoaderRoute: typeof ApiSpotSymbolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/upbit/public': {
       id: '/api/upbit/public'
       path: '/api/upbit/public'
@@ -517,6 +537,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiMexcPublicRoute: ApiMexcPublicRoute,
   ApiOkxTickerRoute: ApiOkxTickerRoute,
   ApiSpotBookRoute: ApiSpotBookRoute,
+  ApiSpotSymbolsRoute: ApiSpotSymbolsRoute,
   ApiUpbitPublicRoute: ApiUpbitPublicRoute,
   ApiWalletsActivityRoute: ApiWalletsActivityRoute,
 }

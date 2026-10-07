@@ -35,9 +35,18 @@ button,input,select { font:inherit; }
 .button-accent { color:white!important; background:#08795c!important; }
 .button:disabled { opacity:.6; cursor:wait!important; }
 .symbol-form { display:flex; align-items:center; gap:8px; }
+.symbol-picker { display:flex; flex-direction:column; align-items:stretch; gap:8px; width:min(280px,100%); }
 .symbol-form label,.wallet-form label { color:var(--muted); display:flex; flex-direction:column; gap:6px; font-size:11px; font-weight:700; }
 input,select { min-width:0; border:1px solid var(--line); border-radius:8px; background:white; color:var(--ink); padding:10px 12px; }
 .symbol-form input { width:120px; font:700 13px ui-monospace,monospace; text-transform:uppercase; }
+.symbol-list-wrap { min-width:0; }
+.symbol-list-meta { margin:0!important; }
+.symbol-list { list-style:none; margin:6px 0 0; padding:4px; max-height:240px; overflow:auto; border:1px solid var(--line); border-radius:10px; background:white; }
+.symbol-list li { margin:0; }
+.symbol-list button { width:100%; display:flex; align-items:center; justify-content:space-between; gap:8px; text-align:left; padding:8px 10px!important; }
+.symbol-list button b { font:700 12px ui-monospace,monospace; }
+.symbol-list button span { color:var(--muted); font-size:11px; }
+.symbol-list button[aria-current="true"] { background:var(--green-soft); border-color:#b7dccb; }
 .quote-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 .sparkline-wrap { margin-top:14px; padding:12px 10px 8px; border:1px solid #e8efeb; border-radius:10px; background:linear-gradient(180deg,#fbfdfc,#fff); }
 .sparkline-head,.sparkline-labels { display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:10px; }.sparkline-head { font-weight:700; }.sparkline-head small { font:11px ui-monospace,monospace;color:var(--ink); }.sparkline { display:block;width:100%;height:120px;margin:6px 0;overflow:visible; }.sparkline-labels { font-size:9px; }.spark-empty { display:grid;place-items:center;min-height:82px;margin-top:12px;color:var(--muted);background:#f7f9f8;border-radius:9px;font-size:11px; }

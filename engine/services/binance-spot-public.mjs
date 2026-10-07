@@ -114,6 +114,44 @@ export function publicMarketUrl(path, query) {
   };
 }
 
+const CATALOG_SYMBOL = /^[A-Z0-9]{5,20}$/;
+
+export function publicSymbolCatalogUrl() {
+  return {
+    ok: true,
+    method: "GET",
+    url: `${REST_ORIGIN}${PATHS.exchangeInfo}?symbolStatus=TRADING`,
+  };
+}
+
+export function parseSymbolCatalog(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value) || !Array.isArray(value.symbols)) {
+    return fail("instrument schema is not allowed");
+  }
+  const symbols = [];
+  const seen = new Set();
+  for (const row of value.symbols) {
+    if (!row || typeof row !== "object") continue;
+    if (row.status !== "TRADING" || row.isSpotTradingAllowed !== true) continue;
+    if (!CATALOG_SYMBOL.test(row.symbol)) continue;
+    if (typeof row.baseAsset !== "string" || typeof row.quoteAsset !== "string") continue;
+    if (!/^[A-Z0-9]{1,20}$/.test(row.baseAsset) || !/^[A-Z0-9]{1,20}$/.test(row.quoteAsset)) continue;
+    if (seen.has(row.symbol)) continue;
+    seen.add(row.symbol);
+    symbols.push({
+      symbol: row.symbol,
+      baseAsset: row.baseAsset,
+      quoteAsset: row.quoteAsset,
+    });
+  }
+  if (symbols.length === 0) return fail("instrument schema is not allowed");
+  symbols.sort((left, right) => {
+    const rank = (quote) => (quote === "USDT" ? 0 : quote === "USDC" ? 1 : quote === "BTC" ? 2 : 3);
+    return rank(left.quoteAsset) - rank(right.quoteAsset) || left.symbol.localeCompare(right.symbol);
+  });
+  return { ok: true, kind: "spot-symbol-catalog", symbols };
+}
+
 function tradeEvent(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return fail("trade schema is not allowed");
   if (value.e !== "trade") return fail("trade schema is not allowed");

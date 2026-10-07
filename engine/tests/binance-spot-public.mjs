@@ -9,7 +9,9 @@ import {
   parseRecentTrades,
   parseRestBookTicker,
   parseSpotStreamMessage,
+  parseSymbolCatalog,
   publicMarketUrl,
+  publicSymbolCatalogUrl,
   smokeBestBidOffer,
   spotStreamName,
   spotStreamUrl,
@@ -127,6 +129,21 @@ test("schema fixtures keep official trade, book, and instrument fields", () => {
   assert.equal(info.kind, "spot-instrument");
   assert.equal(info.symbols[0].symbol, "ETHBTC");
   assert.equal(info.symbols[0].isSpotTradingAllowed, true);
+
+  const catalogUrl = publicSymbolCatalogUrl();
+  assert.equal(catalogUrl.method, "GET");
+  assert.equal(catalogUrl.url, "https://data-api.binance.vision/api/v3/exchangeInfo?symbolStatus=TRADING");
+  const catalog = parseSymbolCatalog({
+    symbols: [
+      { symbol: "ETHUSDT", status: "TRADING", baseAsset: "ETH", quoteAsset: "USDT", isSpotTradingAllowed: true },
+      { symbol: "BTCUSDT", status: "TRADING", baseAsset: "BTC", quoteAsset: "USDT", isSpotTradingAllowed: true },
+      { symbol: "ETHBTC", status: "TRADING", baseAsset: "ETH", quoteAsset: "BTC", isSpotTradingAllowed: true },
+      { symbol: "SOLUSDT", status: "BREAK", baseAsset: "SOL", quoteAsset: "USDT", isSpotTradingAllowed: true },
+      { symbol: "X", status: "TRADING", baseAsset: "X", quoteAsset: "USDT", isSpotTradingAllowed: true },
+    ],
+  });
+  assert.equal(catalog.ok, true);
+  assert.deepEqual(catalog.symbols.map((coin) => coin.symbol), ["BTCUSDT", "ETHUSDT", "ETHBTC"]);
 
   const order = publicMarketUrl("/api/v3/order", { symbol: "BTCUSDT" });
   assert.equal(order.error, "orders are closed");

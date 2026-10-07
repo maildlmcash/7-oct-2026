@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CexDesk } from "./cex-desk";
 import { parseFuture, parseSpot, useSocketFeed, type SpotValue } from "./market-feed";
 import { SpotApiV3 } from "./spot-api-v3";
@@ -34,9 +34,14 @@ function clock(value: number | null | undefined) {
   return typeof value === "number" ? new Date(value).toLocaleTimeString() : "—";
 }
 
+type SpotCoin = { symbol: string; baseAsset: string; quoteAsset: string };
+
 function MarketView() {
   const [symbolInput, setSymbolInput] = useState("BTCUSDT");
   const [symbol, setSymbol] = useState("BTCUSDT");
+  const [filtering, setFiltering] = useState(false);
+  const [coins, setCoins] = useState<SpotCoin[]>([]);
+  const [coinStatus, setCoinStatus] = useState("loading");
   const [spotSource, setSpotSource] = useState<"stream" | "v3">("stream");
   const safeSymbol = /^[A-Z0-9]{5,20}$/.test(symbol) ? symbol.toLowerCase() : "btcusdt";
   const spotUrl = `wss://data-stream.binance.vision:443/stream?streams=${safeSymbol}@trade/${safeSymbol}@bookTicker`;
@@ -46,6 +51,52 @@ function MarketView() {
   const spread = spot.value && spot.value.bid !== "—" && spot.value.ask !== "—" ? (Number(spot.value.ask) - Number(spot.value.bid)).toPrecision(7) : null;
   const buyQty = spot.value?.trades.filter((trade) => !trade.buyerMaker).reduce((sum, trade) => sum + Number(trade.qty), 0) ?? 0;
   const sellQty = spot.value?.trades.filter((trade) => trade.buyerMaker).reduce((sum, trade) => sum + Number(trade.qty), 0) ?? 0;
+  const query = symbolInput.trim().toUpperCase();
+  const matchedCoins = useMemo(() => {
+    const searching = filtering && query.length > 0;
+    const matched = searching
+      ? coins.filter((coin) => coin.symbol.includes(query) || coin.baseAsset.includes(query) || coin.quoteAsset.includes(query))
+      : coins;
+    if (searching) return matched;
+    const active = matched.find((coin) => coin.symbol === symbol);
+    return active ? [active, ...matched.filter((coin) => coin.symbol !== symbol)] : matched;
+  }, [coins, filtering, query, symbol]);
+  const visibleCoins = matchedCoins.slice(0, 40);
+
+  useEffect(() => {
+    let stopped = false;
+    const load = async () => {
+      try {
+        const response = await fetch("/api/spot/symbols", { cache: "no-store" });
+        const body = await response.json() as { ok?: boolean; symbols?: SpotCoin[] };
+        if (stopped) return;
+        if (!response.ok || !body.ok || !Array.isArray(body.symbols)) {
+          setCoins([]);
+          setCoinStatus("error");
+          return;
+        }
+        setCoins(body.symbols);
+        setCoinStatus("ready");
+      } catch {
+        if (!stopped) {
+          setCoins([]);
+          setCoinStatus("error");
+        }
+      }
+    };
+    void load();
+    return () => {
+      stopped = true;
+    };
+  }, []);
+
+  function applySymbol(next: string) {
+    if (!/^[A-Z0-9]{5,20}$/.test(next)) return;
+    setSymbolInput(next);
+    setSymbol(next);
+    setFiltering(false);
+  }
+
   return (
     <>
       <div className="section-intro">
@@ -54,11 +105,37 @@ function MarketView() {
           <h2>Live market monitor</h2>
           <p>Browser connects directly to public Binance market streams. No keys and no order permissions.</p>
         </div>
-        <form className="symbol-form" onSubmit={(event) => { event.preventDefault(); const next = symbolInput.trim().toUpperCase(); if (/^[A-Z0-9]{5,20}$/.test(next)) setSymbol(next); }}>
-          <label htmlFor="symbol">Symbol</label>
-          <input id="symbol" value={symbolInput} onChange={(event) => setSymbolInput(event.target.value)} maxLength={20} />
-          <button className="button button-dark">Apply</button>
-        </form>
+        <div className="symbol-picker">
+          <form className="symbol-form" onSubmit={(event) => { event.preventDefault(); applySymbol(symbolInput.trim().toUpperCase()); }}>
+            <label htmlFor="symbol">Symbol</label>
+            <input
+              id="symbol"
+              value={symbolInput}
+              onChange={(event) => { setSymbolInput(event.target.value); setFiltering(true); }}
+              onFocus={(event) => event.currentTarget.select()}
+              maxLength={20}
+              autoComplete="off"
+              aria-controls="symbol-coin-list"
+              aria-autocomplete="list"
+            />
+            <button className="button button-dark">Apply</button>
+          </form>
+          <div className="symbol-list-wrap">
+            <p className="muted tiny symbol-list-meta">
+              {coinStatus === "loading" ? "Loading coins from the spot API…" : coinStatus === "error" ? "Coin list is not connected. Symbol search still applies." : filtering && query ? `${matchedCoins.length} match${matchedCoins.length === 1 ? "" : "es"}` : `${coins.length} coins · type in Symbol to search`}
+            </p>
+            <ul id="symbol-coin-list" className="symbol-list" aria-label="Coin list">
+              {visibleCoins.map((coin) => (
+                <li key={coin.symbol}>
+                  <button type="button" aria-current={coin.symbol === symbol ? "true" : undefined} onClick={() => applySymbol(coin.symbol)}>
+                    <b>{coin.symbol}</b>
+                    <span>{coin.baseAsset} / {coin.quoteAsset}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
       <div className="grid grid-2">
         <article className="card market-card">
