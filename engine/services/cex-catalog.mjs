@@ -1,7 +1,7 @@
 import { SPOT_REST_ORIGIN, SPOT_STREAM_LIFECYCLE, SPOT_STREAM_ORIGIN } from "./binance-spot-public.mjs";
 
-// Connection plan for this portal. Binance and Bybit public market sockets are open.
-// No order route is opened. Rank follows CoinGecko's 2025 centralized spot-share leaders.
+// Public market data is open for all 15 listed venues.
+// Upbit futures stay closed: Upbit does not publish that book. No order route is opened.
 export const CEX_RANK_NOTE =
   "Order is a connection plan from CoinGecko 2025 CEX spot share, then established public-API venues. Not a live volume feed.";
 
@@ -70,19 +70,101 @@ export const CEX_VENUES = Object.freeze([
       "Admin · Bybit linear top of book",
     ], "bybit-linear"),
   }),
-  closedVenue(3, "okx", "OKX", "plan"),
-  closedVenue(4, "coinbase", "Coinbase Exchange", "absent"),
-  closedVenue(5, "kraken", "Kraken", "plan"),
-  closedVenue(6, "kucoin", "KuCoin", "plan"),
-  closedVenue(7, "gate", "Gate", "plan"),
-  closedVenue(8, "bitget", "Bitget", "plan"),
-  closedVenue(9, "mexc", "MEXC", "plan"),
-  closedVenue(10, "htx", "HTX", "plan"),
-  closedVenue(11, "crypto-com", "Crypto.com Exchange", "plan"),
-  closedVenue(12, "upbit", "Upbit", "absent"),
-  closedVenue(13, "bitfinex", "Bitfinex", "plan"),
-  closedVenue(14, "bitstamp", "Bitstamp", "absent"),
-  closedVenue(15, "gemini", "Gemini", "absent"),
+  Object.freeze({
+    rank: 3,
+    id: "okx",
+    name: "OKX",
+    spot: bookPlan("live", null, [
+      "Admin · OKX spot public connections",
+    ], "okx-spot"),
+    futures: bookPlan("live", null, [
+      "Admin · OKX swap public connections",
+    ], "okx-swap"),
+  }),
+  Object.freeze({
+    rank: 4,
+    id: "coinbase",
+    name: "Coinbase Exchange",
+    spot: bookPlan("live", null, ["Admin · Coinbase spot public connections"], "coinbase-spot"),
+    futures: bookPlan("live", null, ["Admin · Coinbase futures public connections"], "coinbase-futures"),
+  }),
+  Object.freeze({
+    rank: 5,
+    id: "kraken",
+    name: "Kraken",
+    spot: bookPlan("live", null, ["Admin · Kraken spot public connections"], "kraken-spot"),
+    futures: bookPlan("live", null, ["Admin · Kraken futures public connections"], "kraken-futures"),
+  }),
+  Object.freeze({
+    rank: 6,
+    id: "kucoin",
+    name: "KuCoin",
+    spot: bookPlan("live", null, ["Admin · KuCoin spot public connections"], "kucoin-spot"),
+    futures: bookPlan("live", null, ["Admin · KuCoin futures public connections"], "kucoin-futures"),
+  }),
+  Object.freeze({
+    rank: 7,
+    id: "gate",
+    name: "Gate",
+    spot: bookPlan("live", null, ["Admin · Gate spot public connections"], "gate-spot"),
+    futures: bookPlan("live", null, ["Admin · Gate futures public connections"], "gate-futures"),
+  }),
+  Object.freeze({
+    rank: 8,
+    id: "bitget",
+    name: "Bitget",
+    spot: bookPlan("live", null, ["Admin · Bitget spot public connections"], "bitget-spot"),
+    futures: bookPlan("live", null, ["Admin · Bitget futures public connections"], "bitget-futures"),
+  }),
+  Object.freeze({
+    rank: 9,
+    id: "mexc",
+    name: "MEXC",
+    spot: bookPlan("live", null, ["Admin · MEXC spot public connections"], "mexc-spot"),
+    futures: bookPlan("live", null, ["Admin · MEXC futures public connections"], "mexc-futures"),
+  }),
+  Object.freeze({
+    rank: 10,
+    id: "htx",
+    name: "HTX",
+    spot: bookPlan("live", null, ["Admin · HTX spot public connections"], "htx-spot"),
+    futures: bookPlan("live", null, ["Admin · HTX futures public connections"], "htx-futures"),
+  }),
+  Object.freeze({
+    rank: 11,
+    id: "crypto-com",
+    name: "Crypto.com Exchange",
+    spot: bookPlan("live", null, ["Admin · Crypto.com spot public connections"], "crypto-spot"),
+    futures: bookPlan("live", null, ["Admin · Crypto.com perpetual public connections"], "crypto-futures"),
+  }),
+  Object.freeze({
+    rank: 12,
+    id: "upbit",
+    name: "Upbit",
+    spot: bookPlan("live", null, ["Admin · Upbit spot public connections"], "upbit-spot"),
+    futures: bookPlan("absent", "ERROR · This book is outside the plan. No API is opened and nothing on the website reads it.", [], null),
+  }),
+  Object.freeze({
+    rank: 13,
+    id: "bitfinex",
+    name: "Bitfinex",
+    spot: bookPlan("live", null, ["Admin · Bitfinex spot public connections"], "bitfinex-spot"),
+    futures: bookPlan("live", null, ["Admin · Bitfinex perpetual public connections"], "bitfinex-futures"),
+  }),
+  Object.freeze({
+    rank: 14,
+    id: "bitstamp",
+    name: "Bitstamp",
+    spot: bookPlan("live", null, ["Admin · Bitstamp spot public connections"], "bitstamp-spot"),
+    futures: bookPlan("live", null, ["Admin · Bitstamp perpetual public connections"], "bitstamp-futures"),
+  }),
+  Object.freeze({
+    rank: 15,
+    id: "gemini",
+    name: "Gemini",
+    spot: bookPlan("live", null, ["Admin · Gemini spot public connections"], "gemini-spot"),
+    futures: bookPlan("live", null, ["Admin · Gemini perpetual public connections"], "gemini-futures"),
+  }),
 ]);
 
 // Official Binance product launched 5 October 2026. This portal has no session for it.

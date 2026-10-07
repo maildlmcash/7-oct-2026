@@ -13,10 +13,24 @@ import {
   CEX_RANK_NOTE,
   CEX_VENUES,
 } from "../../../services/cex-catalog.mjs";
+import { BitfinexFeed } from "./bitfinex-feed";
+import { BitgetFeed } from "./bitget-feed";
+import { BitstampFeed } from "./bitstamp-feed";
 import { BybitBook } from "./bybit-book";
+import { CoinbaseFeed } from "./coinbase-feed";
+import { CryptoComFeed } from "./crypto-com-feed";
+import { GateFeed } from "./gate-feed";
+import { GeminiFeed } from "./gemini-feed";
+import { HtxFeed } from "./htx-feed";
 import { IntelligenceDesk } from "./intelligence-desk";
+import { MexcFeed } from "./mexc-feed";
+import { KrakenFeed } from "./kraken-feed";
+import { KucoinFeed } from "./kucoin-feed";
+import { OkxFeed } from "./okx-feed";
 import { parseFuture, parseSpot, useSocketFeed, type FutureValue, type SpotValue } from "./market-feed";
 import { SpotApiV3 } from "./spot-api-v3";
+import { UpbitFeed } from "./upbit-feed";
+import { SocketDetails } from "./socket-details";
 
 type BookName = "spot" | "futures";
 type Venue = (typeof CEX_VENUES)[number];
@@ -36,6 +50,14 @@ function SpotLive() {
   return (
     <div className="cex-live">
       <p className="muted tiny">{BINANCE_SPOT_SOCKET.origin}/stream · trade + bookTicker · BTCUSDT</p>
+      <SocketDetails rows={[
+        { label: "Address", value: `${BINANCE_SPOT_SOCKET.origin}/stream?streams=btcusdt@trade/btcusdt@bookTicker` },
+        { label: "Subscribe", value: "Streams are in the URL. No subscribe message is sent." },
+        { label: "Heartbeat", value: "Server ping every 20 seconds. Pong is required within 1 minute." },
+        { label: "Auth", value: "None. No API key and no order route." },
+        { label: "Stale", value: "Reconnecting if no frame arrives for 10 seconds" },
+        { label: "Reconnect", value: "Starts at 1 second and doubles, capped at 15 seconds" },
+      ]} />
       <div className="stat-line"><span>Socket</span><b className={down ? "status-blocked" : "status-implemented"}>{down ? `ERROR · ${feed.status}` : "LIVE"}</b></div>
       <div className="stat-line"><span>Book update</span><b>{feed.value?.bookUpdateId ?? "—"}</b></div>
       <div className="stat-line"><span>Bid / ask</span><b>{feed.value?.bid ?? "—"} / {feed.value?.ask ?? "—"}</b></div>
@@ -54,6 +76,14 @@ function FuturesLive() {
   return (
     <div className="cex-live">
       <p className="muted tiny">{BINANCE_FUTURES_SOCKET.origin}/stream · markPrice@1s · BTCUSDT</p>
+      <SocketDetails rows={[
+        { label: "Address", value: `${BINANCE_FUTURES_SOCKET.origin}/stream?streams=btcusdt@markPrice@1s` },
+        { label: "Subscribe", value: "The stream is in the URL. No subscribe message is sent." },
+        { label: "Heartbeat", value: "Server ping every 3 minutes. Pong is required within 10 minutes." },
+        { label: "Auth", value: "None. No API key and no order route." },
+        { label: "Stale", value: "Reconnecting if no frame arrives for 10 seconds" },
+        { label: "Reconnect", value: "Starts at 1 second and doubles, capped at 15 seconds" },
+      ]} />
       <div className="stat-line"><span>Socket</span><b className={down ? "status-blocked" : "status-implemented"}>{down ? `ERROR · ${feed.status}` : "LIVE"}</b></div>
       <div className="stat-line"><span>Mark / index</span><b>{value?.mark ?? "—"} / {value?.index ?? "—"}</b></div>
       <div className="stat-line"><span>Funding / average</span><b>{value?.funding ?? "—"} / {value?.markAverage ?? "—"}</b></div>
@@ -63,6 +93,7 @@ function FuturesLive() {
 }
 
 function BookDetail({ venue, book }: { venue: Venue; book: BookName }) {
+  const [binanceSpotSource, setBinanceSpotSource] = useState<"stream" | "v3">("stream");
   const plan = book === "spot" ? venue.spot : venue.futures;
   const spec = plan.feed === "binance-spot"
     ? { conditions: BINANCE_SPOT_SOCKET.conditions, fields: BINANCE_SPOT_FIELDS }
@@ -96,11 +127,19 @@ function BookDetail({ venue, book }: { venue: Venue; book: BookName }) {
       {plan.uses.length === 0 ? <p className="notice notice-error">Nowhere. This API is not wired into Market, DEX, Wallets, or Paper.</p> : (
         <ul className="cex-limits">{plan.uses.map((place) => <li key={place}>{place}</li>)}</ul>
       )}
-      {spec.conditions.length > 0 ? (
+      {plan.feed === "okx-spot" || plan.feed === "okx-swap" ? <OkxFeed book={plan.feed === "okx-spot" ? "spot" : "swap"} /> : plan.feed === "coinbase-spot" || plan.feed === "coinbase-futures" ? <CoinbaseFeed book={plan.feed === "coinbase-spot" ? "spot" : "futures"} /> : plan.feed === "kraken-spot" || plan.feed === "kraken-futures" ? <KrakenFeed book={plan.feed === "kraken-spot" ? "spot" : "futures"} /> : plan.feed === "kucoin-spot" || plan.feed === "kucoin-futures" ? <KucoinFeed book={plan.feed === "kucoin-spot" ? "spot" : "futures"} /> : plan.feed === "gate-spot" || plan.feed === "gate-futures" ? <GateFeed book={plan.feed === "gate-spot" ? "spot" : "futures"} /> : plan.feed === "bitget-spot" || plan.feed === "bitget-futures" ? <BitgetFeed book={plan.feed === "bitget-spot" ? "spot" : "futures"} /> : plan.feed === "mexc-spot" || plan.feed === "mexc-futures" ? <MexcFeed book={plan.feed === "mexc-spot" ? "spot" : "futures"} /> : plan.feed === "htx-spot" || plan.feed === "htx-futures" ? <HtxFeed book={plan.feed === "htx-spot" ? "spot" : "futures"} /> : plan.feed === "bitfinex-spot" || plan.feed === "bitfinex-futures" ? <BitfinexFeed book={plan.feed === "bitfinex-spot" ? "spot" : "futures"} /> : plan.feed === "bitstamp-spot" || plan.feed === "bitstamp-futures" ? <BitstampFeed book={plan.feed === "bitstamp-spot" ? "spot" : "futures"} /> : plan.feed === "crypto-spot" || plan.feed === "crypto-futures" ? <CryptoComFeed book={plan.feed === "crypto-spot" ? "spot" : "futures"} /> : plan.feed === "upbit-spot" ? <UpbitFeed /> : plan.feed === "gemini-spot" || plan.feed === "gemini-futures" ? <GeminiFeed book={plan.feed === "gemini-spot" ? "spot" : "futures"} /> : spec.conditions.length > 0 ? (
         <>
           <h4>Socket limits</h4>
           <ul className="cex-limits">{spec.conditions.map((line) => <li key={line}>{line}</li>)}</ul>
-          {plan.feed === "binance-spot" ? <><SpotLive /><SpotApiV3 symbol="BTCUSDT" /></> : null}
+          {plan.feed === "binance-spot" ? (
+            <>
+              <div className="cex-books" role="group" aria-label="Binance spot connections">
+                <button type="button" className="button button-dark" aria-pressed={binanceSpotSource === "stream"} onClick={() => setBinanceSpotSource("stream")}>WebSocket · trade + bookTicker</button>
+                <button type="button" className="button button-dark" aria-pressed={binanceSpotSource === "v3"} onClick={() => setBinanceSpotSource("v3")}>REST · /api/v3 bookTicker</button>
+              </div>
+              {binanceSpotSource === "stream" ? <SpotLive /> : <SpotApiV3 symbol="BTCUSDT" />}
+            </>
+          ) : null}
           {plan.feed === "binance-futures" ? <FuturesLive /> : null}
           {plan.feed === "bybit-spot" ? <BybitBook book="spot" /> : null}
           {plan.feed === "bybit-linear" ? <BybitBook book="linear" /> : null}

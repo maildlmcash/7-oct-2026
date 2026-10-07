@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BYBIT_LINEAR, BYBIT_SPOT, parseBybitBook } from "../../../services/bybit-public.mjs";
+import { SocketDetails } from "./socket-details";
 
 type Book = { bid: string; bidQty: string; ask: string; askQty: string; updateId: number };
 
@@ -76,7 +77,17 @@ export function BybitBook({ book }: { book: "spot" | "linear" }) {
 
   return (
     <div className="cex-live">
-      <p className="muted tiny">{spec.origin} · {spec.topic}</p>
+      <span className="eyebrow">HOW THIS DATA ARRIVES</span>
+      <div className="stat-line"><span>Address</span><b className="mono">{spec.origin}</b></div>
+      <div className="stat-line"><span>Request</span><b className="mono">{`{"op":"subscribe","args":["${spec.topic}"]}`}</b></div>
+      <SocketDetails rows={[
+        { label: "Address", value: spec.origin },
+        { label: "Subscribe", value: `{"op":"subscribe","args":["${spec.topic}"]}` },
+        { label: "Heartbeat", value: "JSON {\"op\":\"ping\"} every 20 seconds" },
+        { label: "Auth", value: "None. The private socket is not opened." },
+        { label: "Stale", value: "Error if no book arrives for 10 seconds" },
+        { label: "Reconnect", value: "5 seconds after the socket closes" },
+      ]} />
       <div className="stat-line"><span>Socket</span><b className={status === "live" ? "status-implemented" : "status-blocked"}>{status === "live" ? "LIVE" : `ERROR · ${status}`}</b></div>
       {error ? <p className="notice notice-error">{error}</p> : null}
       <div className="stat-line"><span>Bid / ask</span><b>{value ? `${value.bid} × ${value.bidQty} / ${value.ask} × ${value.askQty}` : "—"}</b></div>

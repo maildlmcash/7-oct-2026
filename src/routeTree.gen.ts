@@ -11,12 +11,26 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiViewStateRouteImport } from './routes/api/view-state'
+import { Route as ApiBitfinexPublicRouteImport } from './routes/api/bitfinex/public'
+import { Route as ApiBitgetPublicRouteImport } from './routes/api/bitget/public'
+import { Route as ApiBitstampPublicRouteImport } from './routes/api/bitstamp/public'
+import { Route as ApiCoinbaseMarketRouteImport } from './routes/api/coinbase/market'
+import { Route as ApiCryptoComPublicRouteImport } from './routes/api/crypto-com/public'
 import { Route as ApiDeskCsrfRouteImport } from './routes/api/desk/csrf'
 import { Route as ApiDeskLoginRouteImport } from './routes/api/desk/login'
 import { Route as ApiDeskLogoutRouteImport } from './routes/api/desk/logout'
 import { Route as ApiDeskSessionRouteImport } from './routes/api/desk/session'
 import { Route as ApiDexSearchRouteImport } from './routes/api/dex/search'
+import { Route as ApiGatePublicRouteImport } from './routes/api/gate/public'
+import { Route as ApiGeminiPublicRouteImport } from './routes/api/gemini/public'
+import { Route as ApiHtxPublicRouteImport } from './routes/api/htx/public'
+import { Route as ApiKrakenPublicRouteImport } from './routes/api/kraken/public'
+import { Route as ApiKucoinBulletRouteImport } from './routes/api/kucoin/bullet'
+import { Route as ApiKucoinPublicRouteImport } from './routes/api/kucoin/public'
+import { Route as ApiMexcPublicRouteImport } from './routes/api/mexc/public'
+import { Route as ApiOkxTickerRouteImport } from './routes/api/okx/ticker'
 import { Route as ApiSpotBookRouteImport } from './routes/api/spot/book'
+import { Route as ApiUpbitPublicRouteImport } from './routes/api/upbit/public'
 import { Route as ApiWalletsActivityRouteImport } from './routes/api/wallets/activity'
 
 const IndexRoute = IndexRouteImport.update({
@@ -27,6 +41,31 @@ const IndexRoute = IndexRouteImport.update({
 const ApiViewStateRoute = ApiViewStateRouteImport.update({
   id: '/api/view-state',
   path: '/api/view-state',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBitfinexPublicRoute = ApiBitfinexPublicRouteImport.update({
+  id: '/api/bitfinex/public',
+  path: '/api/bitfinex/public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBitgetPublicRoute = ApiBitgetPublicRouteImport.update({
+  id: '/api/bitget/public',
+  path: '/api/bitget/public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBitstampPublicRoute = ApiBitstampPublicRouteImport.update({
+  id: '/api/bitstamp/public',
+  path: '/api/bitstamp/public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCoinbaseMarketRoute = ApiCoinbaseMarketRouteImport.update({
+  id: '/api/coinbase/market',
+  path: '/api/coinbase/market',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCryptoComPublicRoute = ApiCryptoComPublicRouteImport.update({
+  id: '/api/crypto-com/public',
+  path: '/api/crypto-com/public',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiDeskCsrfRoute = ApiDeskCsrfRouteImport.update({
@@ -54,9 +93,54 @@ const ApiDexSearchRoute = ApiDexSearchRouteImport.update({
   path: '/api/dex/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGatePublicRoute = ApiGatePublicRouteImport.update({
+  id: '/api/gate/public',
+  path: '/api/gate/public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGeminiPublicRoute = ApiGeminiPublicRouteImport.update({
+  id: '/api/gemini/public',
+  path: '/api/gemini/public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHtxPublicRoute = ApiHtxPublicRouteImport.update({
+  id: '/api/htx/public',
+  path: '/api/htx/public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiKrakenPublicRoute = ApiKrakenPublicRouteImport.update({
+  id: '/api/kraken/public',
+  path: '/api/kraken/public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiKucoinBulletRoute = ApiKucoinBulletRouteImport.update({
+  id: '/api/kucoin/bullet',
+  path: '/api/kucoin/bullet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiKucoinPublicRoute = ApiKucoinPublicRouteImport.update({
+  id: '/api/kucoin/public',
+  path: '/api/kucoin/public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiMexcPublicRoute = ApiMexcPublicRouteImport.update({
+  id: '/api/mexc/public',
+  path: '/api/mexc/public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiOkxTickerRoute = ApiOkxTickerRouteImport.update({
+  id: '/api/okx/ticker',
+  path: '/api/okx/ticker',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSpotBookRoute = ApiSpotBookRouteImport.update({
   id: '/api/spot/book',
   path: '/api/spot/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiUpbitPublicRoute = ApiUpbitPublicRouteImport.update({
+  id: '/api/upbit/public',
+  path: '/api/upbit/public',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiWalletsActivityRoute = ApiWalletsActivityRouteImport.update({
@@ -68,35 +152,77 @@ const ApiWalletsActivityRoute = ApiWalletsActivityRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/view-state': typeof ApiViewStateRoute
+  '/api/bitfinex/public': typeof ApiBitfinexPublicRoute
+  '/api/bitget/public': typeof ApiBitgetPublicRoute
+  '/api/bitstamp/public': typeof ApiBitstampPublicRoute
+  '/api/coinbase/market': typeof ApiCoinbaseMarketRoute
+  '/api/crypto-com/public': typeof ApiCryptoComPublicRoute
   '/api/desk/csrf': typeof ApiDeskCsrfRoute
   '/api/desk/login': typeof ApiDeskLoginRoute
   '/api/desk/logout': typeof ApiDeskLogoutRoute
   '/api/desk/session': typeof ApiDeskSessionRoute
   '/api/dex/search': typeof ApiDexSearchRoute
+  '/api/gate/public': typeof ApiGatePublicRoute
+  '/api/gemini/public': typeof ApiGeminiPublicRoute
+  '/api/htx/public': typeof ApiHtxPublicRoute
+  '/api/kraken/public': typeof ApiKrakenPublicRoute
+  '/api/kucoin/bullet': typeof ApiKucoinBulletRoute
+  '/api/kucoin/public': typeof ApiKucoinPublicRoute
+  '/api/mexc/public': typeof ApiMexcPublicRoute
+  '/api/okx/ticker': typeof ApiOkxTickerRoute
   '/api/spot/book': typeof ApiSpotBookRoute
+  '/api/upbit/public': typeof ApiUpbitPublicRoute
   '/api/wallets/activity': typeof ApiWalletsActivityRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/view-state': typeof ApiViewStateRoute
+  '/api/bitfinex/public': typeof ApiBitfinexPublicRoute
+  '/api/bitget/public': typeof ApiBitgetPublicRoute
+  '/api/bitstamp/public': typeof ApiBitstampPublicRoute
+  '/api/coinbase/market': typeof ApiCoinbaseMarketRoute
+  '/api/crypto-com/public': typeof ApiCryptoComPublicRoute
   '/api/desk/csrf': typeof ApiDeskCsrfRoute
   '/api/desk/login': typeof ApiDeskLoginRoute
   '/api/desk/logout': typeof ApiDeskLogoutRoute
   '/api/desk/session': typeof ApiDeskSessionRoute
   '/api/dex/search': typeof ApiDexSearchRoute
+  '/api/gate/public': typeof ApiGatePublicRoute
+  '/api/gemini/public': typeof ApiGeminiPublicRoute
+  '/api/htx/public': typeof ApiHtxPublicRoute
+  '/api/kraken/public': typeof ApiKrakenPublicRoute
+  '/api/kucoin/bullet': typeof ApiKucoinBulletRoute
+  '/api/kucoin/public': typeof ApiKucoinPublicRoute
+  '/api/mexc/public': typeof ApiMexcPublicRoute
+  '/api/okx/ticker': typeof ApiOkxTickerRoute
   '/api/spot/book': typeof ApiSpotBookRoute
+  '/api/upbit/public': typeof ApiUpbitPublicRoute
   '/api/wallets/activity': typeof ApiWalletsActivityRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/view-state': typeof ApiViewStateRoute
+  '/api/bitfinex/public': typeof ApiBitfinexPublicRoute
+  '/api/bitget/public': typeof ApiBitgetPublicRoute
+  '/api/bitstamp/public': typeof ApiBitstampPublicRoute
+  '/api/coinbase/market': typeof ApiCoinbaseMarketRoute
+  '/api/crypto-com/public': typeof ApiCryptoComPublicRoute
   '/api/desk/csrf': typeof ApiDeskCsrfRoute
   '/api/desk/login': typeof ApiDeskLoginRoute
   '/api/desk/logout': typeof ApiDeskLogoutRoute
   '/api/desk/session': typeof ApiDeskSessionRoute
   '/api/dex/search': typeof ApiDexSearchRoute
+  '/api/gate/public': typeof ApiGatePublicRoute
+  '/api/gemini/public': typeof ApiGeminiPublicRoute
+  '/api/htx/public': typeof ApiHtxPublicRoute
+  '/api/kraken/public': typeof ApiKrakenPublicRoute
+  '/api/kucoin/bullet': typeof ApiKucoinBulletRoute
+  '/api/kucoin/public': typeof ApiKucoinPublicRoute
+  '/api/mexc/public': typeof ApiMexcPublicRoute
+  '/api/okx/ticker': typeof ApiOkxTickerRoute
   '/api/spot/book': typeof ApiSpotBookRoute
+  '/api/upbit/public': typeof ApiUpbitPublicRoute
   '/api/wallets/activity': typeof ApiWalletsActivityRoute
 }
 export interface FileRouteTypes {
@@ -104,46 +230,102 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/api/view-state'
+    | '/api/bitfinex/public'
+    | '/api/bitget/public'
+    | '/api/bitstamp/public'
+    | '/api/coinbase/market'
+    | '/api/crypto-com/public'
     | '/api/desk/csrf'
     | '/api/desk/login'
     | '/api/desk/logout'
     | '/api/desk/session'
     | '/api/dex/search'
+    | '/api/gate/public'
+    | '/api/gemini/public'
+    | '/api/htx/public'
+    | '/api/kraken/public'
+    | '/api/kucoin/bullet'
+    | '/api/kucoin/public'
+    | '/api/mexc/public'
+    | '/api/okx/ticker'
     | '/api/spot/book'
+    | '/api/upbit/public'
     | '/api/wallets/activity'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/api/view-state'
+    | '/api/bitfinex/public'
+    | '/api/bitget/public'
+    | '/api/bitstamp/public'
+    | '/api/coinbase/market'
+    | '/api/crypto-com/public'
     | '/api/desk/csrf'
     | '/api/desk/login'
     | '/api/desk/logout'
     | '/api/desk/session'
     | '/api/dex/search'
+    | '/api/gate/public'
+    | '/api/gemini/public'
+    | '/api/htx/public'
+    | '/api/kraken/public'
+    | '/api/kucoin/bullet'
+    | '/api/kucoin/public'
+    | '/api/mexc/public'
+    | '/api/okx/ticker'
     | '/api/spot/book'
+    | '/api/upbit/public'
     | '/api/wallets/activity'
   id:
     | '__root__'
     | '/'
     | '/api/view-state'
+    | '/api/bitfinex/public'
+    | '/api/bitget/public'
+    | '/api/bitstamp/public'
+    | '/api/coinbase/market'
+    | '/api/crypto-com/public'
     | '/api/desk/csrf'
     | '/api/desk/login'
     | '/api/desk/logout'
     | '/api/desk/session'
     | '/api/dex/search'
+    | '/api/gate/public'
+    | '/api/gemini/public'
+    | '/api/htx/public'
+    | '/api/kraken/public'
+    | '/api/kucoin/bullet'
+    | '/api/kucoin/public'
+    | '/api/mexc/public'
+    | '/api/okx/ticker'
     | '/api/spot/book'
+    | '/api/upbit/public'
     | '/api/wallets/activity'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiViewStateRoute: typeof ApiViewStateRoute
+  ApiBitfinexPublicRoute: typeof ApiBitfinexPublicRoute
+  ApiBitgetPublicRoute: typeof ApiBitgetPublicRoute
+  ApiBitstampPublicRoute: typeof ApiBitstampPublicRoute
+  ApiCoinbaseMarketRoute: typeof ApiCoinbaseMarketRoute
+  ApiCryptoComPublicRoute: typeof ApiCryptoComPublicRoute
   ApiDeskCsrfRoute: typeof ApiDeskCsrfRoute
   ApiDeskLoginRoute: typeof ApiDeskLoginRoute
   ApiDeskLogoutRoute: typeof ApiDeskLogoutRoute
   ApiDeskSessionRoute: typeof ApiDeskSessionRoute
   ApiDexSearchRoute: typeof ApiDexSearchRoute
+  ApiGatePublicRoute: typeof ApiGatePublicRoute
+  ApiGeminiPublicRoute: typeof ApiGeminiPublicRoute
+  ApiHtxPublicRoute: typeof ApiHtxPublicRoute
+  ApiKrakenPublicRoute: typeof ApiKrakenPublicRoute
+  ApiKucoinBulletRoute: typeof ApiKucoinBulletRoute
+  ApiKucoinPublicRoute: typeof ApiKucoinPublicRoute
+  ApiMexcPublicRoute: typeof ApiMexcPublicRoute
+  ApiOkxTickerRoute: typeof ApiOkxTickerRoute
   ApiSpotBookRoute: typeof ApiSpotBookRoute
+  ApiUpbitPublicRoute: typeof ApiUpbitPublicRoute
   ApiWalletsActivityRoute: typeof ApiWalletsActivityRoute
 }
 
@@ -161,6 +343,41 @@ declare module '@tanstack/react-router' {
       path: '/api/view-state'
       fullPath: '/api/view-state'
       preLoaderRoute: typeof ApiViewStateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/bitfinex/public': {
+      id: '/api/bitfinex/public'
+      path: '/api/bitfinex/public'
+      fullPath: '/api/bitfinex/public'
+      preLoaderRoute: typeof ApiBitfinexPublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/bitget/public': {
+      id: '/api/bitget/public'
+      path: '/api/bitget/public'
+      fullPath: '/api/bitget/public'
+      preLoaderRoute: typeof ApiBitgetPublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/bitstamp/public': {
+      id: '/api/bitstamp/public'
+      path: '/api/bitstamp/public'
+      fullPath: '/api/bitstamp/public'
+      preLoaderRoute: typeof ApiBitstampPublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/coinbase/market': {
+      id: '/api/coinbase/market'
+      path: '/api/coinbase/market'
+      fullPath: '/api/coinbase/market'
+      preLoaderRoute: typeof ApiCoinbaseMarketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/crypto-com/public': {
+      id: '/api/crypto-com/public'
+      path: '/api/crypto-com/public'
+      fullPath: '/api/crypto-com/public'
+      preLoaderRoute: typeof ApiCryptoComPublicRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/desk/csrf': {
@@ -198,11 +415,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiDexSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/gate/public': {
+      id: '/api/gate/public'
+      path: '/api/gate/public'
+      fullPath: '/api/gate/public'
+      preLoaderRoute: typeof ApiGatePublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/gemini/public': {
+      id: '/api/gemini/public'
+      path: '/api/gemini/public'
+      fullPath: '/api/gemini/public'
+      preLoaderRoute: typeof ApiGeminiPublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/htx/public': {
+      id: '/api/htx/public'
+      path: '/api/htx/public'
+      fullPath: '/api/htx/public'
+      preLoaderRoute: typeof ApiHtxPublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/kraken/public': {
+      id: '/api/kraken/public'
+      path: '/api/kraken/public'
+      fullPath: '/api/kraken/public'
+      preLoaderRoute: typeof ApiKrakenPublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/kucoin/bullet': {
+      id: '/api/kucoin/bullet'
+      path: '/api/kucoin/bullet'
+      fullPath: '/api/kucoin/bullet'
+      preLoaderRoute: typeof ApiKucoinBulletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/kucoin/public': {
+      id: '/api/kucoin/public'
+      path: '/api/kucoin/public'
+      fullPath: '/api/kucoin/public'
+      preLoaderRoute: typeof ApiKucoinPublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/mexc/public': {
+      id: '/api/mexc/public'
+      path: '/api/mexc/public'
+      fullPath: '/api/mexc/public'
+      preLoaderRoute: typeof ApiMexcPublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/okx/ticker': {
+      id: '/api/okx/ticker'
+      path: '/api/okx/ticker'
+      fullPath: '/api/okx/ticker'
+      preLoaderRoute: typeof ApiOkxTickerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/spot/book': {
       id: '/api/spot/book'
       path: '/api/spot/book'
       fullPath: '/api/spot/book'
       preLoaderRoute: typeof ApiSpotBookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/upbit/public': {
+      id: '/api/upbit/public'
+      path: '/api/upbit/public'
+      fullPath: '/api/upbit/public'
+      preLoaderRoute: typeof ApiUpbitPublicRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/wallets/activity': {
@@ -218,12 +498,26 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiViewStateRoute: ApiViewStateRoute,
+  ApiBitfinexPublicRoute: ApiBitfinexPublicRoute,
+  ApiBitgetPublicRoute: ApiBitgetPublicRoute,
+  ApiBitstampPublicRoute: ApiBitstampPublicRoute,
+  ApiCoinbaseMarketRoute: ApiCoinbaseMarketRoute,
+  ApiCryptoComPublicRoute: ApiCryptoComPublicRoute,
   ApiDeskCsrfRoute: ApiDeskCsrfRoute,
   ApiDeskLoginRoute: ApiDeskLoginRoute,
   ApiDeskLogoutRoute: ApiDeskLogoutRoute,
   ApiDeskSessionRoute: ApiDeskSessionRoute,
   ApiDexSearchRoute: ApiDexSearchRoute,
+  ApiGatePublicRoute: ApiGatePublicRoute,
+  ApiGeminiPublicRoute: ApiGeminiPublicRoute,
+  ApiHtxPublicRoute: ApiHtxPublicRoute,
+  ApiKrakenPublicRoute: ApiKrakenPublicRoute,
+  ApiKucoinBulletRoute: ApiKucoinBulletRoute,
+  ApiKucoinPublicRoute: ApiKucoinPublicRoute,
+  ApiMexcPublicRoute: ApiMexcPublicRoute,
+  ApiOkxTickerRoute: ApiOkxTickerRoute,
   ApiSpotBookRoute: ApiSpotBookRoute,
+  ApiUpbitPublicRoute: ApiUpbitPublicRoute,
   ApiWalletsActivityRoute: ApiWalletsActivityRoute,
 }
 export const routeTree = rootRouteImport

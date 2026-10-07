@@ -37,6 +37,7 @@ function clock(value: number | null | undefined) {
 function MarketView() {
   const [symbolInput, setSymbolInput] = useState("BTCUSDT");
   const [symbol, setSymbol] = useState("BTCUSDT");
+  const [spotSource, setSpotSource] = useState<"stream" | "v3">("stream");
   const safeSymbol = /^[A-Z0-9]{5,20}$/.test(symbol) ? symbol.toLowerCase() : "btcusdt";
   const spotUrl = `wss://data-stream.binance.vision:443/stream?streams=${safeSymbol}@trade/${safeSymbol}@bookTicker`;
   const futuresUrl = `wss://fstream.binance.com/market/stream?streams=${safeSymbol}@markPrice@1s`;
@@ -61,40 +62,49 @@ function MarketView() {
       </div>
       <div className="grid grid-2">
         <article className="card market-card">
-          <header className="card-head"><div><span className="eyebrow">BINANCE SPOT</span><h3>{symbol} · Top of book</h3></div><StatusPill status={spot.status} age={spot.ageSeconds} /></header>
-          <div className="quote-grid">
-            <div><small>BEST BID</small><b className="positive">{spot.value?.bid ?? "—"}</b><small>{spot.value?.bidQty ?? "—"} {symbol.slice(0, -4)}</small></div>
-            <div><small>BEST ASK</small><b className="negative">{spot.value?.ask ?? "—"}</b><small>{spot.value?.askQty ?? "—"} {symbol.slice(0, -4)}</small></div>
+          <header className="card-head"><div><span className="eyebrow">BINANCE SPOT</span><h3>{symbol} · {spotSource === "stream" ? "WebSocket stream" : "Spot API v3"}</h3></div><StatusPill status={spot.status} age={spot.ageSeconds} /></header>
+          <div className="cex-books" role="group" aria-label="Binance spot web connections">
+            <button type="button" className="button button-dark" aria-pressed={spotSource === "stream"} onClick={() => setSpotSource("stream")}>WebSocket · trade + bookTicker</button>
+            <button type="button" className="button button-dark" aria-pressed={spotSource === "v3"} onClick={() => setSpotSource("v3")}>REST · /api/v3 bookTicker</button>
           </div>
-          <div className="stat-line"><span>Spread</span><b>{spread ?? "—"}</b></div>
-          <div className="stat-line"><span>Book update id</span><b>{spot.value?.bookUpdateId ?? "—"}</b></div>
-          <SpotApiV3 symbol={symbol} />
-          <div className="stat-line"><span>Recent trade imbalance (12 prints)</span><b>{buyQty + sellQty > 0 ? `${(((buyQty - sellQty) / (buyQty + sellQty)) * 100).toFixed(1)}%` : "—"}</b></div>
-          <PriceSparkline trades={spot.value?.trades ?? []} />
-          <h4>Recent trades</h4>
-          {spot.value?.trades.length ? (
-            <div className="table-scroll">
-              <table>
-                <thead><tr><th>Trade id</th><th>Time (UTC)</th><th>Event time</th><th>Price</th><th>Quantity</th><th>Taker</th><th>Best match</th></tr></thead>
-                <tbody>
-                  {spot.value.trades.map((trade, index) => (
-                    <tr key={`${trade.tradeId ?? trade.time}-${index}`}>
-                      <td>{trade.tradeId ?? "—"}</td>
-                      <td>{clock(trade.time)}</td>
-                      <td>{clock(trade.eventTime)}</td>
-                      <td>{trade.price}</td>
-                      <td>{trade.qty}</td>
-                      <td>{trade.buyerMaker ? "Sell" : "Buy"}</td>
-                      <td>{trade.bestMatch === null ? "—" : trade.bestMatch ? "Yes" : "No"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : <p className="muted">Waiting for actual exchange events. Empty values stay unknown.</p>}
+          {spotSource === "stream" ? (
+            <>
+              <p className="muted tiny">HOW THIS DATA ARRIVES · {spotUrl} · public combined stream. No API key.</p>
+              <div className="quote-grid">
+                <div><small>BEST BID</small><b className="positive">{spot.value?.bid ?? "—"}</b><small>{spot.value?.bidQty ?? "—"} {symbol.slice(0, -4)}</small></div>
+                <div><small>BEST ASK</small><b className="negative">{spot.value?.ask ?? "—"}</b><small>{spot.value?.askQty ?? "—"} {symbol.slice(0, -4)}</small></div>
+              </div>
+              <div className="stat-line"><span>Spread</span><b>{spread ?? "—"}</b></div>
+              <div className="stat-line"><span>Book update id</span><b>{spot.value?.bookUpdateId ?? "—"}</b></div>
+              <div className="stat-line"><span>Recent trade imbalance (12 prints)</span><b>{buyQty + sellQty > 0 ? `${(((buyQty - sellQty) / (buyQty + sellQty)) * 100).toFixed(1)}%` : "—"}</b></div>
+              <PriceSparkline trades={spot.value?.trades ?? []} />
+              <h4>Recent trades</h4>
+              {spot.value?.trades.length ? (
+                <div className="table-scroll">
+                  <table>
+                    <thead><tr><th>Trade id</th><th>Time (UTC)</th><th>Event time</th><th>Price</th><th>Quantity</th><th>Taker</th><th>Best match</th></tr></thead>
+                    <tbody>
+                      {spot.value.trades.map((trade, index) => (
+                        <tr key={`${trade.tradeId ?? trade.time}-${index}`}>
+                          <td>{trade.tradeId ?? "—"}</td>
+                          <td>{clock(trade.time)}</td>
+                          <td>{clock(trade.eventTime)}</td>
+                          <td>{trade.price}</td>
+                          <td>{trade.qty}</td>
+                          <td>{trade.buyerMaker ? "Sell" : "Buy"}</td>
+                          <td>{trade.bestMatch === null ? "—" : trade.bestMatch ? "Yes" : "No"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : <p className="muted">Waiting for actual exchange events. Empty values stay unknown.</p>}
+            </>
+          ) : <SpotApiV3 symbol={symbol} />}
         </article>
         <article className="card">
           <header className="card-head"><div><span className="eyebrow">BINANCE USDⓈ-M FUTURES</span><h3>{symbol} · Mark & funding</h3></div><StatusPill status={future.status} age={future.ageSeconds} /></header>
+          <p className="muted tiny">HOW THIS DATA ARRIVES · {futuresUrl} · public markPrice@1s. No API key. No order route.</p>
           <div className="metric-grid">
             <div className="metric"><small>MARK PRICE</small><strong>{future.value?.mark ?? "—"}</strong></div>
             <div className="metric"><small>INDEX PRICE</small><strong>{future.value?.index ?? "—"}</strong></div>
@@ -110,11 +120,9 @@ function MarketView() {
         </article>
       </div>
       <article className="card">
-        <header className="card-head"><div><span className="eyebrow">CONNECTOR COVERAGE</span><h3>Exchange adapter status</h3></div><span className="coverage-number">1 <small>/ 15 CEX connection slots</small></span></header>
+        <header className="card-head"><div><span className="eyebrow">CONNECTOR COVERAGE</span><h3>Exchange adapter status</h3></div><span className="coverage-number">15 <small>/ 15 CEX connection slots</small></span></header>
         <div className="coverage-list">
-          <span className="coverage-ok">● Binance Spot — public adapter live</span>
-          <span className="coverage-ok">● Binance USDⓈ-M — public adapter live</span>
-          <span className="coverage-off">○ 14 other CEX venues — listed in Admin, not connected</span>
+          <span className="coverage-ok">● All 15 venues have a public connection. Upbit futures stay closed.</span>
         </div>
         <p className="muted tiny">The Admin role holds the 15-exchange list, socket limits, and field map. Live orders stay locked.</p>
       </article>
