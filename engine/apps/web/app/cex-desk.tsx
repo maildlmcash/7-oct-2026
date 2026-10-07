@@ -121,7 +121,7 @@ function BookDetail({ venue, book }: { venue: Venue; book: BookName }) {
       </header>
       <p className="muted tiny">Plan {complete}/{plan.steps.length}. Another exchange's fields are not shown here.</p>
       {plan.error ? <div className="notice notice-error"><b>{venue.name} {book}</b><span>{plan.error}</span></div> : null}
-      {live ? <ExchangeTools venue={venue.id} book={book === "spot" ? "spot" : "futures"} /> : null}
+      {planReady ? <ExchangeTools venue={venue.id} book={book === "spot" ? "spot" : "futures"} /> : null}
       <ul className="cex-limits">
         {plan.steps.map((step) => (
           <li key={step.name} className={step.done ? "status-implemented" : "status-blocked"}>{step.done ? "Done" : "Error"} · {step.name}</li>

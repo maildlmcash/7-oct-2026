@@ -451,8 +451,8 @@ function readBook(venue: string, market: "spot" | "futures", coin: string, body:
   }
   if (venue === "gate") {
     const result = body.result as { s?: string; contract?: string; bids?: unknown; asks?: unknown; b?: string; a?: string; B?: string; A?: string } | undefined;
-    if ((body.event !== "update" && body.event !== "all") || (result?.s ?? result?.contract) !== `${coin}_USDT`) return null;
-    if (typeof result?.b === "string") return book([[result.b, result.B]], [[result.a, result.A]]);
+    if (!result || (body.event !== "update" && body.event !== "all") || (result.s ?? result.contract) !== `${coin}_USDT`) return null;
+    if (typeof result.b === "string") return book([[result.b, result.B]], [[result.a, result.A]]);
     return book(result.bids, result.asks);
   }
   if (venue === "bitget") {
@@ -479,10 +479,10 @@ function readBook(venue: string, market: "spot" | "futures", coin: string, body:
   if (venue === "crypto-com") {
     const result = body.result as { instrument_name?: string; data?: { bids?: unknown; asks?: unknown }[] } | undefined;
     const expected = market === "spot" ? `${coin}_USDT` : `${coin}USD-PERP`;
-    const item = result.data?.[0] as { bids?: unknown; asks?: unknown; b?: unknown; a?: unknown } | undefined;
+    const item = result?.data?.[0] as { bids?: unknown; asks?: unknown; b?: unknown; a?: unknown } | undefined;
     if (result?.instrument_name !== expected) return null;
     if (item?.b != null && item.a != null && !item.bids) return book([[item.b, "1"]], [[item.a, "1"]]);
-    return book(result.data?.[0]?.bids, result.data?.[0]?.asks);
+    return book(item?.bids, item?.asks);
   }
   if (venue === "upbit" && body.code === `KRW-${coin}`) {
     const unit = (body.orderbook_units as { bid_price?: number; ask_price?: number; bid_size?: number; ask_size?: number }[] | undefined)?.[0];
