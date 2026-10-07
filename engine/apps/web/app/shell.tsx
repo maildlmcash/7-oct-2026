@@ -19,6 +19,7 @@ import {
   type ShellSection,
 } from "@crypto-prediction-engine/contracts";
 import { renderSectionCapability } from "../../../services/shell-capabilities.mjs";
+import { deskSections, isDeskRole } from "../../../services/desk-roles.mjs";
 import { ModelHealthCharts } from "./model-health-charts";
 import { SectionErrorBoundary, SectionRequest } from "./section-boundary";
 import { DeskAuth, type DeskSession } from "./desk-auth";
@@ -66,15 +67,16 @@ export default function Shell({
   const [languageId, setLanguageId] = useState<(typeof SHELL_LANGUAGES)[number]["id"]>("en");
   const language = SHELL_LANGUAGES.find((item) => item.id === languageId) ?? SHELL_LANGUAGES[0];
   const section = view.section;
-  const signedRole = session?.role ?? null;
+  const signedRole = session && isDeskRole(session.role) ? session.role : null;
+  const allowedSections = signedRole ? deskSections(signedRole) : null;
   const effectiveCapabilities: ShellCapabilities = signedRole === "Admin"
     ? { editChecklist: true, userChecklist: false, market: false }
-    : signedRole === "Customer"
+    : signedRole === "User"
       ? { editChecklist: false, userChecklist: true, market: false }
       : capabilities;
   const sectionMarkup = renderSectionCapability(effectiveCapabilities, section, checklistMarkup);
-  const visibleSections = signedRole === "Customer"
-    ? SHELL_SECTIONS.filter((name) => name !== "Admin" && name !== "Bugs")
+  const visibleSections = allowedSections
+    ? SHELL_SECTIONS.filter((name) => allowedSections.includes(name))
     : SHELL_SECTIONS;
   const adminLocked = (section === "Admin" || section === "Bugs") && signedRole !== "Admin";
 
@@ -88,9 +90,10 @@ export default function Shell({
 
   function applySession(next: DeskSession | null) {
     setSession(next);
-    if (next?.role === "Customer" && (view.section === "Admin" || view.section === "Bugs")) {
+    if (next?.role === "User" && (view.section === "Admin" || view.section === "Bugs")) {
       chooseSection("Dashboard");
     }
+    if (next?.role === "Admin") chooseSection("Admin");
   }
 
   useEffect(() => {
@@ -100,7 +103,7 @@ export default function Shell({
 
   return (
     <main className="layout-shell">
-      <div className="app-masthead"><p className="layout-mark">crypto-prediction-engine</p><span className="safety-banner"><i />LIVE ORDERS LOCKED</span><span className={signedRole === "Admin" ? "pill pill-live" : "pill"}>{signedRole ?? "Signed out"}</span></div>
+      <div className="app-masthead"><p className="layout-mark">crypto-prediction-engine</p><span className="safety-banner"><i />LIVE ORDERS LOCKED</span><span className={signedRole === "Admin" ? "pill pill-live" : "pill"}>{signedRole ? `${signedRole} role` : "Signed out"}</span></div>
       <LanguageChoice
         label="Language"
         options={SHELL_LANGUAGES}
@@ -129,7 +132,7 @@ export default function Shell({
               <article className="card desk-lock">
                 <span className="pill pill-warn">ADMIN ONLY</span>
                 <h2>Admin login required</h2>
-                <p>यह सेक्शन सिर्फ Admin रोल के लिए है। User (Customer) इसे नहीं खोल सकता। Live orders locked रहते हैं।</p>
+                <p>यह सेक्शन सिर्फ Admin रोल के लिए है। User रोल इसे नहीं खोल सकता। Live orders locked रहते हैं।</p>
               </article>
             ) : (
               <>

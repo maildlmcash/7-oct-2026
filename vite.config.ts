@@ -1,5 +1,5 @@
 import { readdirSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import type { Plugin } from "vite";
 import { defineConfig } from "vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -156,7 +156,23 @@ export default defineConfig(({ command, isPreview }) => ({
     port: 8081,
     strictPort: true,
   },
-  resolve: { tsconfigPaths: true },
+  resolve: {
+    tsconfigPaths: true,
+    alias: [
+      {
+        find: /^@crypto-prediction-engine\/ui-kit\/layout\.css$/,
+        replacement: resolve("engine/packages/ui-kit/src/layout.css"),
+      },
+      {
+        find: /^@crypto-prediction-engine\/ui-kit$/,
+        replacement: resolve("engine/packages/ui-kit/src/index.ts"),
+      },
+      {
+        find: /^@crypto-prediction-engine\/contracts$/,
+        replacement: resolve("engine/packages/contracts/src/view-state.mjs"),
+      },
+    ],
+  },
   plugins: [
     pgliteBootstrapPlugin(),
     // Before tanstackStart so /auth/popup never falls through to the SPA.

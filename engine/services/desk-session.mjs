@@ -1,4 +1,4 @@
-import { isKnownRole } from "../packages/contracts/src/roles.mjs";
+import { isDeskRole } from "./desk-roles.mjs";
 import {
   beginLogin,
   createAccount,
@@ -10,7 +10,7 @@ import {
 
 // Paper-desk identities only. These are not exchange accounts and cannot place orders.
 export const DESK_ACCOUNTS = Object.freeze([
-  Object.freeze({ loginId: "user", password: "user-paper-1", role: "Customer" }),
+  Object.freeze({ loginId: "user", password: "user-paper-1", role: "User" }),
   Object.freeze({ loginId: "admin", password: "admin-paper-1", role: "Admin" }),
 ]);
 
@@ -42,7 +42,7 @@ for (const account of DESK_ACCOUNTS) {
 
 function actorFor(subjectId) {
   const actor = actors.get(subjectId);
-  if (!actor || !isKnownRole(actor.role)) return null;
+  if (!actor || !isDeskRole(actor.role)) return null;
   return actor;
 }
 

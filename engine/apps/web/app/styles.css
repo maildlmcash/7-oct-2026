@@ -69,17 +69,14 @@ tbody tr:last-child td { border-bottom:0; }
 @media(max-width:850px) { .grid-3 { grid-template-columns:1fr 1fr; }.grid-2 { grid-template-columns:1fr; }.section-intro { align-items:flex-start;flex-direction:column; }.coverage-list { grid-template-columns:1fr; } }
 @media(max-width:560px) { .layout-shell { padding:16px 12px 36px!important; }.layout-language { justify-content:flex-start; }.wallet-form { align-items:stretch;flex-direction:column; }.symbol-form { flex-wrap:wrap; }.search-form { flex-direction:column; }.grid-3 { grid-template-columns:1fr; }.quote-grid b { font-size:18px; }.check-row { grid-template-columns:24px 1fr; }.check-row b { grid-column:2; }.prediction-blocked { grid-template-columns:1fr; } }
 .desk-auth { margin: 16px 0 4px; }
-.desk-auth h2,.desk-lock h2 { font: 800 20px Manrope,sans-serif; letter-spacing:-.03em; margin: 4px 0; }
-.desk-auth-head,.desk-auth-row { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
-.desk-auth-head p,.desk-lock p { color:var(--muted); margin:0; max-width:70ch; }
-.desk-auth-roles { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.desk-auth-roles button { display:flex; flex-direction:column; align-items:flex-start; gap:3px; text-align:left; }
-.desk-auth-roles button small { color:var(--muted); }
-.desk-auth-roles button[aria-pressed="true"] { color:white; background:#123f34; border-color:#123f34; }
-.desk-auth-roles button[aria-pressed="true"] small { color:#d7eee3; }
-.desk-auth-form { display:grid; grid-template-columns:1fr 1fr auto; gap:10px; align-items:end; margin-top:12px; }
-.desk-auth-form label { color:var(--muted); display:flex; flex-direction:column; gap:6px; font-size:11px; font-weight:700; }
-.desk-auth-row { align-items:center; margin-top:12px; }
+.desk-auth h2,.desk-lock h2 { font: 800 20px Manrope,sans-serif; letter-spacing:-.03em; margin: 4px 0 6px; }
+.desk-auth-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:12px; }
+.desk-auth-head p,.desk-lock p,.role-card p { color:var(--muted); margin:0; }
+.role-split { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.role-card { display:flex; flex-direction:column; align-items:flex-start; gap:8px; }
+.role-card h3 { margin:0; }
+.role-list { font-size:12px; line-height:1.5; }
+.role-list b { color:var(--ink); margin-right:6px; }
 .desk-lock { display:grid; gap:8px; }
 .app-masthead .pill { white-space:nowrap; }
-@media(max-width:720px) { .desk-auth-form,.desk-auth-roles { grid-template-columns:1fr; } .desk-auth-head { flex-direction:column; } }
+@media(max-width:720px) { .role-split { grid-template-columns:1fr; } .desk-auth-head { flex-direction:column; } }

@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { DESK_ROLE_ACCESS, isDeskRole } from "../../../services/desk-roles.mjs";
 
-export type DeskRole = "Customer" | "Admin";
+export type DeskRole = "User" | "Admin";
 
 export type DeskSession = {
   role: DeskRole;
@@ -10,10 +11,19 @@ export type DeskSession = {
   csrfToken: string;
 };
 
-const PRESETS = [
-  { id: "user", label: "User login", hint: "यूजर · Customer", loginId: "user", password: "user-paper-1" },
-  { id: "admin", label: "Admin login", hint: "एडमिन · Admin", loginId: "admin", password: "admin-paper-1" },
-] as const;
+const DOORS = [
+  { role: "User" as const, loginId: "user", password: "user-paper-1", action: "User login" },
+  { role: "Admin" as const, loginId: "admin", password: "admin-paper-1", action: "Admin login" },
+];
+
+function isSession(body: { ok?: boolean; role?: string; loginId?: string; csrfToken?: string }): body is {
+  ok: true;
+  role: DeskRole;
+  loginId: string;
+  csrfToken: string;
+} {
+  return Boolean(body?.ok && isDeskRole(body.role) && typeof body.loginId === "string" && typeof body.csrfToken === "string");
+}
 
 export function DeskAuth({
   session,
@@ -22,9 +32,7 @@ export function DeskAuth({
   session: DeskSession | null;
   onSession: (session: DeskSession | null) => void;
 }) {
-  const [loginId, setLoginId] = useState(PRESETS[0].loginId);
-  const [password, setPassword] = useState(PRESETS[0].password);
-  const [pending, setPending] = useState(false);
+  const [pending, setPending] = useState<DeskRole | null>(null);
   const [error, setError] = useState<string | null>(null);
   const onSessionRef = useRef(onSession);
   onSessionRef.current = onSession;
@@ -34,9 +42,7 @@ export function DeskAuth({
     fetch("/api/desk/session", { credentials: "include", cache: "no-store" })
       .then((response) => response.json())
       .then((body) => {
-        if (cancel || !body?.ok || (body.role !== "Customer" && body.role !== "Admin")) return;
-        if (typeof body.loginId !== "string" || typeof body.csrfToken !== "string") return;
-        onSessionRef.current({ role: body.role, loginId: body.loginId, csrfToken: body.csrfToken });
+        if (!cancel && isSession(body)) onSessionRef.current({ role: body.role, loginId: body.loginId, csrfToken: body.csrfToken });
       })
       .catch(() => {});
     return () => {
@@ -44,8 +50,8 @@ export function DeskAuth({
     };
   }, []);
 
-  async function signIn(nextId: string, nextPassword: string) {
-    setPending(true);
+  async function signIn(door: (typeof DOORS)[number]) {
+    setPending(door.role);
     setError(null);
     try {
       const csrfResponse = await fetch("/api/desk/csrf", { cache: "no-store" });
@@ -57,28 +63,25 @@ export function DeskAuth({
       const response = await fetch("/api/desk/login", {
         method: "POST",
         credentials: "include",
-        headers: {
-          "content-type": "application/json",
-          "x-csrf-token": csrf.csrfToken,
-        },
-        body: JSON.stringify({ loginId: nextId, password: nextPassword }),
+        headers: { "content-type": "application/json", "x-csrf-token": csrf.csrfToken },
+        body: JSON.stringify({ loginId: door.loginId, password: door.password }),
       });
       const body = await response.json();
-      if (!body?.ok || (body.role !== "Customer" && body.role !== "Admin") || typeof body.csrfToken !== "string") {
-        setError(body?.error === "login denied" ? "Login denied. Check the role password." : "Login denied.");
+      if (!isSession(body) || body.role !== door.role) {
+        setError(body?.error === "login denied" ? "Login denied for this role." : "Login denied.");
         return;
       }
       onSession({ role: body.role, loginId: body.loginId, csrfToken: body.csrfToken });
     } catch {
       setError("Login denied.");
     } finally {
-      setPending(false);
+      setPending(null);
     }
   }
 
   async function signOut() {
     if (!session) return;
-    setPending(true);
+    setPending(session.role);
     setError(null);
     try {
       await fetch("/api/desk/logout", {
@@ -87,64 +90,54 @@ export function DeskAuth({
         headers: { "x-csrf-token": session.csrfToken },
       });
     } catch {
-      // The local role still clears. A stale cookie cannot open admin tools without a fresh login.
+      // Local role still clears. Admin tools need a fresh login.
     }
     onSession(null);
-    setPending(false);
+    setPending(null);
   }
 
+  const active = session ? DESK_ROLE_ACCESS[session.role] : null;
+
   return (
-    <section className="card desk-auth" aria-label="Role login">
+    <section className="desk-auth" aria-label="Role login">
       <div className="desk-auth-head">
         <div>
-          <span className="eyebrow">ROLE ACCESS · PAPER DESK</span>
-          <h2>User and admin login</h2>
-          <p>यूजर लॉगिन Customer है। एडमिन लॉगिन Admin है। Live orders locked रहते हैं।</p>
+          <span className="eyebrow">TWO ROLES · PAPER DESK</span>
+          <h2>User role and Admin role</h2>
+          <p>दोनों रोल अलग हैं। User रिसर्च देखता है। Admin वही देखता है और checklist एडिट भी कर सकता है। Live orders locked रहते हैं।</p>
         </div>
-        <span className={session ? "pill pill-live" : "pill pill-warn"}>{session ? session.role : "Signed out"}</span>
+        <span className={session?.role === "Admin" ? "pill pill-live" : "pill pill-warn"}>{session ? `${session.role} role` : "Signed out"}</span>
       </div>
-      {session ? (
-        <div className="desk-auth-row">
-          <b>{session.loginId}</b>
-          <span className="muted">{session.role === "Admin" ? "Admin tools unlocked" : "Customer · admin sections hidden"}</span>
-          <button type="button" className="button button-dark" onClick={signOut} disabled={pending}>Sign out</button>
-        </div>
+      {active && session ? (
+        <article className="card role-card">
+          <span className="eyebrow">{active.title} ROLE</span>
+          <h3>{session.loginId}</h3>
+          <p>{active.summary}</p>
+          <p className="role-list"><b>Open</b> {active.sections.join(" · ")}</p>
+          {active.denied.length > 0 ? <p className="role-list"><b>Closed</b> {active.denied.join(" · ")}</p> : <p className="role-list"><b>Closed</b> none</p>}
+          <button type="button" className="button button-dark" onClick={signOut} disabled={pending !== null}>Sign out</button>
+        </article>
       ) : (
-        <form
-          className="desk-auth-form"
-          onSubmit={(event) => {
-            event.preventDefault();
-            void signIn(loginId, password);
-          }}
-        >
-          <div className="desk-auth-roles" role="group" aria-label="Choose role">
-            {PRESETS.map((preset) => (
-              <button
-                key={preset.id}
-                type="button"
-                aria-pressed={loginId === preset.loginId}
-                onClick={() => {
-                  setLoginId(preset.loginId);
-                  setPassword(preset.password);
-                  void signIn(preset.loginId, preset.password);
-                }}
-                disabled={pending}
-              >
-                {preset.label}
-                <small>{preset.hint}</small>
-              </button>
-            ))}
-          </div>
-          <label>Login id
-            <input value={loginId} autoComplete="username" onChange={(event) => setLoginId(event.target.value)} />
-          </label>
-          <label>Password
-            <input type="password" value={password} autoComplete="current-password" onChange={(event) => setPassword(event.target.value)} />
-          </label>
-          <button type="submit" className="button button-accent" disabled={pending}>{pending ? "Signing in…" : "Sign in"}</button>
-          {error ? <p className="notice notice-error">{error}</p> : <p className="muted tiny">user / user-paper-1 · admin / admin-paper-1</p>}
-        </form>
+        <div className="role-split">
+          {DOORS.map((door) => {
+            const access = DESK_ROLE_ACCESS[door.role];
+            return (
+              <article className="card role-card" key={door.role}>
+                <span className="eyebrow">{access.title} ROLE</span>
+                <h3>{access.title}</h3>
+                <p>{access.summary}</p>
+                <p className="role-list"><b>Open</b> {access.sections.join(" · ")}</p>
+                <p className="role-list"><b>Closed</b> {access.denied.length > 0 ? access.denied.join(" · ") : "none"}</p>
+                <p className="muted tiny">{door.loginId} / {door.password}</p>
+                <button type="button" className={door.role === "Admin" ? "button button-dark" : "button button-accent"} onClick={() => void signIn(door)} disabled={pending !== null}>
+                  {pending === door.role ? "Signing in…" : door.action}
+                </button>
+              </article>
+            );
+          })}
+        </div>
       )}
+      {error ? <p className="notice notice-error">{error}</p> : null}
     </section>
   );
 }

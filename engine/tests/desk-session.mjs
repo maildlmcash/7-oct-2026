@@ -32,7 +32,7 @@ async function signIn(loginId, password, csrfToken = csrf()) {
 test("user and admin desk logins stay role-scoped and do not unlock the fail-closed session policy", async () => {
   const user = await signIn("user", "user-paper-1");
   assert.equal(user.status, 200);
-  assert.equal(user.body.role, "Customer");
+  assert.equal(user.body.role, "User");
   assert.equal(user.body.loginId, "user");
   assert.equal(user.body.liveTrading, "OFF");
   assert.equal(user.body.liveOrdersLocked, true);
@@ -42,7 +42,7 @@ test("user and admin desk logins stay role-scoped and do not unlock the fail-clo
   const userSession = await getDeskSession(new Request("http://localhost/api/desk/session", {
     headers: { cookie: `${SESSION_COOKIE_NAME}=${tokenFrom(user.setCookie)}` },
   }));
-  assert.equal((await userSession.json()).role, "Customer");
+  assert.equal((await userSession.json()).role, "User");
 
   const wrong = await signIn("admin", "user-paper-1");
   assert.equal(wrong.status, 401);
@@ -52,7 +52,7 @@ test("user and admin desk logins stay role-scoped and do not unlock the fail-clo
   assert.equal(admin.status, 200);
   assert.equal(admin.body.role, "Admin");
   assert.equal(admin.body.loginId, "admin");
-  assert.notEqual(admin.body.role, "Customer");
+  assert.notEqual(admin.body.role, "User");
 
   const forged = await postDeskLogin(new Request("http://localhost/api/desk/login", {
     method: "POST",
@@ -72,7 +72,8 @@ test("user and admin desk logins stay role-scoped and do not unlock the fail-clo
   const after = await getDeskSession(new Request("http://localhost/api/desk/session", {
     headers: { cookie: `${SESSION_COOKIE_NAME}=${tokenFrom(admin.setCookie)}` },
   }));
-  assert.equal(after.status, 401);
+  assert.equal(after.status, 200);
+  assert.equal((await after.json()).ok, false);
 
   assert.equal(sessionRuntime.policy.ttlMs, null);
   assert.equal(sessionRuntime.store.accounts.size, 0);

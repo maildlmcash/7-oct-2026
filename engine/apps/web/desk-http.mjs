@@ -88,7 +88,8 @@ export async function postDeskLogin(request) {
 export function getDeskSession(request) {
   const correlationId = correlationIdFrom(request);
   const result = deskRead(cookieToken(request));
-  return json(publicDesk(result), statusFor(result), correlationId, null);
+  if (!result.ok) return json({ ok: false }, 200, correlationId, null);
+  return json(publicDesk(result), 200, correlationId, null);
 }
 
 export function postDeskLogout(request) {
