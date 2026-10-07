@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { K as require_react, b as require_jsx_runtime } from "../_libs/@tanstack/react-router+[...].mjs";
-import { a as recordPageHealth, c as diagnosticEvent, d as initialClientViewState, f as parseUserVisibleStatus, i as isDeskRole, l as resolveCorrelationId, m as setPageIndex, n as DESK_ROLE_ACCESS, o as CORRELATION_HEADER, p as selectSection, r as deskSections, s as SECTION_HEADER, u as SHELL_SECTIONS } from "./router-BXJ91u3h.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-T1hyOanx.js
+import { a as recordPageHealth, c as diagnosticEvent, d as initialClientViewState, f as parseUserVisibleStatus, i as isDeskRole, l as resolveCorrelationId, m as setPageIndex, n as DESK_ROLE_ACCESS, o as CORRELATION_HEADER, p as selectSection, r as deskSections, s as SECTION_HEADER, u as SHELL_SECTIONS } from "./router-N7GIrcEW.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-Co6p7IYF.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var CHECKLIST_STATUSES = Object.freeze([
@@ -1199,6 +1199,387 @@ function DeskAuth({ session, onSession }) {
 		]
 	});
 }
+Object.freeze({
+	venueDocsUrl: "https://developers.binance.com/en/docs",
+	streamsUrl: "https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md",
+	restUrl: "https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md",
+	marketDataOnlyUrl: "https://github.com/binance/binance-spot-api-docs/blob/master/faqs/market_data_only.md",
+	changelogUrl: "https://github.com/binance/binance-spot-api-docs/blob/master/CHANGELOG.md",
+	version: "2026-09-18",
+	checkedAt: "2026-10-06"
+});
+var SPOT_STREAM_LIFECYCLE = Object.freeze({
+	connectionValid: "24 hours",
+	connectionValidMs: 864e5,
+	serverPing: "20 seconds",
+	serverPingMs: 2e4,
+	pongDeadline: "1 minute",
+	pongDeadlineMs: 6e4,
+	incomingControlPerSecond: 5,
+	maxStreams: 1024,
+	connectionAttempts: "300 connections per attempt every 5 minutes per IP"
+});
+var SPOT_REST_ORIGIN = "https://data-api.binance.vision";
+var SPOT_STREAM_ORIGIN = "wss://data-stream.binance.vision:443";
+Object.freeze({
+	trades: "/api/v3/trades",
+	bookTicker: "/api/v3/ticker/bookTicker",
+	exchangeInfo: "/api/v3/exchangeInfo",
+	depth: "/api/v3/depth"
+});
+var CEX_RANK_NOTE = "Order is a connection plan from CoinGecko 2025 CEX spot share, then established public-API venues. Not a live volume feed.";
+var CEX_VENUES = Object.freeze([
+	Object.freeze({
+		rank: 1,
+		name: "Binance",
+		spot: "connected",
+		futures: "connected"
+	}),
+	Object.freeze({
+		rank: 2,
+		name: "Bybit",
+		spot: "not-connected",
+		futures: "not-connected"
+	}),
+	Object.freeze({
+		rank: 3,
+		name: "OKX",
+		spot: "not-connected",
+		futures: "not-connected"
+	}),
+	Object.freeze({
+		rank: 4,
+		name: "Coinbase Exchange",
+		spot: "not-connected",
+		futures: "not-offered"
+	}),
+	Object.freeze({
+		rank: 5,
+		name: "Kraken",
+		spot: "not-connected",
+		futures: "not-connected"
+	}),
+	Object.freeze({
+		rank: 6,
+		name: "KuCoin",
+		spot: "not-connected",
+		futures: "not-connected"
+	}),
+	Object.freeze({
+		rank: 7,
+		name: "Gate",
+		spot: "not-connected",
+		futures: "not-connected"
+	}),
+	Object.freeze({
+		rank: 8,
+		name: "Bitget",
+		spot: "not-connected",
+		futures: "not-connected"
+	}),
+	Object.freeze({
+		rank: 9,
+		name: "MEXC",
+		spot: "not-connected",
+		futures: "not-connected"
+	}),
+	Object.freeze({
+		rank: 10,
+		name: "HTX",
+		spot: "not-connected",
+		futures: "not-connected"
+	}),
+	Object.freeze({
+		rank: 11,
+		name: "Crypto.com Exchange",
+		spot: "not-connected",
+		futures: "not-connected"
+	}),
+	Object.freeze({
+		rank: 12,
+		name: "Upbit",
+		spot: "not-connected",
+		futures: "not-offered"
+	}),
+	Object.freeze({
+		rank: 13,
+		name: "Bitfinex",
+		spot: "not-connected",
+		futures: "not-connected"
+	}),
+	Object.freeze({
+		rank: 14,
+		name: "Bitstamp",
+		spot: "not-connected",
+		futures: "not-offered"
+	}),
+	Object.freeze({
+		rank: 15,
+		name: "Gemini",
+		spot: "not-connected",
+		futures: "not-offered"
+	})
+]);
+var BINANCE_FUTURES_STREAM_LIMITS = Object.freeze({
+	docsUrl: "https://developers.binance.com/en/docs/products/derivatives-trading-usds-futures/websocket-market-streams/Connect",
+	markDocsUrl: "https://developers.binance.com/en/docs/catalog/core-trading-derivatives-trading-usd-s-m-futures/api/ws-streams/market",
+	checkedAt: "2026-10-07",
+	origin: "wss://fstream.binance.com/market",
+	connectionValid: "24 hours",
+	serverPing: "3 minutes",
+	pongDeadline: "10 minutes",
+	incomingMessagesPerSecond: 10,
+	maxStreams: 1024,
+	updateSpeed: "1s on @markPrice@1s, otherwise 3s",
+	condition: "markPrice is served on /market. No order or private stream is opened."
+});
+var BINANCE_SPOT_SOCKET = Object.freeze({
+	origin: SPOT_STREAM_ORIGIN,
+	restOrigin: SPOT_REST_ORIGIN,
+	streams: Object.freeze(["{symbol}@trade", "{symbol}@bookTicker"]),
+	limits: SPOT_STREAM_LIFECYCLE,
+	conditions: Object.freeze([
+		"Public market-data host only. No API key and no order route.",
+		"Symbol must match A-Z and 0-9. Any other stream name is rejected.",
+		"A connection lasts 24 hours, then it must reconnect and resubscribe.",
+		"Server ping is every 20 seconds. A pong is required within 1 minute.",
+		"At most 5 incoming control messages per second.",
+		"At most 1024 streams on one connection.",
+		"At most 300 connection attempts every 5 minutes per IP.",
+		"An invalid frame is ignored. It is never stored as zero.",
+		"The page calls the feed stale after 10 seconds without a frame.",
+		"Reconnect waits from 1 second and doubles, capped at 15 seconds.",
+		"The page keeps the last 12 trades. Older prints are dropped on screen only."
+	])
+});
+var BINANCE_FUTURES_SOCKET = Object.freeze({
+	origin: BINANCE_FUTURES_STREAM_LIMITS.origin,
+	streams: Object.freeze(["{symbol}@markPrice@1s"]),
+	limits: BINANCE_FUTURES_STREAM_LIMITS,
+	conditions: Object.freeze([
+		"Public market stream only. No API key and no order route.",
+		"The stream is pinned to /market. The old /ws markPrice path is not used.",
+		"A connection lasts 24 hours, then it must reconnect.",
+		"Server ping is every 3 minutes. A pong is required within 10 minutes.",
+		"At most 10 incoming messages per second.",
+		"At most 1024 streams on one connection.",
+		"Update speed for this socket is 1 second.",
+		"Estimated settle price P is only useful in the last hour before settlement.",
+		"An invalid frame is ignored. It is never stored as zero.",
+		"The page calls the feed stale after 10 seconds without a frame."
+	])
+});
+var BINANCE_SPOT_FIELDS = Object.freeze([
+	Object.freeze({
+		stream: "bookTicker",
+		field: "s",
+		meaning: "Symbol",
+		limit: "Must match the subscribed symbol",
+		used: "Market · book header",
+		wasHidden: true
+	}),
+	Object.freeze({
+		stream: "bookTicker",
+		field: "b",
+		meaning: "Best bid price",
+		limit: "Decimal string",
+		used: "Market · best bid",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "bookTicker",
+		field: "B",
+		meaning: "Best bid quantity",
+		limit: "Decimal string",
+		used: "Market · best bid size",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "bookTicker",
+		field: "a",
+		meaning: "Best ask price",
+		limit: "Decimal string",
+		used: "Market · best ask",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "bookTicker",
+		field: "A",
+		meaning: "Best ask quantity",
+		limit: "Decimal string",
+		used: "Market · best ask size",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "bookTicker",
+		field: "u",
+		meaning: "Order book update id",
+		limit: "Whole number",
+		used: "Market · book update id",
+		wasHidden: true
+	}),
+	Object.freeze({
+		stream: "trade",
+		field: "e",
+		meaning: "Event name",
+		limit: "Must be trade",
+		used: "Parser gate only",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "trade",
+		field: "E",
+		meaning: "Event time",
+		limit: "Unix milliseconds",
+		used: "Market · trade event time",
+		wasHidden: true
+	}),
+	Object.freeze({
+		stream: "trade",
+		field: "s",
+		meaning: "Symbol",
+		limit: "Must match the subscribed symbol",
+		used: "Market · trade symbol",
+		wasHidden: true
+	}),
+	Object.freeze({
+		stream: "trade",
+		field: "t",
+		meaning: "Trade id",
+		limit: "Whole number",
+		used: "Market · trade id",
+		wasHidden: true
+	}),
+	Object.freeze({
+		stream: "trade",
+		field: "p",
+		meaning: "Price",
+		limit: "Decimal string",
+		used: "Market · price, sparkline",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "trade",
+		field: "q",
+		meaning: "Quantity",
+		limit: "Decimal string",
+		used: "Market · quantity and 12-print imbalance",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "trade",
+		field: "T",
+		meaning: "Trade time",
+		limit: "Unix milliseconds",
+		used: "Market · trade clock",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "trade",
+		field: "m",
+		meaning: "Buyer is the maker",
+		limit: "Boolean. true means the taker sold",
+		used: "Market · taker side",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "trade",
+		field: "M",
+		meaning: "Best-match flag",
+		limit: "Boolean. Docs say ignore for strategy",
+		used: "Market · best-match column",
+		wasHidden: true
+	})
+]);
+var BINANCE_FUTURES_FIELDS = Object.freeze([
+	Object.freeze({
+		stream: "markPrice@1s",
+		field: "e",
+		meaning: "Event name",
+		limit: "markPriceUpdate",
+		used: "Market · event name",
+		wasHidden: true
+	}),
+	Object.freeze({
+		stream: "markPrice@1s",
+		field: "E",
+		meaning: "Event time",
+		limit: "Unix milliseconds",
+		used: "Market · event time",
+		wasHidden: true
+	}),
+	Object.freeze({
+		stream: "markPrice@1s",
+		field: "s",
+		meaning: "Symbol",
+		limit: "Must match the subscribed symbol",
+		used: "Market · futures symbol",
+		wasHidden: true
+	}),
+	Object.freeze({
+		stream: "markPrice@1s",
+		field: "p",
+		meaning: "Mark price",
+		limit: "Decimal string",
+		used: "Market · mark price",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "markPrice@1s",
+		field: "i",
+		meaning: "Index price",
+		limit: "Decimal string. Not a kline close",
+		used: "Market · index price",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "markPrice@1s",
+		field: "P",
+		meaning: "Estimated settle price",
+		limit: "Useful only in the last hour before settlement",
+		used: "Market · settle estimate",
+		wasHidden: true
+	}),
+	Object.freeze({
+		stream: "markPrice@1s",
+		field: "r",
+		meaning: "Funding rate",
+		limit: "Decimal string",
+		used: "Market · funding rate",
+		wasHidden: false
+	}),
+	Object.freeze({
+		stream: "markPrice@1s",
+		field: "ap",
+		meaning: "Mark price moving average",
+		limit: "Decimal string",
+		used: "Market · mark average",
+		wasHidden: true
+	}),
+	Object.freeze({
+		stream: "markPrice@1s",
+		field: "T",
+		meaning: "Next funding time",
+		limit: "Unix milliseconds",
+		used: "Market · next funding",
+		wasHidden: false
+	})
+]);
+var EMPTY_SPOT = {
+	symbol: "",
+	bid: "—",
+	bidQty: "—",
+	ask: "—",
+	askQty: "—",
+	bookUpdateId: null,
+	trades: []
+};
+function asRecord(input) {
+	if (!input || typeof input !== "object") return null;
+	const event = input.data ?? input;
+	if (!event || typeof event !== "object") return null;
+	return event;
+}
 function useSocketFeed(url, parse) {
 	const [state, setState] = (0, import_react.useState)({
 		status: "connecting",
@@ -1217,8 +1598,8 @@ function useSocketFeed(url, parse) {
 		let attempts = 0;
 		const connect = () => {
 			if (stopped) return;
-			setState((s) => ({
-				...s,
+			setState((current) => ({
+				...current,
 				status: attempts ? "reconnecting" : "connecting"
 			}));
 			socket = new WebSocket(url);
@@ -1265,52 +1646,290 @@ function useSocketFeed(url, parse) {
 	};
 }
 function parseSpot(input, prior) {
-	if (!input || typeof input !== "object") return null;
-	const event = input.data ?? input;
-	if (typeof event.s !== "string") return null;
+	const event = asRecord(input);
+	if (!event || typeof event.s !== "string") return null;
 	if (event.e === "trade" && typeof event.p === "string" && typeof event.q === "string" && typeof event.T === "number") {
-		const base = prior ?? {
-			bid: "—",
-			bidQty: "—",
-			ask: "—",
-			askQty: "—",
-			trades: []
+		const base = prior ?? EMPTY_SPOT;
+		const trade = {
+			symbol: event.s,
+			price: event.p,
+			qty: event.q,
+			buyerMaker: event.m === true,
+			time: event.T,
+			eventTime: typeof event.E === "number" ? event.E : null,
+			tradeId: typeof event.t === "number" ? event.t : null,
+			bestMatch: typeof event.M === "boolean" ? event.M : null
 		};
 		return {
 			...base,
-			trades: [{
-				price: event.p,
-				qty: event.q,
-				buyerMaker: event.m === true,
-				time: event.T
-			}, ...base.trades].slice(0, 12)
+			symbol: event.s,
+			trades: [trade, ...base.trades].slice(0, 12)
 		};
 	}
-	if (typeof event.b === "string" && typeof event.B === "string" && typeof event.a === "string" && typeof event.A === "string") return {
-		...prior ?? {
-			bid: "—",
-			bidQty: "—",
-			ask: "—",
-			askQty: "—",
-			trades: []
-		},
-		bid: event.b,
-		bidQty: event.B,
-		ask: event.a,
-		askQty: event.A
-	};
+	if (typeof event.b === "string" && typeof event.B === "string" && typeof event.a === "string" && typeof event.A === "string") {
+		const base = prior ?? EMPTY_SPOT;
+		return {
+			...base,
+			symbol: event.s,
+			bid: event.b,
+			bidQty: event.B,
+			ask: event.a,
+			askQty: event.A,
+			bookUpdateId: typeof event.u === "number" ? event.u : base.bookUpdateId
+		};
+	}
 	return null;
 }
-function parseFuture(input) {
-	if (!input || typeof input !== "object") return null;
-	const event = input.data ?? input;
-	if (typeof event.p !== "string" || typeof event.i !== "string" || typeof event.r !== "string" || typeof event.T !== "number") return null;
+function parseFuture(input, _prior) {
+	const event = asRecord(input);
+	if (!event || typeof event.p !== "string" || typeof event.i !== "string" || typeof event.r !== "string" || typeof event.T !== "number") return null;
 	return {
+		event: typeof event.e === "string" ? event.e : null,
+		eventTime: typeof event.E === "number" ? event.E : null,
+		symbol: typeof event.s === "string" ? event.s : null,
 		mark: event.p,
 		index: event.i,
 		funding: event.r,
-		nextFunding: event.T
+		nextFunding: event.T,
+		settle: typeof event.P === "string" ? event.P : null,
+		markAverage: typeof event.ap === "string" ? event.ap : null
 	};
+}
+function statusLabel(status) {
+	if (status === "connected") return "Connected";
+	if (status === "not-offered") return "Not in this book";
+	return "Not connected";
+}
+function FieldTable({ rows }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "table-scroll",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Socket" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Field" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Meaning" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Limit / condition" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Where it is used" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Was hidden" })
+		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: rows.map((row) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: row.stream }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+				className: "mono",
+				children: row.field
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: row.meaning }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: row.limit }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: row.used }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: row.wasHidden ? "Yes · now on Market" : "No" })
+		] }, `${row.stream}-${row.field}`)) })] })
+	});
+}
+function SpotLive() {
+	const feed = useSocketFeed("wss://data-stream.binance.vision:443/stream?streams=btcusdt@trade/btcusdt@bookTicker", parseSpot);
+	const last = feed.value?.trades[0];
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "cex-live",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+				className: "muted tiny",
+				children: [BINANCE_SPOT_SOCKET.origin, "/stream?streams=btcusdt@trade/btcusdt@bookTicker"]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "stat-line",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Status" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: feed.status })]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "stat-line",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Symbol / book update" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("b", { children: [
+					feed.value?.symbol || "—",
+					" · ",
+					feed.value?.bookUpdateId ?? "—"
+				] })]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "stat-line",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Bid / ask" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("b", { children: [
+					feed.value?.bid ?? "—",
+					" × ",
+					feed.value?.bidQty ?? "—",
+					" / ",
+					feed.value?.ask ?? "—",
+					" × ",
+					feed.value?.askQty ?? "—"
+				] })]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "stat-line",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Last trade id / price / qty" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: last ? `${last.tradeId ?? "—"} · ${last.price} · ${last.qty}` : "—" })]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "stat-line",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Event time / best match" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("b", { children: [
+					last?.eventTime ? new Date(last.eventTime).toLocaleTimeString() : "—",
+					" · ",
+					last?.bestMatch === null || last?.bestMatch === void 0 ? "—" : last.bestMatch ? "Yes" : "No"
+				] })]
+			})
+		]
+	});
+}
+function FuturesLive() {
+	const feed = useSocketFeed("wss://fstream.binance.com/market/stream?streams=btcusdt@markPrice@1s", parseFuture);
+	const value = feed.value;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "cex-live",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+				className: "muted tiny",
+				children: [BINANCE_FUTURES_SOCKET.origin, "/stream?streams=btcusdt@markPrice@1s"]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "stat-line",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Status" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: feed.status })]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "stat-line",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Event / symbol" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("b", { children: [
+					value?.event ?? "—",
+					" · ",
+					value?.symbol ?? "—"
+				] })]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "stat-line",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Mark / index / average" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("b", { children: [
+					value?.mark ?? "—",
+					" · ",
+					value?.index ?? "—",
+					" · ",
+					value?.markAverage ?? "—"
+				] })]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "stat-line",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Funding / next / settle" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("b", { children: [
+					value?.funding ?? "—",
+					" · ",
+					value ? new Date(value.nextFunding).toLocaleTimeString() : "—",
+					" · ",
+					value?.settle ?? "—"
+				] })]
+			})
+		]
+	});
+}
+function CexDesk() {
+	const [book, setBook] = (0, import_react.useState)("spot");
+	const fields = book === "spot" ? BINANCE_SPOT_FIELDS : BINANCE_FUTURES_FIELDS;
+	const socket = book === "spot" ? BINANCE_SPOT_SOCKET : BINANCE_FUTURES_SOCKET;
+	const limits = socket.limits;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+		className: "cex-desk",
+		"aria-label": "Centralized exchanges",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "section-intro",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "eyebrow",
+						children: "ADMIN · CENTRALIZED EXCHANGES"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Top 15 CEX · API connection plan" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Spot और Futures अलग हैं। सिर्फ Binance का public socket खुला है। बाकी 14 एक्सचेंज लिस्ट में हैं, कनेक्ट नहीं। Live orders locked रहते हैं।" })
+				] })
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "cex-books",
+				role: "group",
+				"aria-label": "Market book",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+					type: "button",
+					className: "button button-accent",
+					"aria-pressed": book === "spot",
+					onClick: () => setBook("spot"),
+					children: "Spot"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+					type: "button",
+					className: "button button-dark",
+					"aria-pressed": book === "futures",
+					onClick: () => setBook("futures"),
+					children: "Futures"
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
+				className: "card",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "muted tiny",
+					children: CEX_RANK_NOTE
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "table-scroll",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "#" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Exchange" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: book === "spot" ? "Spot API" : "Futures API" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Orders" })
+					] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: CEX_VENUES.map((venue) => {
+						const state = book === "spot" ? venue.spot : venue.futures;
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: venue.rank }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: venue.name }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+								className: state === "connected" ? "status-implemented" : "status-blocked",
+								children: statusLabel(state)
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: "Locked" })
+						] }, venue.name);
+					}) })] })
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
+				className: "card",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+						className: "card-head",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "eyebrow",
+							children: ["BINANCE · ", book === "spot" ? "SPOT" : "USDⓈ-M FUTURES"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: "Socket, limits, and every field" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "pill pill-live",
+							children: "BTCUSDT"
+						})]
+					}),
+					book === "spot" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SpotLive, {}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FuturesLive, {}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
+						className: "cex-limits",
+						children: [
+							"connectionValid" in limits ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: ["Connection life: ", limits.connectionValid] }) : null,
+							"serverPing" in limits ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
+								"Server ping: ",
+								limits.serverPing,
+								". Pong deadline: ",
+								limits.pongDeadline
+							] }) : null,
+							"incomingControlPerSecond" in limits ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
+								"Incoming control limit: ",
+								limits.incomingControlPerSecond,
+								" per second"
+							] }) : null,
+							"incomingMessagesPerSecond" in limits ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
+								"Incoming message limit: ",
+								limits.incomingMessagesPerSecond,
+								" per second"
+							] }) : null,
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: ["Max streams on one connection: ", limits.maxStreams] }),
+							"connectionAttempts" in limits ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: ["Connection attempts: ", limits.connectionAttempts] }) : null,
+							"updateSpeed" in limits ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: ["Update speed: ", limits.updateSpeed] }) : null,
+							"condition" in limits ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: limits.condition }) : null
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+						className: "cex-limits",
+						children: socket.conditions.map((condition) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: condition }, condition))
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FieldTable, { rows: fields })
+				]
+			})
+		]
+	});
 }
 function StatusPill({ status, age }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
@@ -1323,7 +1942,7 @@ function PriceSparkline({ trades }) {
 		className: "spark-empty",
 		children: "Price trace appears after live trade events arrive."
 	});
-	const values = [...trades].reverse().map((t) => Number(t.price)).filter(Number.isFinite);
+	const values = [...trades].reverse().map((trade) => Number(trade.price)).filter(Number.isFinite);
 	if (values.length < 2) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "spark-empty",
 		children: "Waiting for valid price events."
@@ -1331,7 +1950,7 @@ function PriceSparkline({ trades }) {
 	const low = Math.min(...values);
 	const high = Math.max(...values);
 	const range = high - low || Math.max(high * 1e-5, 1);
-	const points = values.map((value, i) => `${i / (values.length - 1) * 520},${108 - (value - low) / range * 92}`).join(" ");
+	const points = values.map((value, index) => `${index / (values.length - 1) * 520},${108 - (value - low) / range * 92}`).join(" ");
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "sparkline-wrap",
 		children: [
@@ -1392,6 +2011,9 @@ function PriceSparkline({ trades }) {
 		]
 	});
 }
+function clock(value) {
+	return typeof value === "number" ? new Date(value).toLocaleTimeString() : "—";
+}
 function MarketView() {
 	const [symbolInput, setSymbolInput] = (0, import_react.useState)("BTCUSDT");
 	const [symbol, setSymbol] = (0, import_react.useState)("BTCUSDT");
@@ -1401,8 +2023,8 @@ function MarketView() {
 	const spot = useSocketFeed(spotUrl, parseSpot);
 	const future = useSocketFeed(futuresUrl, parseFuture);
 	const spread = spot.value && spot.value.bid !== "—" && spot.value.ask !== "—" ? (Number(spot.value.ask) - Number(spot.value.bid)).toPrecision(7) : null;
-	const buyQty = spot.value?.trades.filter((x) => !x.buyerMaker).reduce((s, x) => s + Number(x.qty), 0) ?? 0;
-	const sellQty = spot.value?.trades.filter((x) => x.buyerMaker).reduce((s, x) => s + Number(x.qty), 0) ?? 0;
+	const buyQty = spot.value?.trades.filter((trade) => !trade.buyerMaker).reduce((sum, trade) => sum + Number(trade.qty), 0) ?? 0;
+	const sellQty = spot.value?.trades.filter((trade) => trade.buyerMaker).reduce((sum, trade) => sum + Number(trade.qty), 0) ?? 0;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
 		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "section-intro",
@@ -1415,8 +2037,8 @@ function MarketView() {
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Browser connects directly to public Binance market streams. No keys and no order permissions." })
 			] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
 				className: "symbol-form",
-				onSubmit: (e) => {
-					e.preventDefault();
+				onSubmit: (event) => {
+					event.preventDefault();
 					const next = symbolInput.trim().toUpperCase();
 					if (/^[A-Z0-9]{5,20}$/.test(next)) setSymbol(next);
 				},
@@ -1428,7 +2050,7 @@ function MarketView() {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 						id: "symbol",
 						value: symbolInput,
-						onChange: (e) => setSymbolInput(e.target.value),
+						onChange: (event) => setSymbolInput(event.target.value),
 						maxLength: 20
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
@@ -1485,6 +2107,10 @@ function MarketView() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "stat-line",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Book update id" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: spot.value?.bookUpdateId ?? "—" })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "stat-line",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Recent trade imbalance (12 prints)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: buyQty + sellQty > 0 ? `${((buyQty - sellQty) / (buyQty + sellQty) * 100).toFixed(1)}%` : "—" })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PriceSparkline, { trades: spot.value?.trades ?? [] }),
@@ -1492,16 +2118,22 @@ function MarketView() {
 					spot.value?.trades.length ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "table-scroll",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Trade id" }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Time (UTC)" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Event time" }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Price" }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Quantity" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Taker" })
-						] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: spot.value.trades.map((t, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: new Date(t.time).toLocaleTimeString() }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: t.price }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: t.qty }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: t.buyerMaker ? "Sell" : "Buy" })
-						] }, `${t.time}-${i}`)) })] })
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Taker" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Best match" })
+						] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: spot.value.trades.map((trade, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: trade.tradeId ?? "—" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: clock(trade.time) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: clock(trade.eventTime) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: trade.price }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: trade.qty }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: trade.buyerMaker ? "Sell" : "Buy" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: trade.bestMatch === null ? "—" : trade.bestMatch ? "Yes" : "No" })
+						] }, `${trade.tradeId ?? trade.time}-${index}`)) })] })
 					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 						className: "muted",
 						children: "Waiting for actual exchange events. Empty values stay unknown."
@@ -1533,17 +2165,37 @@ function MarketView() {
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "metric",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "MARK AVERAGE" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: future.value?.markAverage ?? "—" })]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "metric",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "SETTLE ESTIMATE" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: future.value?.settle ?? "—" })]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "metric",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "FUNDING RATE" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: future.value?.funding ?? "—" })]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "metric",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "NEXT FUNDING" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: future.value ? new Date(future.value.nextFunding).toLocaleTimeString() : "—" })]
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "NEXT FUNDING" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: future.value ? clock(future.value.nextFunding) : "—" })]
 							})
 						]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "stat-line",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Event" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: future.value?.event ?? "—" })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "stat-line",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Event time" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: clock(future.value?.eventTime) })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "stat-line",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Symbol on the frame" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: future.value?.symbol ?? "—" })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "notice notice-warn",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Live futures trading: LOCKED" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "This panel reads public data only. No order placement or account stream is enabled." })]
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Live futures trading: LOCKED" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Settle estimate is only useful in the last hour before settlement. This panel reads public data only." })]
 					})
 				]
 			})]
@@ -1558,7 +2210,7 @@ function MarketView() {
 						children: "CONNECTOR COVERAGE"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: "Exchange adapter status" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 						className: "coverage-number",
-						children: ["1 ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "/ 30 planned venue adapters" })]
+						children: ["1 ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "/ 15 CEX connection slots" })]
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -1566,25 +2218,21 @@ function MarketView() {
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 							className: "coverage-ok",
-							children: "● Binance Spot — public adapter implemented"
+							children: "● Binance Spot — public adapter live"
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 							className: "coverage-ok",
-							children: "● Binance USDⓈ-M — public adapter implemented"
+							children: "● Binance USDⓈ-M — public adapter live"
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 							className: "coverage-off",
-							children: "○ 14 other CEX venues — unconfigured"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "coverage-off",
-							children: "○ 15 DEX venue adapters — not implemented"
+							children: "○ 14 other CEX venues — listed in Admin, not connected"
 						})
 					]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "muted tiny",
-					children: "The 15 CEX / 15 DEX targets are capacity goals, not current integrations. Two Binance market streams come from the same exchange venue. Use each feed status above to see actual live connection health."
+					children: "The Admin role holds the 15-exchange list, socket limits, and field map. Live orders stay locked."
 				})
 			]
 		})
@@ -1600,13 +2248,13 @@ function DexView() {
 		setStatus("loading");
 		setError("");
 		try {
-			const res = await fetch(`/api/dex/search?q=${encodeURIComponent(query)}`, { cache: "no-store" });
-			const data = await res.json();
-			if (!res.ok || !data.ok) throw new Error(data.error ?? "Search failed.");
+			const response = await fetch(`/api/dex/search?q=${encodeURIComponent(query)}`, { cache: "no-store" });
+			const data = await response.json();
+			if (!response.ok || !data.ok) throw new Error(data.error ?? "Search failed.");
 			setPairs(data.pairs);
 			setStatus("ready");
-		} catch (e) {
-			setError(e instanceof Error ? e.message : "DEX search failed.");
+		} catch (caught) {
+			setError(caught instanceof Error ? caught.message : "DEX search failed.");
 			setStatus("error");
 		}
 	}
@@ -1637,7 +2285,7 @@ function DexView() {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 							id: "dex-query",
 							value: query,
-							onChange: (e) => setQuery(e.target.value),
+							onChange: (event) => setQuery(event.target.value),
 							placeholder: "Token name, symbol or address",
 							minLength: 2,
 							maxLength: 100
@@ -1666,36 +2314,36 @@ function DexView() {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Liquidity USD" }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "24h volume USD" }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Source" })
-					] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: pairs.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: p.chain }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", {
+					] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: pairs.map((pair) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: pair.chain }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", {
 							className: "block",
-							children: p.dex
+							children: pair.dex
 						})] }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", { children: [
-							p.base,
+							pair.base,
 							"/",
-							p.quote,
+							pair.quote,
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", {
 								className: "block mono",
-								children: p.pairAddress
+								children: pair.pairAddress
 							})
 						] }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: p.priceUsd ?? "—" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: p.liquidityUsd?.toLocaleString() ?? "—" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: p.volume24hUsd?.toLocaleString() ?? "—" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: p.url ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-							href: p.url,
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: pair.priceUsd ?? "—" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: pair.liquidityUsd?.toLocaleString() ?? "—" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: pair.volume24hUsd?.toLocaleString() ?? "—" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: pair.url ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+							href: pair.url,
 							target: "_blank",
 							rel: "noreferrer",
 							children: "Open ↗"
 						}) : "—" })
-					] }, `${p.chain}-${p.pairAddress}`)) })] })
+					] }, `${pair.chain}-${pair.pairAddress}`)) })] })
 				})
 			]
 		}),
 		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "notice notice-info",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Scope" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "DEX search returns a bounded list of indexed pairs. It does not decode swaps, establish wallet ownership, or submit trades. DEX WebSocket adapters remain a separate integration task." })]
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Scope" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "DEX search returns a bounded list of indexed pairs. It does not decode swaps, establish wallet ownership, or submit trades." })]
 		})
 	] });
 }
@@ -1721,22 +2369,22 @@ function WalletView() {
 			setError("Enter a valid EVM address.");
 			return;
 		}
-		if (!watchlist.some((x) => x.toLowerCase() === cleaned.toLowerCase()) && watchlist.length >= 15) {
+		if (!watchlist.some((item) => item.toLowerCase() === cleaned.toLowerCase()) && watchlist.length >= 15) {
 			setError("The local watchlist is limited to 15 entries.");
 			return;
 		}
 		setLoading(true);
 		setError("");
 		try {
-			const list = [...watchlist.filter((x) => x.toLowerCase() !== cleaned.toLowerCase()), cleaned];
+			const list = [...watchlist.filter((item) => item.toLowerCase() !== cleaned.toLowerCase()), cleaned];
 			setWatchlist(list);
 			localStorage.setItem("cpe-wallet-watchlist", JSON.stringify(list));
-			const res = await fetch(`/api/wallets/activity?chain=${chain}&address=${cleaned}`, { cache: "no-store" });
-			const value = await res.json();
-			if (!res.ok || !value.ok) throw new Error(value.error ?? "Explorer request failed.");
+			const response = await fetch(`/api/wallets/activity?chain=${chain}&address=${cleaned}`, { cache: "no-store" });
+			const value = await response.json();
+			if (!response.ok || !value.ok) throw new Error(value.error ?? "Explorer request failed.");
 			setData(value);
-		} catch (e) {
-			setError(e instanceof Error ? e.message : "Wallet lookup failed.");
+		} catch (caught) {
+			setError(caught instanceof Error ? caught.message : "Wallet lookup failed.");
 			setData(null);
 		} finally {
 			setLoading(false);
@@ -1766,7 +2414,7 @@ function WalletView() {
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { children: ["Chain", /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", {
 							value: chain,
-							onChange: (e) => setChain(e.target.value),
+							onChange: (event) => setChain(event.target.value),
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 								value: "ethereum",
 								children: "Ethereum"
@@ -1779,7 +2427,7 @@ function WalletView() {
 							className: "wallet-address",
 							children: ["Address", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 								value: address,
-								onChange: (e) => setAddress(e.target.value),
+								onChange: (event) => setAddress(event.target.value),
 								placeholder: "0x… (reviewed address)",
 								spellCheck: false
 							})]
@@ -1797,7 +2445,7 @@ function WalletView() {
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "notice notice-warn",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Whale verification: NOT ESTABLISHED" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "No preloaded wallets, labels, balances, or inactivity claims are fabricated. Add an address you have independently reviewed. Current adapter displays recent normal transactions only." })]
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Whale verification: NOT ESTABLISHED" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "No preloaded wallets, labels, balances, or inactivity claims are fabricated. Add an address you have independently reviewed." })]
 				}),
 				data && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -1810,7 +2458,7 @@ function WalletView() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 						className: "muted tiny",
-						children: [data.transactions.length, " recent explorer transactions. Inactivity threshold and whale eligibility still require a separate verified policy."]
+						children: [data.transactions.length, " recent explorer transactions."]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "table-scroll",
@@ -1821,23 +2469,23 @@ function WalletView() {
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "To" }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Transaction" }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Status" })
-						] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: data.transactions.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: t.timestamp ? new Date(t.timestamp).toLocaleString() : "—" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: t.method ?? "Transfer / contract call" }),
+						] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: data.transactions.map((tx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: tx.timestamp ? new Date(tx.timestamp).toLocaleString() : "—" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: tx.method ?? "Transfer / contract call" }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", {
 								className: "mono",
-								children: [t.from?.slice(0, 8) ?? "—", "…"]
+								children: [tx.from?.slice(0, 8) ?? "—", "…"]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", {
 								className: "mono",
-								children: [t.to?.slice(0, 8) ?? "—", "…"]
+								children: [tx.to?.slice(0, 8) ?? "—", "…"]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", {
 								className: "mono",
-								children: [t.hash.slice(0, 12), "…"]
+								children: [tx.hash.slice(0, 12), "…"]
 							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: t.status })
-						] }, t.hash)) })] })
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: tx.status })
+						] }, tx.hash)) })] })
 					})
 				] })
 			]
@@ -1958,13 +2606,13 @@ function PaperView() {
 					})] }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { children: ["Side", /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", {
 						value: side,
-						onChange: (e) => setSide(e.target.value),
+						onChange: (event) => setSide(event.target.value),
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { children: "BUY" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { children: "SELL" })]
 					})] }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { children: ["Quantity", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 						inputMode: "decimal",
 						value: qty,
-						onChange: (e) => setQty(e.target.value)
+						onChange: (event) => setQty(event.target.value)
 					})] })
 				]
 			}),
@@ -1983,7 +2631,7 @@ function PaperView() {
 		]
 	})] });
 }
-function AdminView() {
+function ReleaseChecklist() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "section-intro",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
@@ -2013,27 +2661,30 @@ function AdminView() {
 					"Database migrations",
 					"iOS release",
 					"Android release"
-				].map((item, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				].map((item, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "check-row",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 							className: "check-index",
-							children: String(i + 1).padStart(2, "0")
+							children: String(index + 1).padStart(2, "0")
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: item }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", {
-							className: i === 0 || i === 1 ? "status-implemented" : "status-blocked",
-							children: i === 0 || i === 1 ? "SOURCE READY · VERIFY AT RUN" : "BLOCKED / NOT CONFIGURED"
+							className: index === 0 || index === 1 ? "status-implemented" : "status-blocked",
+							children: index === 0 || index === 1 ? "SOURCE READY · VERIFY AT RUN" : "BLOCKED / NOT CONFIGURED"
 						})
 					]
 				}, item))
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "muted tiny",
-				children: "Checklist labels are not deployment health attestations. Provider credentials belong server-side and are not editable or stored in this browser panel."
+				children: "Checklist labels are not deployment health attestations. Provider credentials belong server-side and are not stored in this browser panel."
 			})
 		]
 	})] });
+}
+function AdminView() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CexDesk, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReleaseChecklist, {})] });
 }
 function EngineWorkspace({ section, onNavigate }) {
 	if (section === "Market") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketView, {});
@@ -2041,7 +2692,8 @@ function EngineWorkspace({ section, onNavigate }) {
 	if (section === "Wallets") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WalletView, {});
 	if (section === "Predictions") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PredictionsView, {});
 	if (section === "Paper") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaperView, {});
-	if (section === "Admin" || section === "Checklist" || section === "Bugs") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AdminView, {});
+	if (section === "Admin") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AdminView, {});
+	if (section === "Checklist" || section === "Bugs") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReleaseChecklist, {});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
 		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "section-intro",
@@ -2107,8 +2759,8 @@ function EngineWorkspace({ section, onNavigate }) {
 						className: "eyebrow",
 						children: "CURRENT CONNECTIONS"
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: "Two public market streams" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Binance Spot and Binance USDⓈ-M Futures. Remaining exchange slots are unconfigured and not included in scoring." })
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: "One connected exchange" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Binance Spot and Binance USDⓈ-M are live. The other 14 centralized exchanges are listed for a later public adapter. They are not scored." })
 				]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
 				className: "card",

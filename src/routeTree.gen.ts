@@ -16,6 +16,7 @@ import { Route as ApiDeskLoginRouteImport } from './routes/api/desk/login'
 import { Route as ApiDeskLogoutRouteImport } from './routes/api/desk/logout'
 import { Route as ApiDeskSessionRouteImport } from './routes/api/desk/session'
 import { Route as ApiDexSearchRouteImport } from './routes/api/dex/search'
+import { Route as ApiSpotBookRouteImport } from './routes/api/spot/book'
 import { Route as ApiWalletsActivityRouteImport } from './routes/api/wallets/activity'
 
 const IndexRoute = IndexRouteImport.update({
@@ -53,6 +54,11 @@ const ApiDexSearchRoute = ApiDexSearchRouteImport.update({
   path: '/api/dex/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSpotBookRoute = ApiSpotBookRouteImport.update({
+  id: '/api/spot/book',
+  path: '/api/spot/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiWalletsActivityRoute = ApiWalletsActivityRouteImport.update({
   id: '/api/wallets/activity',
   path: '/api/wallets/activity',
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/api/desk/logout': typeof ApiDeskLogoutRoute
   '/api/desk/session': typeof ApiDeskSessionRoute
   '/api/dex/search': typeof ApiDexSearchRoute
+  '/api/spot/book': typeof ApiSpotBookRoute
   '/api/wallets/activity': typeof ApiWalletsActivityRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/api/desk/logout': typeof ApiDeskLogoutRoute
   '/api/desk/session': typeof ApiDeskSessionRoute
   '/api/dex/search': typeof ApiDexSearchRoute
+  '/api/spot/book': typeof ApiSpotBookRoute
   '/api/wallets/activity': typeof ApiWalletsActivityRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/api/desk/logout': typeof ApiDeskLogoutRoute
   '/api/desk/session': typeof ApiDeskSessionRoute
   '/api/dex/search': typeof ApiDexSearchRoute
+  '/api/spot/book': typeof ApiSpotBookRoute
   '/api/wallets/activity': typeof ApiWalletsActivityRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/api/desk/logout'
     | '/api/desk/session'
     | '/api/dex/search'
+    | '/api/spot/book'
     | '/api/wallets/activity'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/api/desk/logout'
     | '/api/desk/session'
     | '/api/dex/search'
+    | '/api/spot/book'
     | '/api/wallets/activity'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/api/desk/logout'
     | '/api/desk/session'
     | '/api/dex/search'
+    | '/api/spot/book'
     | '/api/wallets/activity'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   ApiDeskLogoutRoute: typeof ApiDeskLogoutRoute
   ApiDeskSessionRoute: typeof ApiDeskSessionRoute
   ApiDexSearchRoute: typeof ApiDexSearchRoute
+  ApiSpotBookRoute: typeof ApiSpotBookRoute
   ApiWalletsActivityRoute: typeof ApiWalletsActivityRoute
 }
 
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiDexSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/spot/book': {
+      id: '/api/spot/book'
+      path: '/api/spot/book'
+      fullPath: '/api/spot/book'
+      preLoaderRoute: typeof ApiSpotBookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/wallets/activity': {
       id: '/api/wallets/activity'
       path: '/api/wallets/activity'
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiDeskLogoutRoute: ApiDeskLogoutRoute,
   ApiDeskSessionRoute: ApiDeskSessionRoute,
   ApiDexSearchRoute: ApiDexSearchRoute,
+  ApiSpotBookRoute: ApiSpotBookRoute,
   ApiWalletsActivityRoute: ApiWalletsActivityRoute,
 }
 export const routeTree = rootRouteImport

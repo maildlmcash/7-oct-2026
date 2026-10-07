@@ -3,7 +3,7 @@ import { K as require_react, _ as createFileRoute, b as require_jsx_runtime, d a
 import { t as TriangleAlert } from "../_libs/lucide-react.mjs";
 import { a as union, i as string, n as number, r as object, t as literal } from "../_libs/zod.mjs";
 import { createHash, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-BXJ91u3h.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-N7GIrcEW.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var __defProp = Object.defineProperty;
@@ -352,7 +352,7 @@ var Route$8 = createRootRoute({
 		] })]
 	})
 });
-var $$splitComponentImporter = () => import("./routes-T1hyOanx.mjs");
+var $$splitComponentImporter = () => import("./routes-Co6p7IYF.mjs");
 var Route$7 = createFileRoute("/")({ component: lazyRouteComponent($$splitComponentImporter, "component") });
 var SHELL_SECTIONS = Object.freeze([
 	"Dashboard",

@@ -79,4 +79,19 @@ tbody tr:last-child td { border-bottom:0; }
 .role-list b { color:var(--ink); margin-right:6px; }
 .desk-lock { display:grid; gap:8px; }
 .app-masthead .pill { white-space:nowrap; }
-@media(max-width:720px) { .role-split { grid-template-columns:1fr; } .desk-auth-head { flex-direction:column; } }
+.cex-desk { display:grid; gap:12px; margin-bottom:18px; }
+.cex-books { display:flex; gap:8px; }
+.cex-books button[aria-pressed="true"] { outline:2px solid #123f34; }
+.cex-limits { margin:8px 0 0; padding-left:18px; color:var(--muted); font-size:13px; }
+.cex-live { display:grid; gap:4px; margin:8px 0 12px; }
+.cex-pick { display:grid; grid-template-columns: 280px 1fr; gap:12px; align-items:start; }
+.cex-venue-list { display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+.cex-venue-list button { display:flex; flex-direction:column; align-items:flex-start; gap:2px; text-align:left; }
+.cex-venue-list button small { color:var(--muted); }
+.cex-venue-list button[aria-pressed="true"] { color:white; background:#123f34; border-color:#123f34; }
+.cex-venue-list button[aria-pressed="true"] small { color:#d7eee3; }
+.cex-detail { display:grid; gap:10px; }
+.intel-desk { display:grid; gap:12px; }
+.intel-desk .grid { align-items:stretch; }
+@media(max-width:900px) { .cex-pick { grid-template-columns:1fr; } }
+@media(max-width:720px) { .cex-books { flex-direction:column; } }
