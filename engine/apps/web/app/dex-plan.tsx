@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { DEX_VENUES } from "../../../services/dex-plan.mjs";
 
-type Pool = { id: string; name: string; liquidity: number; score: number; liquidityPoints: number; activityPoints: number; weight: number; use: string };
+type Pool = { id: string; name: string; liquidity: number; score: number; liquidityPoints: number; activityPoints: number; weight: number; use: string; priceChangeH24?: number | null; priceFlag?: string };
 type Row = { field: string; value: string; meaning: string };
 type Plan = {
   ok: boolean;
@@ -12,6 +12,7 @@ type Plan = {
   conditions?: string[];
   uses?: string[];
   scorePlan?: string[];
+  note?: string;
   pools?: Pool[];
   selected?: { id: string; name: string; liquidityPoints: number; activityPoints: number; score: number; weight: number; use: string };
   rows?: Row[];
@@ -24,10 +25,10 @@ function csvCell(value: unknown) {
 }
 
 function downloadPools(name: string, pools: Pool[]) {
-  const header = ["dex", "pool", "pool_id", "liquidity_usd", "prediction_score", "liquidity_points", "activity_points", "weight", "prediction_use"];
+  const header = ["dex", "pool", "pool_id", "liquidity_usd", "prediction_score", "liquidity_points", "activity_points", "weight", "prediction_use", "price_change_h24", "price_flag"];
   const lines = [
     header.join(","),
-    ...pools.map((pool) => [name, pool.name, pool.id, pool.liquidity, pool.score, pool.liquidityPoints, pool.activityPoints, pool.weight, pool.use].map(csvCell).join(",")),
+    ...pools.map((pool) => [name, pool.name, pool.id, pool.liquidity, pool.score, pool.liquidityPoints, pool.activityPoints, pool.weight, pool.use, pool.priceChangeH24 ?? "", pool.priceFlag ?? ""].map(csvCell).join(",")),
   ];
   const file = new Blob([lines.join("\n")], { type: "text/csv" });
   const link = document.createElement("a");
@@ -38,7 +39,7 @@ function downloadPools(name: string, pools: Pool[]) {
 }
 
 export function DexPlan() {
-  const [chain, setChain] = useState<"ethereum" | "arbitrum" | "order-book" | "hybrid">("ethereum");
+  const [chain, setChain] = useState<"ethereum" | "arbitrum" | "order-book" | "hybrid" | "index">("ethereum");
   const [venueId, setVenueId] = useState<string | null>(null);
   const [poolId, setPoolId] = useState("");
   const [withCex, setWithCex] = useState(false);
@@ -67,6 +68,7 @@ export function DexPlan() {
           <button type="button" className="button button-dark" aria-pressed={chain === "arbitrum"} onClick={() => { setChain("arbitrum"); setVenueId(null); setPoolId(""); setPlan(null); setWithCex(false); }}>Arbitrum</button>
           <button type="button" className="button button-dark" aria-pressed={chain === "order-book"} onClick={() => { setChain("order-book"); setVenueId(null); setPoolId(""); setPlan(null); setWithCex(false); }}>Order Book DEX</button>
           <button type="button" className="button button-dark" aria-pressed={chain === "hybrid"} onClick={() => { setChain("hybrid"); setVenueId(null); setPoolId(""); setPlan(null); setWithCex(false); }}>Hybrid DeFi</button>
+          <button type="button" className="button button-dark" aria-pressed={chain === "index"} onClick={() => { setChain("index"); setVenueId(null); setPoolId(""); setPlan(null); setWithCex(false); }}>DexScreener</button>
         </div>
         <div className="cex-venue-list">
           {DEX_VENUES.filter((item) => item.chain === chain).map((item) => (
@@ -87,6 +89,7 @@ export function DexPlan() {
             <span className={plan?.ok ? "pill pill-live" : "pill pill-warn"}>{plan == null ? "CONNECTING" : plan.ok ? "LIVE" : "ERROR"}</span>
           </header>
           {plan && !plan.ok ? <p className="notice notice-error">{plan.error}</p> : null}
+          {plan?.note ? <p className="notice notice-info">{plan.note}</p> : null}
           {plan?.ok ? (
             <>
               <ul className="cex-limits">{plan.conditions?.map((line) => <li key={line}>{line}</li>)}</ul>
@@ -97,15 +100,17 @@ export function DexPlan() {
               <h4>Pools</h4>
               <div className="table-scroll">
                 <table>
-                  <thead><tr><th>Pool</th><th>Prediction score</th><th>Liquidity points</th><th>Activity points</th><th>Weight</th></tr></thead>
+                  <thead><tr><th>Pool</th><th>Prediction score</th><th>Weight</th><th>24h change</th><th>Flag</th><th>Liquidity points</th><th>Activity points</th></tr></thead>
                   <tbody>
                     {plan.pools?.map((pool) => (
                       <tr key={pool.id}>
                         <td><button type="button" aria-pressed={pool.id === (poolId || plan.selected?.id)} onClick={() => setPoolId(pool.id)}>{pool.name}</button></td>
                         <td><b>{pool.score}</b></td>
+                        <td>{pool.weight}</td>
+                        <td>{pool.priceChangeH24 == null ? "—" : `${pool.priceChangeH24}%`}</td>
+                        <td>{pool.priceFlag ?? "—"}</td>
                         <td>{pool.liquidityPoints}</td>
                         <td>{pool.activityPoints}</td>
-                        <td>{pool.weight}</td>
                       </tr>
                     ))}
                   </tbody>
