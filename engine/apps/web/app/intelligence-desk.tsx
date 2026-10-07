@@ -1,8 +1,40 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { BINANCE_INTELLIGENCE } from "../../../services/cex-catalog.mjs";
 import { observationLabel } from "./feed-evidence.mjs";
 import { parseFuture, parseSpot, useSocketFeed, type FutureValue, type SpotValue } from "./market-feed";
+
+type Row = { field: string; value: string; meaning: string };
+type Live = { ok: boolean; error?: string; rows?: Row[] };
+
+function ProductCard({ product }: { product: (typeof BINANCE_INTELLIGENCE.products)[number] }) {
+  const [live, setLive] = useState<Live | null>(null);
+  useEffect(() => {
+    let stopped = false;
+    const load = () => {
+      void fetch(`/api/binance/intelligence?product=${product.id}`, { cache: "no-store" })
+        .then((response) => response.json())
+        .then((body: Live) => { if (!stopped) setLive(body); })
+        .catch(() => { if (!stopped) setLive({ ok: false, error: "Public market call is not connected." }); });
+    };
+    load();
+    const timer = setInterval(load, 15_000);
+    return () => { stopped = true; clearInterval(timer); };
+  }, [product.id]);
+  const down = live?.ok !== true;
+  return (
+    <article className="card">
+      <span className={down ? "pill pill-warn" : "pill pill-live"}>{live == null ? "CONNECTING" : down ? "ERROR" : "LIVE"}</span>
+      <h3>{product.name}</h3>
+      <p className="mono tiny">{product.address}</p>
+      {down && live ? <p className="notice notice-error">{live.error}</p> : null}
+      {live?.rows?.map((row) => <div className="stat-line" key={row.field}><span>{row.meaning}</span><b className="mono">{row.value}</b></div>)}
+      <p className="muted tiny">Planned use: {product.uses[0]}</p>
+      <p className="muted tiny">{product.locked}</p>
+    </article>
+  );
+}
 
 function DeskBrief() {
   const spotSource = "wss://data-stream.binance.vision:443/stream?streams=btcusdt@trade/btcusdt@bookTicker";
@@ -27,7 +59,7 @@ function DeskBrief() {
       <div className="stat-line"><span>Bid / ask</span><b>{spot.value?.bid ?? "—"} / {spot.value?.ask ?? "—"}</b></div>
       <div className="stat-line"><span>Futures socket</span><b className={futureDown ? "status-blocked" : "status-implemented"}>{observationLabel(future.status, futureSource, future.seenAt).text}</b></div>
       <div className="stat-line"><span>Mark / funding</span><b>{future.value?.mark ?? "—"} / {future.value?.funding ?? "—"}</b></div>
-      <p className="muted tiny">Used on Market only. Not sent to Binance AI, AI Pro, or Agent OS.</p>
+      <p className="muted tiny">Same public BTCUSDT numbers as the cards above. No order is sent.</p>
     </article>
   );
 }
@@ -38,17 +70,10 @@ export function IntelligenceDesk() {
       <article className="card">
         <span className="eyebrow">SEPARATE APP · LAUNCHED {BINANCE_INTELLIGENCE.launched}</span>
         <h3>Binance Intelligence</h3>
-        <p>Binance ने 5 अक्टूबर 2026 को यह ऐप खोली: Binance AI, AI Pro, और Agent OS। इस पोर्टल का उनसे कोई सेशन नहीं है, इसलिए तीनों error हैं।</p>
+        <p>Each card uses one public BTCUSDT call. No Binance login, no API key, and no order.</p>
       </article>
       <div className="grid grid-3">
-        {BINANCE_INTELLIGENCE.products.map((product) => (
-          <article className="card" key={product.id}>
-            <span className="pill pill-warn">ERROR</span>
-            <h3>{product.name}</h3>
-            <p>{product.error}</p>
-            <p className="muted tiny">Used on this website: nowhere.</p>
-          </article>
-        ))}
+        {BINANCE_INTELLIGENCE.products.map((product) => <ProductCard key={product.id} product={product} />)}
       </div>
       <DeskBrief />
     </div>

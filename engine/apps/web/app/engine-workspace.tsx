@@ -202,6 +202,7 @@ function MarketView() {
           <div className="notice notice-warn"><b>Live futures trading: LOCKED</b><span>Settle estimate is only useful in the last hour before settlement. This panel reads public data only.</span></div>
         </article>
       </div>
+      <DexMarketFlag symbol={symbol} />
       <article className="card">
         <header className="card-head"><div><span className="eyebrow">CONNECTOR COVERAGE</span><h3>Exchange adapter status</h3></div><span className="coverage-number">15 <small>/ 15 CEX connection slots</small></span></header>
         <div className="coverage-list">
@@ -213,12 +214,150 @@ function MarketView() {
   );
 }
 
-type DexPair = { chain: string; dex: string; pairAddress: string; base: string; quote: string; priceUsd: string | null; liquidityUsd: number | null; volume24hUsd: number | null; url: string | null };
+type DexField = { field: string; value: string };
+type DexPair = { chain: string; dex: string; pairAddress: string; base: string; quote: string; priceUsd: string | null; liquidityUsd: number | null; volume1hUsd?: number | null; volume6hUsd?: number | null; volume24hUsd: number | null; marketCapUsd?: number | null; priceChangeH24?: number | null; priceFlag?: string; score?: number; weight?: number; use?: string; fields?: DexField[] };
+
+function DexMarketFlag({ symbol }: { symbol: string }) {
+  const asset = symbol.endsWith("USDT") || symbol.endsWith("USDC") ? symbol.slice(0, -4) : symbol;
+  const [pairs, setPairs] = useState<DexPair[]>([]);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    if (asset.length < 2) return;
+    let stopped = false;
+    fetch(`/api/dex/search?q=${encodeURIComponent(asset)}`, { cache: "no-store" })
+      .then((response) => response.json())
+      .then((data) => {
+        if (stopped) return;
+        if (!data.ok) throw new Error(data.error ?? "DexScreener is not connected.");
+        setPairs(data.pairs ?? []);
+        setError("");
+      })
+      .catch((caught) => { if (!stopped) setError(caught instanceof Error ? caught.message : "DexScreener is not connected."); });
+    return () => { stopped = true; };
+  }, [asset]);
+  const names = new Set([asset, asset === "ETH" ? "WETH" : "", asset === "BTC" ? "WBTC" : ""].filter(Boolean));
+  const matched = pairs.filter((pair) => names.has(pair.base) && (pair.quote === "USDC" || pair.quote === "USDT")).slice(0, 8);
+  return (
+    <article className="card">
+      <header className="card-head"><div><span className="eyebrow">DEXSCREENER · 24H PRICE CHANGE</span><h3>{asset} flag</h3></div><span className={error ? "pill pill-warn" : "pill pill-live"}>{error ? "ERROR" : "LIVE"}</span></header>
+      <p className="muted tiny">One DexScreener search for {asset}. A move beyond 20% is a disagreement flag. It is not an order.</p>
+      {error ? <p className="notice notice-error">{error}</p> : null}
+      {matched.length === 0 ? <p className="muted">No USDT or USDC pair for this symbol was in the search response.</p> : (
+        <div className="table-scroll">
+          <table>
+            <thead><tr><th>Pair</th><th>Chain</th><th>Score</th><th>Weight</th><th>24h change</th><th>Flag</th></tr></thead>
+            <tbody>
+              {matched.map((pair) => (
+                <tr key={`${pair.chain}-${pair.pairAddress}`}>
+                  <td>{pair.base}/{pair.quote}</td>
+                  <td>{pair.chain}</td>
+                  <td>{pair.score ?? "—"}</td>
+                  <td>{pair.weight ?? 0}</td>
+                  <td>{pair.priceChangeH24 == null ? "—" : `${pair.priceChangeH24}%`}</td>
+                  <td>{pair.priceFlag}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </article>
+  );
+}
+
+function DexPredictionWeight() {
+  const [pairs, setPairs] = useState<DexPair[]>([]);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    let stopped = false;
+    fetch("/api/dex/search?q=WETH%20USDC", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((data) => {
+        if (stopped) return;
+        if (!data.ok) throw new Error(data.error ?? "DexScreener is not connected.");
+        setPairs(data.pairs ?? []);
+      })
+      .catch((caught) => { if (!stopped) setError(caught instanceof Error ? caught.message : "DexScreener is not connected."); });
+    return () => { stopped = true; };
+  }, []);
+  const ranked = [...pairs].sort((a, b) => (b.score ?? 0) - (a.score ?? 0)).slice(0, 12);
+  const used = ranked.filter((pair) => (pair.weight ?? 0) > 0);
+  return (
+    <article className="card">
+      <header className="card-head"><div><span className="eyebrow">DEXSCREENER · SCORE WEIGHT</span><h3>WETH USDC index weight</h3></div><span className={error ? "pill pill-warn" : "pill pill-live"}>{error ? "ERROR" : "LIVE"}</span></header>
+      <p className="muted tiny">{used.length} of {ranked.length} shown pairs have a weight. A score under 40, or a pool under 24 hours old, stays at weight 0. This is not a probability and not an order.</p>
+      {error ? <p className="notice notice-error">{error}</p> : null}
+      <div className="table-scroll">
+        <table>
+          <thead><tr><th>Pair</th><th>Chain</th><th>Score</th><th>Weight</th><th>24h change</th><th>Flag</th><th>Use</th></tr></thead>
+          <tbody>
+            {ranked.map((pair) => (
+              <tr key={`${pair.chain}-${pair.pairAddress}`}>
+                <td>{pair.base.length > 18 ? `${pair.base.slice(0, 18)}…` : pair.base}/{pair.quote}</td>
+                <td>{pair.chain}</td>
+                <td>{pair.score ?? "—"}</td>
+                <td>{pair.weight ?? 0}</td>
+                <td>{pair.priceChangeH24 == null ? "—" : `${pair.priceChangeH24}%`}</td>
+                <td>{pair.priceFlag ?? "—"}</td>
+                <td>{pair.use}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </article>
+  );
+}
+
+type DexSearch = { limit?: { requestsPerMinute: number; requestsUsed: number; pairsImported: number }; uses?: string[]; predictionPlan?: string[]; pipeline?: string[] };
+function showDexValue(field: string, value: string) {
+  if (!/At$/.test(field)) return value;
+  const time = Number(value);
+  if (!Number.isFinite(time) || time < 1_000_000_000_000) return value;
+  return `${value} · ${new Date(time).toISOString().slice(0, 16).replace("T", " ")} UTC`;
+}
+
+function dexGroups(fields: DexField[]) {
+  const titles: Record<string, string> = { baseToken: "Base token", quoteToken: "Quote token", priceChange: "Old price change", liquidity: "Liquidity", volume: "Old volume", txns: "Old transactions", info: "Profile", boosts: "Boosts", labels: "Labels" };
+  const buckets = new Map<string, DexField[]>();
+  for (const row of fields) {
+    const key = row.field.split(".")[0].replace(/\[\d+\]/, "");
+    const title = titles[key] ?? "Pair";
+    const list = buckets.get(title) ?? [];
+    list.push(row);
+    buckets.set(title, list);
+  }
+  const order = ["Pair", "Base token", "Quote token", "Old price change", "Liquidity", "Old volume", "Old transactions", "Profile", "Boosts", "Labels"];
+  const rank = (title: string) => { const index = order.indexOf(title); return index === -1 ? order.length : index; };
+  return [...buckets.entries()].sort((a, b) => rank(a[0]) - rank(b[0]) || a[0].localeCompare(b[0]));
+}
+
 function DexView() {
   const [query, setQuery] = useState("WETH USDC");
   const [pairs, setPairs] = useState<DexPair[]>([]);
+  const [meta, setMeta] = useState<DexSearch | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [minPrice, setMinPrice] = useState("");
+  const [minVolume1h, setMinVolume1h] = useState("");
+  const [minVolume6h, setMinVolume6h] = useState("");
+  const [minVolume, setMinVolume] = useState("");
+  const [minCap, setMinCap] = useState("");
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
+  const priceFloor = minPrice.trim() === "" ? null : Number(minPrice);
+  const volume1hFloor = minVolume1h.trim() === "" ? null : Number(minVolume1h);
+  const volume6hFloor = minVolume6h.trim() === "" ? null : Number(minVolume6h);
+  const volumeFloor = minVolume.trim() === "" ? null : Number(minVolume);
+  const capFloor = minCap.trim() === "" ? null : Number(minCap);
+  const ranked = [...pairs].filter((pair) => {
+    if (priceFloor != null && Number.isFinite(priceFloor) && (Number(pair.priceUsd) || -1) < priceFloor) return false;
+    if (volume1hFloor != null && Number.isFinite(volume1hFloor) && (pair.volume1hUsd ?? -1) < volume1hFloor) return false;
+    if (volume6hFloor != null && Number.isFinite(volume6hFloor) && (pair.volume6hUsd ?? -1) < volume6hFloor) return false;
+    if (volumeFloor != null && Number.isFinite(volumeFloor) && (pair.volume24hUsd ?? -1) < volumeFloor) return false;
+    if (capFloor != null && Number.isFinite(capFloor) && (pair.marketCapUsd ?? -1) < capFloor) return false;
+    return true;
+  }).sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+  const open = ranked.find((pair) => `${pair.chain}-${pair.pairAddress}` === selected) ?? ranked[0] ?? null;
   async function search(event: React.FormEvent) {
     event.preventDefault();
     setStatus("loading");
@@ -227,13 +366,20 @@ function DexView() {
       const response = await fetch(`/api/dex/search?q=${encodeURIComponent(query)}`, { cache: "no-store" });
       const data = await response.json();
       if (!response.ok || !data.ok) throw new Error(data.error ?? "Search failed.");
-      setPairs(data.pairs);
+      const next = [...(data.pairs as DexPair[])].sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+      const withAge = next.find((pair) => pair.fields?.some((row) => row.field === "pairCreatedAt"));
+      const first = withAge ?? next[0];
+      setPairs(next);
+      setMeta(data);
+      setSelected(first ? `${first.chain}-${first.pairAddress}` : null);
       setStatus("ready");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "DEX search failed.");
       setStatus("error");
     }
   }
+  const fields = open?.fields?.length ? open.fields : open ? Object.keys(open).sort().filter((key) => key !== "fields").map((key) => ({ field: key, value: String(open[key as keyof DexPair] ?? "") })) : [];
+  const baseLabel = open ? (open.base.length > 18 ? `${open.base.slice(0, 18)}…` : open.base) : "";
   return (
     <>
       <div className="section-intro"><div><span className="eyebrow">DEX DISCOVERY · PUBLIC SEARCH</span><h2>Pool and pair search</h2><p>Search index data supplied by DexScreener. This is not an on-chain event socket or a token safety verdict.</p></div></div>
@@ -243,23 +389,65 @@ function DexView() {
           <input id="dex-query" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Token name, symbol or address" minLength={2} maxLength={100} />
           <button className="button button-accent" disabled={status === "loading"}>{status === "loading" ? "Searching…" : "Search pools"}</button>
         </form>
+        <div className="search-form dex-filters">
+          <label>Min price USD<input inputMode="decimal" value={minPrice} onChange={(event) => setMinPrice(event.target.value)} placeholder="0" /></label>
+          <label>Min 1h volume USD<input inputMode="decimal" value={minVolume1h} onChange={(event) => setMinVolume1h(event.target.value)} placeholder="0" /></label>
+          <label>Min 6h volume USD<input inputMode="decimal" value={minVolume6h} onChange={(event) => setMinVolume6h(event.target.value)} placeholder="0" /></label>
+          <label>Min 24h volume USD<input inputMode="decimal" value={minVolume} onChange={(event) => setMinVolume(event.target.value)} placeholder="0" /></label>
+          <label>Min market cap USD<input inputMode="decimal" value={minCap} onChange={(event) => setMinCap(event.target.value)} placeholder="0" /></label>
+          <label>2h volume USD<input value="" disabled placeholder="Not published" /></label>
+        </div>
+        <p className="muted tiny">DexScreener has no 2-hour volume. Its windows are 5 minutes, 1 hour, 6 hours, and 24 hours. The 2h filter is not applied.</p>
         {error && <div className="notice notice-error">{error}</div>}
-        {status === "ready" && pairs.length === 0 && <p className="muted">No indexed pools found for this query.</p>}
-        {pairs.length > 0 && (
+        {status === "ready" && meta?.limit && <p className="notice notice-info">LIVE. Imported {meta.limit.pairsImported} pairs. Showing {ranked.length} after price, 1h, 6h, 24h volume, and market-cap filters. Limit is {meta.limit.requestsPerMinute} requests per minute.</p>}
+        {status === "ready" && pairs.length > 0 && ranked.length === 0 && <p className="muted">No pairs match these price, volume, or market-cap filters.</p>}
+        {open && (
+          <>
+            <header className="card-head">
+              <div>
+                <span className="eyebrow">{open.chain} · {open.dex}</span>
+                <h3>{baseLabel}/{open.quote}</h3>
+              </div>
+              <span className="pill pill-live">SCORE {open.score ?? "—"} · WEIGHT {open.weight ?? 0}</span>
+            </header>
+            <p className="muted tiny">{open.priceFlag ?? "No 24h flag."} Price {open.priceUsd ?? "—"} USD. This record stays on this page.</p>
+            <div className="dex-record">
+              {dexGroups(fields).map(([title, rows]) => (
+                <section key={title}>
+                  <h4>{title}</h4>
+                  <div className="dex-kv">
+                    {rows.map((row) => (
+                      <div key={row.field}>
+                        <small>{row.field}</small>
+                        <b>{showDexValue(row.field, row.value)}</b>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          </>
+        )}
+        {ranked.length > 0 && (
           <div className="table-scroll">
             <table>
-              <thead><tr><th>Chain / DEX</th><th>Pair</th><th>Price USD</th><th>Liquidity USD</th><th>24h volume USD</th><th>Source</th></tr></thead>
+              <thead><tr><th>Pair</th><th>Chain / DEX</th><th>1h volume</th><th>24h volume</th><th>Score</th><th>Weight</th><th>24h flag</th></tr></thead>
               <tbody>
-                {pairs.map((pair) => (
-                  <tr key={`${pair.chain}-${pair.pairAddress}`}>
-                    <td><b>{pair.chain}</b><small className="block">{pair.dex}</small></td>
-                    <td>{pair.base}/{pair.quote}<small className="block mono">{pair.pairAddress}</small></td>
-                    <td>{pair.priceUsd ?? "—"}</td>
-                    <td>{pair.liquidityUsd?.toLocaleString() ?? "—"}</td>
-                    <td>{pair.volume24hUsd?.toLocaleString() ?? "—"}</td>
-                    <td>{pair.url ? <a href={pair.url} target="_blank" rel="noreferrer">Open ↗</a> : "—"}</td>
-                  </tr>
-                ))}
+                {ranked.map((pair) => {
+                  const id = `${pair.chain}-${pair.pairAddress}`;
+                  const base = pair.base.length > 18 ? `${pair.base.slice(0, 18)}…` : pair.base;
+                  return (
+                    <tr key={id}>
+                      <td><button type="button" aria-pressed={open?.pairAddress === pair.pairAddress && open.chain === pair.chain} onClick={() => setSelected(id)}>{base}/{pair.quote}</button></td>
+                      <td><b>{pair.chain}</b><small className="block">{pair.dex}</small></td>
+                      <td>{pair.volume1hUsd == null ? "—" : pair.volume1hUsd.toLocaleString()}</td>
+                      <td>{pair.volume24hUsd == null ? "—" : pair.volume24hUsd.toLocaleString()}</td>
+                      <td>{pair.score ?? "—"}</td>
+                      <td>{pair.weight ?? 0}</td>
+                      <td>{pair.priceChangeH24 == null ? "—" : `${pair.priceChangeH24}%`} · {pair.priceFlag ?? "—"}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -344,7 +532,8 @@ function PredictionsView() {
   return (
     <>
       <div className="section-intro"><div><span className="eyebrow">MODEL STATUS</span><h2>Prediction and score</h2><p>No market probability is displayed until its required inputs and calibration evidence are available.</p></div></div>
-      <article className="card prediction-blocked"><div className="blocked-icon">!</div><div><span className="pill pill-warn">BLOCKED · NO SCORE</span><h3>Prediction engine is not eligible to publish a score</h3><p>Current connected venue count is 1 CEX. Cross-venue breadth, verified DEX flow, and verified active-wallet flow are missing. Missing inputs are not treated as zero.</p><ul><li>Connect and validate independent CEX feeds</li><li>Build DEX swap event adapters and transaction decoding</li><li>Verify wallet ownership, activity windows, and inclusion criteria</li><li>Run time-split backtests and calibration before publishing probability</li></ul></div></article>
+      <article className="card prediction-blocked"><div className="blocked-icon">!</div><div><span className="pill pill-warn">BLOCKED · NO PROBABILITY</span><h3>No market probability is published</h3><p>Cross-venue breadth, verified swap decoding, and wallet proof are still missing. Missing inputs are not treated as zero. The DexScreener weight below is a separate index score.</p></div></article>
+      <DexPredictionWeight />
       <article className="card"><h3>Score and execution gates</h3><div className="gate-row"><span>Prediction score</span><b className="status-blocked">Unavailable</b></div><div className="gate-row"><span>Spot automatic execution</span><b className="status-blocked">LOCKED · Paper only</b></div><div className="gate-row"><span>Futures automatic execution</span><b className="status-blocked">LOCKED · Paper only</b></div><div className="gate-row"><span>Model calibration</span><b className="status-blocked">No verified observation set</b></div></article>
     </>
   );
