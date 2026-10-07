@@ -21,6 +21,7 @@ import {
 import { renderSectionCapability } from "../../../services/shell-capabilities.mjs";
 import { ModelHealthCharts } from "./model-health-charts";
 import { SectionErrorBoundary, SectionRequest } from "./section-boundary";
+import { DeskAuth, type DeskSession } from "./desk-auth";
 import { EngineWorkspace } from "./engine-workspace";
 
 export { SHELL_SECTIONS };
@@ -61,10 +62,21 @@ export default function Shell({
     if (!initial.ok) throw new Error(initial.error);
     return initial.state;
   });
+  const [session, setSession] = useState<DeskSession | null>(null);
   const [languageId, setLanguageId] = useState<(typeof SHELL_LANGUAGES)[number]["id"]>("en");
   const language = SHELL_LANGUAGES.find((item) => item.id === languageId) ?? SHELL_LANGUAGES[0];
   const section = view.section;
-  const sectionMarkup = renderSectionCapability(capabilities, section, checklistMarkup);
+  const signedRole = session?.role ?? null;
+  const effectiveCapabilities: ShellCapabilities = signedRole === "Admin"
+    ? { editChecklist: true, userChecklist: false, market: false }
+    : signedRole === "Customer"
+      ? { editChecklist: false, userChecklist: true, market: false }
+      : capabilities;
+  const sectionMarkup = renderSectionCapability(effectiveCapabilities, section, checklistMarkup);
+  const visibleSections = signedRole === "Customer"
+    ? SHELL_SECTIONS.filter((name) => name !== "Admin" && name !== "Bugs")
+    : SHELL_SECTIONS;
+  const adminLocked = (section === "Admin" || section === "Bugs") && signedRole !== "Admin";
 
   function chooseSection(id: string) {
     if (id === view.section) return;
@@ -74,6 +86,13 @@ export default function Shell({
     if (paged.ok) setView(paged.state);
   }
 
+  function applySession(next: DeskSession | null) {
+    setSession(next);
+    if (next?.role === "Customer" && (view.section === "Admin" || view.section === "Bugs")) {
+      chooseSection("Dashboard");
+    }
+  }
+
   useEffect(() => {
     document.documentElement.lang = language.lang;
     document.documentElement.dir = language.dir;
@@ -81,7 +100,7 @@ export default function Shell({
 
   return (
     <main className="layout-shell">
-      <div className="app-masthead"><p className="layout-mark">crypto-prediction-engine</p><span className="safety-banner"><i />LIVE ORDERS LOCKED</span></div>
+      <div className="app-masthead"><p className="layout-mark">crypto-prediction-engine</p><span className="safety-banner"><i />LIVE ORDERS LOCKED</span><span className={signedRole === "Admin" ? "pill pill-live" : "pill"}>{signedRole ?? "Signed out"}</span></div>
       <LanguageChoice
         label="Language"
         options={SHELL_LANGUAGES}
@@ -94,20 +113,31 @@ export default function Shell({
       <LanguageSample label="Language sample" lang={language.lang} dir={language.dir} parts={language.parts} />
       <SectionNav
         label="Sections"
-        items={SHELL_SECTIONS.map((name) => ({
+        items={visibleSections.map((name) => ({
           id: name,
           label: name,
           pressed: section === name,
         }))}
         onSelect={chooseSection}
       />
+      <DeskAuth session={session} onSession={applySession} />
       <Panel labelledBy="section-title">
         <Heading id="section-title">{section}</Heading>
         <SectionErrorBoundary key={section} section={section} environment={environment}>
           <SectionRequest section={section} pageSize={100} environment={environment}>
-            {sectionMarkup ? <div dangerouslySetInnerHTML={{ __html: sectionMarkup }} /> : null}
-            <EngineWorkspace section={section} onNavigate={chooseSection} />
-            {section === "Predictions" ? <ModelHealthCharts bound={100} /> : null}
+            {adminLocked ? (
+              <article className="card desk-lock">
+                <span className="pill pill-warn">ADMIN ONLY</span>
+                <h2>Admin login required</h2>
+                <p>यह सेक्शन सिर्फ Admin रोल के लिए है। User (Customer) इसे नहीं खोल सकता। Live orders locked रहते हैं।</p>
+              </article>
+            ) : (
+              <>
+                {sectionMarkup ? <div dangerouslySetInnerHTML={{ __html: sectionMarkup }} /> : null}
+                <EngineWorkspace section={section} onNavigate={chooseSection} />
+                {section === "Predictions" ? <ModelHealthCharts bound={100} /> : null}
+              </>
+            )}
           </SectionRequest>
         </SectionErrorBoundary>
       </Panel>
