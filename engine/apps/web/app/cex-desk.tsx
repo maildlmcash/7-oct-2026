@@ -13,6 +13,8 @@ import {
   CEX_RANK_NOTE,
   CEX_VENUES,
 } from "../../../services/cex-catalog.mjs";
+import { DexPlan } from "./dex-plan";
+import { ExchangeTools } from "./exchange-tools";
 import { BitfinexFeed } from "./bitfinex-feed";
 import { BitgetFeed } from "./bitget-feed";
 import { BitstampFeed } from "./bitstamp-feed";
@@ -118,6 +120,7 @@ function BookDetail({ venue, book }: { venue: Venue; book: BookName }) {
       </header>
       <p className="muted tiny">Plan {complete}/{plan.steps.length}. Another exchange's fields are not shown here.</p>
       {plan.error ? <div className="notice notice-error"><b>{venue.name} {book}</b><span>{plan.error}</span></div> : null}
+      {live ? <ExchangeTools venue={venue.id} book={book === "spot" ? "spot" : "futures"} /> : null}
       <ul className="cex-limits">
         {plan.steps.map((step) => (
           <li key={step.name} className={step.done ? "status-implemented" : "status-blocked"}>{step.done ? "Done" : "Error"} · {step.name}</li>
@@ -127,40 +130,12 @@ function BookDetail({ venue, book }: { venue: Venue; book: BookName }) {
       {plan.uses.length === 0 ? <p className="notice notice-error">Nowhere. This API is not wired into Market, DEX, Wallets, or Paper.</p> : (
         <ul className="cex-limits">{plan.uses.map((place) => <li key={place}>{place}</li>)}</ul>
       )}
-      {plan.feed === "okx-spot" || plan.feed === "okx-swap" ? <OkxFeed book={plan.feed === "okx-spot" ? "spot" : "swap"} /> : plan.feed === "coinbase-spot" || plan.feed === "coinbase-futures" ? <CoinbaseFeed book={plan.feed === "coinbase-spot" ? "spot" : "futures"} /> : plan.feed === "kraken-spot" || plan.feed === "kraken-futures" ? <KrakenFeed book={plan.feed === "kraken-spot" ? "spot" : "futures"} /> : plan.feed === "kucoin-spot" || plan.feed === "kucoin-futures" ? <KucoinFeed book={plan.feed === "kucoin-spot" ? "spot" : "futures"} /> : plan.feed === "gate-spot" || plan.feed === "gate-futures" ? <GateFeed book={plan.feed === "gate-spot" ? "spot" : "futures"} /> : plan.feed === "bitget-spot" || plan.feed === "bitget-futures" ? <BitgetFeed book={plan.feed === "bitget-spot" ? "spot" : "futures"} /> : plan.feed === "mexc-spot" || plan.feed === "mexc-futures" ? <MexcFeed book={plan.feed === "mexc-spot" ? "spot" : "futures"} /> : plan.feed === "htx-spot" || plan.feed === "htx-futures" ? <HtxFeed book={plan.feed === "htx-spot" ? "spot" : "futures"} /> : plan.feed === "bitfinex-spot" || plan.feed === "bitfinex-futures" ? <BitfinexFeed book={plan.feed === "bitfinex-spot" ? "spot" : "futures"} /> : plan.feed === "bitstamp-spot" || plan.feed === "bitstamp-futures" ? <BitstampFeed book={plan.feed === "bitstamp-spot" ? "spot" : "futures"} /> : plan.feed === "crypto-spot" || plan.feed === "crypto-futures" ? <CryptoComFeed book={plan.feed === "crypto-spot" ? "spot" : "futures"} /> : plan.feed === "upbit-spot" ? <UpbitFeed /> : plan.feed === "gemini-spot" || plan.feed === "gemini-futures" ? <GeminiFeed book={plan.feed === "gemini-spot" ? "spot" : "futures"} /> : spec.conditions.length > 0 ? (
-        <>
-          <h4>Socket limits</h4>
-          <ul className="cex-limits">{spec.conditions.map((line) => <li key={line}>{line}</li>)}</ul>
-          {plan.feed === "binance-spot" ? (
-            <>
-              <div className="cex-books" role="group" aria-label="Binance spot connections">
-                <button type="button" className="button button-dark" aria-pressed={binanceSpotSource === "stream"} onClick={() => setBinanceSpotSource("stream")}>WebSocket · trade + bookTicker</button>
-                <button type="button" className="button button-dark" aria-pressed={binanceSpotSource === "v3"} onClick={() => setBinanceSpotSource("v3")}>REST · /api/v3 bookTicker</button>
-              </div>
-              {binanceSpotSource === "stream" ? <SpotLive /> : <SpotApiV3 symbol="BTCUSDT" />}
-            </>
-          ) : null}
-          {plan.feed === "binance-futures" ? <FuturesLive /> : null}
-          {plan.feed === "bybit-spot" ? <BybitBook book="spot" /> : null}
-          {plan.feed === "bybit-linear" ? <BybitBook book="linear" /> : null}
-          <div className="table-scroll">
-            <table>
-              <thead><tr><th>Field</th><th>Meaning</th><th>Limit</th><th>Used on</th></tr></thead>
-              <tbody>
-                {spec.fields.map((field) => (
-                  <tr key={`${"stream" in field ? field.stream : "book"}-${field.field}`}><td className="mono">{"stream" in field && field.stream ? `${field.stream} · ${field.field}` : field.field}</td><td>{field.meaning}</td><td>{field.limit}</td><td>{field.used}</td></tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      ) : null}
-    </article>
+      </article>
   );
 }
 
 export function CexDesk() {
-  const [mode, setMode] = useState<"exchanges" | "intelligence">("exchanges");
+  const [mode, setMode] = useState<"exchanges" | "intelligence" | "dex">("exchanges");
   const [venueId, setVenueId] = useState<string | null>(null);
   const [book, setBook] = useState<BookName>("spot");
   const venue = CEX_VENUES.find((item) => item.id === venueId) ?? null;
@@ -182,9 +157,10 @@ export function CexDesk() {
       </div>
       <div className="cex-books" role="group" aria-label="Desk mode">
         <button type="button" className="button button-accent" aria-pressed={mode === "exchanges"} onClick={() => setMode("exchanges")}>15 exchanges</button>
+        <button type="button" className="button button-dark" aria-pressed={mode === "dex"} onClick={() => { setMode("dex"); setVenueId(null); }}>Ethereum DEX</button>
         <button type="button" className="button button-dark" aria-pressed={mode === "intelligence"} onClick={() => { setMode("intelligence"); setVenueId(null); }}>Binance Intelligence</button>
       </div>
-      {mode === "intelligence" ? <IntelligenceDesk /> : (
+      {mode === "intelligence" ? <IntelligenceDesk /> : mode === "dex" ? <DexPlan /> : (
         <div className="cex-pick">
           <article className="card">
             <p className="muted tiny">{CEX_RANK_NOTE}</p>

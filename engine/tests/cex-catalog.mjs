@@ -89,7 +89,10 @@ test("the first ten centralized venues are the only live books", () => {
   assert.equal(closed.length, 0);
   assert.equal(CEX_VENUES.filter((venue) => venue.futures.state !== "live").map((venue) => venue.id).join(","), "upbit");
   assert.equal(BINANCE_INTELLIGENCE.products.length, 3);
-  assert.ok(BINANCE_INTELLIGENCE.products.every((product) => product.state === "error" && product.uses.length === 0));
+  assert.deepEqual(BINANCE_INTELLIGENCE.products.map((product) => product.id), ["binance-ai", "ai-pro", "agent-os"]);
+  assert.ok(BINANCE_INTELLIGENCE.products.every((product) => product.state === "live" && product.address.includes("symbol=BTCUSDT") && product.uses.length === 1));
+  assert.match(BINANCE_INTELLIGENCE.products[1].locked, /No order/);
+  assert.match(BINANCE_INTELLIGENCE.products[2].locked, /not opened/);
   assert.ok(BINANCE_SPOT_FIELDS.some((field) => field.wasHidden && field.field === "t"));
   assert.ok(BINANCE_FUTURES_FIELDS.some((field) => field.wasHidden && field.field === "ap"));
 });

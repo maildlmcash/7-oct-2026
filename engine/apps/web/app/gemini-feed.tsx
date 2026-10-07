@@ -10,7 +10,25 @@ import {
 } from "../../../services/gemini-public.mjs";
 import { SocketDetails } from "./socket-details";
 
+type Alert = {
+  id: string;
+  book: "spot" | "futures";
+  side: "bid" | "ask";
+  direction: "above" | "below";
+  kind: "alert" | "stop" | "profit";
+  price: number;
+  status: "armed" | "fired";
+  live?: number;
+};
+
+type Sale = { id: string; book: "spot" | "futures"; size: number; price: number; quote: number };
 type Row = { field: string; value: string; meaning: string };
+
+function livePrice(rows: Row[], side: "bid" | "ask") {
+  const row = rows.find((item) => item.field === `${side} 1` || item.field === (side === "bid" ? "b" : "a") || item.field === side);
+  const value = Number(row?.value.split(" × ")[0]);
+  return Number.isFinite(value) ? value : null;
+}
 type Spec = (typeof GEMINI_SPOT_CONNECTIONS)[number];
 
 function DepthBook({ rows }: { rows: Row[] }) {
@@ -50,6 +68,23 @@ export function GeminiFeed({ book }: { book: "spot" | "futures" }) {
   const [rows, setRows] = useState<Row[]>([]);
   const [status, setStatus] = useState<"connecting" | "live" | "error">("connecting");
   const [error, setError] = useState("");
+  const [alerts, setAlerts] = useState<Alert[]>([]);
+  const [draft, setDraft] = useState("");
+  const [side, setSide] = useState<"bid" | "ask">("bid");
+  const [direction, setDirection] = useState<"above" | "below">("above");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [stopOpen, setStopOpen] = useState(false);
+  const [stopDraft, setStopDraft] = useState("");
+  const [profitOpen, setProfitOpen] = useState(false);
+  const [profitDraft, setProfitDraft] = useState("");
+  const [sellOpen, setSellOpen] = useState(false);
+  const [sellSize, setSellSize] = useState("");
+  const [sales, setSales] = useState<Sale[]>([]);
+  const visible = alerts.filter((alert) => alert.book === book);
+  const sellBid = livePrice(rows, "bid");
+  const sellAmount = Number(sellSize);
+  const sellReady = sellBid != null && Number.isFinite(sellAmount) && sellAmount > 0;
+  const marketName = book === "spot" ? "BTCUSD" : "BTCGUSDPERP";
 
   useEffect(() => {
     let stopped = false;
@@ -118,6 +153,22 @@ export function GeminiFeed({ book }: { book: "spot" | "futures" }) {
     };
   }, [book, spec.address, spec.id, spec.kind]);
 
+  useEffect(() => {
+    setAlerts((current) => {
+      let changed = false;
+      const next = current.map((alert) => {
+        if (alert.book !== book || alert.status !== "armed") return alert;
+        const live = livePrice(rows, alert.side);
+        if (live == null) return alert;
+        const hit = alert.direction === "above" ? live >= alert.price : live <= alert.price;
+        if (!hit) return alert;
+        changed = true;
+        return { ...alert, status: "fired" as const, live };
+      });
+      return changed ? next : current;
+    });
+  }, [book, rows]);
+
   return (
     <div className="cex-detail">
       <ul className="cex-limits">{conditions.map((line) => <li key={line}>{line}</li>)}</ul>
@@ -128,14 +179,102 @@ export function GeminiFeed({ book }: { book: "spot" | "futures" }) {
           </button>
         ))}
       </div>
+      {sales.filter((sale) => sale.book === book).map((sale) => (
+        <p key={sale.id} className="notice notice-warn" role="status">
+          Paper sell {sale.size} {marketName} at bid {sale.price}. Quote {sale.quote.toFixed(2)}. No order was sent.
+          <button type="button" onClick={() => setSales((current) => current.filter((item) => item.id !== sale.id))}>Dismiss</button>
+        </p>
+      ))}
+      {visible.filter((alert) => alert.status === "fired").map((alert) => (
+        <p key={alert.id} className="notice notice-warn" role="status">
+          {book === "spot" ? "BTCUSD" : "BTCGUSDPERP"} {alert.kind === "stop" ? `stop loss hit at ${alert.price}.` : alert.kind === "profit" ? `take profit hit at ${alert.price}.` : `${alert.side} is ${alert.direction} ${alert.price}.`} Live price {alert.live}. No order was sent.
+          <button type="button" onClick={() => setAlerts((current) => current.filter((item) => item.id !== alert.id))}>Dismiss</button>
+        </p>
+      ))}
+      {visible.some((alert) => alert.status === "armed") ? (
+        <ul className="cex-limits">
+          {visible.filter((alert) => alert.status === "armed").map((alert) => (
+            <li key={alert.id}>{alert.kind === "stop" ? `Stop loss if best bid falls to ${alert.price}.` : alert.kind === "profit" ? `Take profit if best bid rises to ${alert.price}.` : `Watching ${alert.side} ${alert.direction} ${alert.price}.`} <button type="button" onClick={() => setAlerts((current) => current.filter((item) => item.id !== alert.id))}>Remove</button></li>
+          ))}
+        </ul>
+      ) : null}
       <article className="card">
         <header className="card-head">
           <div>
             <span className="eyebrow">HOW THIS DATA ARRIVES</span>
             <h3>{spec.kind === "rest" ? "REST API" : "WebSocket"} · {spec.channel}</h3>
           </div>
-          <span className={status === "live" ? "pill pill-live" : "pill pill-warn"}>{status === "live" ? "LIVE" : "ERROR"}</span>
+          <div className="card-actions">
+            <span className={status === "live" ? "pill pill-live" : "pill pill-warn"}>{status === "live" ? "LIVE" : "ERROR"}</span>
+            <button className="button button-accent" type="button" aria-expanded={alertOpen} onClick={() => { setAlertOpen((open) => !open); setStopOpen(false); setProfitOpen(false); setSellOpen(false); }}>Set price alert</button>
+            <button className="button button-stop" type="button" aria-expanded={stopOpen} onClick={() => { setStopOpen((open) => !open); setAlertOpen(false); setProfitOpen(false); setSellOpen(false); }}>Set stop loss</button>
+            <button className="button button-accent" type="button" aria-expanded={profitOpen} onClick={() => { setProfitOpen((open) => !open); setAlertOpen(false); setStopOpen(false); setSellOpen(false); }}>Set take profit</button>
+            <button className="button button-stop" type="button" aria-expanded={sellOpen} onClick={() => { setSellOpen((open) => !open); setAlertOpen(false); setStopOpen(false); setProfitOpen(false); }}>{sellBid == null ? "Sell" : `Sell ${sellBid}`}</button>
+          </div>
         </header>
+        {alertOpen ? (
+          <form className="alert-form" onSubmit={(event) => {
+            event.preventDefault();
+            const price = Number(draft);
+            if (!Number.isFinite(price) || price <= 0) return;
+            setAlerts((current) => [...current, { id: crypto.randomUUID(), book, side, direction, kind: "alert", price, status: "armed" }]);
+            setDraft("");
+            setAlertOpen(false);
+          }}>
+            <span>Alert when this {book} {side} is {direction}</span>
+            <input aria-label="Alert price" inputMode="decimal" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Price" />
+            <select aria-label="Alert side" value={side} onChange={(event) => setSide(event.target.value as "bid" | "ask")}>
+              <option value="bid">Best bid</option>
+              <option value="ask">Best ask</option>
+            </select>
+            <select aria-label="Alert direction" value={direction} onChange={(event) => setDirection(event.target.value as "above" | "below")}>
+              <option value="above">Above</option>
+              <option value="below">Below</option>
+            </select>
+            <button className="button button-dark" type="submit">Save alert</button>
+          </form>
+        ) : null}
+        {stopOpen ? (
+          <form className="alert-form" onSubmit={(event) => {
+            event.preventDefault();
+            const price = Number(stopDraft);
+            if (!Number.isFinite(price) || price <= 0) return;
+            setAlerts((current) => [...current, { id: crypto.randomUUID(), book, side: "bid", direction: "below", kind: "stop", price, status: "armed" }]);
+            setStopDraft("");
+            setStopOpen(false);
+          }}>
+            <span>Stop if this {book} best bid falls to</span>
+            <input aria-label="Stop loss price" inputMode="decimal" value={stopDraft} onChange={(event) => setStopDraft(event.target.value)} placeholder="Stop price" />
+            <button className="button button-stop" type="submit">Save stop loss</button>
+          </form>
+        ) : null}
+        {profitOpen ? (
+          <form className="alert-form" onSubmit={(event) => {
+            event.preventDefault();
+            const price = Number(profitDraft);
+            if (!Number.isFinite(price) || price <= 0) return;
+            setAlerts((current) => [...current, { id: crypto.randomUUID(), book, side: "bid", direction: "above", kind: "profit", price, status: "armed" }]);
+            setProfitDraft("");
+            setProfitOpen(false);
+          }}>
+            <span>Take profit if this {book} best bid rises to</span>
+            <input aria-label="Take profit price" inputMode="decimal" value={profitDraft} onChange={(event) => setProfitDraft(event.target.value)} placeholder="Target price" />
+            <button className="button button-accent" type="submit">Save take profit</button>
+          </form>
+        ) : null}
+        {sellOpen ? (
+          <form className="alert-form" onSubmit={(event) => {
+            event.preventDefault();
+            if (!sellReady || sellBid == null) return;
+            setSales((current) => [{ id: crypto.randomUUID(), book, size: sellAmount, price: sellBid, quote: sellAmount * sellBid }, ...current]);
+            setSellSize("");
+            setSellOpen(false);
+          }}>
+            <span>{sellBid == null ? "Best bid is not on this book yet." : `${marketName} best bid is ${sellBid}. ${sellReady ? `Quote ${ (sellAmount * sellBid).toFixed(2) }.` : ""} No order is sent.`}</span>
+            <input aria-label="Sell size" inputMode="decimal" value={sellSize} onChange={(event) => setSellSize(event.target.value)} placeholder="BTC size" />
+            <button className="button button-stop" type="submit" disabled={!sellReady}>{sellReady ? `Sell ${sellAmount} BTC` : "Sell"}</button>
+          </form>
+        ) : null}
         <div className="stat-line"><span>Address</span><b className="mono">{spec.address}</b></div>
         <div className="stat-line"><span>Request</span><b className="mono">{spec.request}</b></div>
         <div className="stat-line"><span>Used on</span><b>{spec.where}</b></div>

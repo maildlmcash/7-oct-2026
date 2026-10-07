@@ -32,7 +32,7 @@ button,input,select { font:inherit; }
 .pill-warn { color:var(--amber);background:var(--amber-soft); }
 .button { font-weight:700!important; border:0!important; padding:10px 15px!important; }
 .button-dark { color:white!important; background:#163e34!important; }
-.button-accent { color:white!important; background:#08795c!important; }
+.button-stop { color:white!important; background:#b34452!important; }
 .button:disabled { opacity:.6; cursor:wait!important; }
 .symbol-form { display:flex; align-items:center; gap:8px; }
 .symbol-form label,.wallet-form label { color:var(--muted); display:flex; flex-direction:column; gap:6px; font-size:11px; font-weight:700; }
@@ -98,7 +98,12 @@ tbody tr:last-child td { border-bottom:0; }
 .book-price,.book-size { position:relative; }
 .book-ask .book-price { color:var(--red); }
 .book-bid .book-price { color:var(--green); }
-.book-spread { margin:4px 0; padding:6px 8px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); color:var(--muted); font-size:12px; text-align:center; }
+.live-ticker { display:flex; flex-wrap:wrap; gap:14px 18px; align-items:baseline; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:var(--white); }
+.live-ticker b { font:800 28px ui-monospace,monospace; letter-spacing:-.03em; }
+.tick-up { color:var(--green); }
+.tick-down { color:var(--red); }
+.alert-form input { width:140px; font:700 13px ui-monospace,monospace; }
+.alert-form span { color:var(--muted); font-size:13px; }
 
 .intel-desk { display:grid; gap:12px; }
 .intel-desk .grid { align-items:stretch; }

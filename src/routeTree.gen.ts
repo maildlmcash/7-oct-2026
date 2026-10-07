@@ -11,15 +11,18 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiViewStateRouteImport } from './routes/api/view-state'
+import { Route as ApiBinanceIntelligenceRouteImport } from './routes/api/binance/intelligence'
 import { Route as ApiBitfinexPublicRouteImport } from './routes/api/bitfinex/public'
 import { Route as ApiBitgetPublicRouteImport } from './routes/api/bitget/public'
 import { Route as ApiBitstampPublicRouteImport } from './routes/api/bitstamp/public'
+import { Route as ApiCexMenuRouteImport } from './routes/api/cex/menu'
 import { Route as ApiCoinbaseMarketRouteImport } from './routes/api/coinbase/market'
 import { Route as ApiCryptoComPublicRouteImport } from './routes/api/crypto-com/public'
 import { Route as ApiDeskCsrfRouteImport } from './routes/api/desk/csrf'
 import { Route as ApiDeskLoginRouteImport } from './routes/api/desk/login'
 import { Route as ApiDeskLogoutRouteImport } from './routes/api/desk/logout'
 import { Route as ApiDeskSessionRouteImport } from './routes/api/desk/session'
+import { Route as ApiDexPlanRouteImport } from './routes/api/dex/plan'
 import { Route as ApiDexSearchRouteImport } from './routes/api/dex/search'
 import { Route as ApiGatePublicRouteImport } from './routes/api/gate/public'
 import { Route as ApiGeminiPublicRouteImport } from './routes/api/gemini/public'
@@ -43,6 +46,11 @@ const ApiViewStateRoute = ApiViewStateRouteImport.update({
   path: '/api/view-state',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiBinanceIntelligenceRoute = ApiBinanceIntelligenceRouteImport.update({
+  id: '/api/binance/intelligence',
+  path: '/api/binance/intelligence',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiBitfinexPublicRoute = ApiBitfinexPublicRouteImport.update({
   id: '/api/bitfinex/public',
   path: '/api/bitfinex/public',
@@ -56,6 +64,11 @@ const ApiBitgetPublicRoute = ApiBitgetPublicRouteImport.update({
 const ApiBitstampPublicRoute = ApiBitstampPublicRouteImport.update({
   id: '/api/bitstamp/public',
   path: '/api/bitstamp/public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCexMenuRoute = ApiCexMenuRouteImport.update({
+  id: '/api/cex/menu',
+  path: '/api/cex/menu',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiCoinbaseMarketRoute = ApiCoinbaseMarketRouteImport.update({
@@ -86,6 +99,11 @@ const ApiDeskLogoutRoute = ApiDeskLogoutRouteImport.update({
 const ApiDeskSessionRoute = ApiDeskSessionRouteImport.update({
   id: '/api/desk/session',
   path: '/api/desk/session',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiDexPlanRoute = ApiDexPlanRouteImport.update({
+  id: '/api/dex/plan',
+  path: '/api/dex/plan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiDexSearchRoute = ApiDexSearchRouteImport.update({
@@ -152,15 +170,18 @@ const ApiWalletsActivityRoute = ApiWalletsActivityRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/view-state': typeof ApiViewStateRoute
+  '/api/binance/intelligence': typeof ApiBinanceIntelligenceRoute
   '/api/bitfinex/public': typeof ApiBitfinexPublicRoute
   '/api/bitget/public': typeof ApiBitgetPublicRoute
   '/api/bitstamp/public': typeof ApiBitstampPublicRoute
+  '/api/cex/menu': typeof ApiCexMenuRoute
   '/api/coinbase/market': typeof ApiCoinbaseMarketRoute
   '/api/crypto-com/public': typeof ApiCryptoComPublicRoute
   '/api/desk/csrf': typeof ApiDeskCsrfRoute
   '/api/desk/login': typeof ApiDeskLoginRoute
   '/api/desk/logout': typeof ApiDeskLogoutRoute
   '/api/desk/session': typeof ApiDeskSessionRoute
+  '/api/dex/plan': typeof ApiDexPlanRoute
   '/api/dex/search': typeof ApiDexSearchRoute
   '/api/gate/public': typeof ApiGatePublicRoute
   '/api/gemini/public': typeof ApiGeminiPublicRoute
@@ -177,15 +198,18 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/view-state': typeof ApiViewStateRoute
+  '/api/binance/intelligence': typeof ApiBinanceIntelligenceRoute
   '/api/bitfinex/public': typeof ApiBitfinexPublicRoute
   '/api/bitget/public': typeof ApiBitgetPublicRoute
   '/api/bitstamp/public': typeof ApiBitstampPublicRoute
+  '/api/cex/menu': typeof ApiCexMenuRoute
   '/api/coinbase/market': typeof ApiCoinbaseMarketRoute
   '/api/crypto-com/public': typeof ApiCryptoComPublicRoute
   '/api/desk/csrf': typeof ApiDeskCsrfRoute
   '/api/desk/login': typeof ApiDeskLoginRoute
   '/api/desk/logout': typeof ApiDeskLogoutRoute
   '/api/desk/session': typeof ApiDeskSessionRoute
+  '/api/dex/plan': typeof ApiDexPlanRoute
   '/api/dex/search': typeof ApiDexSearchRoute
   '/api/gate/public': typeof ApiGatePublicRoute
   '/api/gemini/public': typeof ApiGeminiPublicRoute
@@ -203,15 +227,18 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/view-state': typeof ApiViewStateRoute
+  '/api/binance/intelligence': typeof ApiBinanceIntelligenceRoute
   '/api/bitfinex/public': typeof ApiBitfinexPublicRoute
   '/api/bitget/public': typeof ApiBitgetPublicRoute
   '/api/bitstamp/public': typeof ApiBitstampPublicRoute
+  '/api/cex/menu': typeof ApiCexMenuRoute
   '/api/coinbase/market': typeof ApiCoinbaseMarketRoute
   '/api/crypto-com/public': typeof ApiCryptoComPublicRoute
   '/api/desk/csrf': typeof ApiDeskCsrfRoute
   '/api/desk/login': typeof ApiDeskLoginRoute
   '/api/desk/logout': typeof ApiDeskLogoutRoute
   '/api/desk/session': typeof ApiDeskSessionRoute
+  '/api/dex/plan': typeof ApiDexPlanRoute
   '/api/dex/search': typeof ApiDexSearchRoute
   '/api/gate/public': typeof ApiGatePublicRoute
   '/api/gemini/public': typeof ApiGeminiPublicRoute
@@ -230,15 +257,18 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/api/view-state'
+    | '/api/binance/intelligence'
     | '/api/bitfinex/public'
     | '/api/bitget/public'
     | '/api/bitstamp/public'
+    | '/api/cex/menu'
     | '/api/coinbase/market'
     | '/api/crypto-com/public'
     | '/api/desk/csrf'
     | '/api/desk/login'
     | '/api/desk/logout'
     | '/api/desk/session'
+    | '/api/dex/plan'
     | '/api/dex/search'
     | '/api/gate/public'
     | '/api/gemini/public'
@@ -255,15 +285,18 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/api/view-state'
+    | '/api/binance/intelligence'
     | '/api/bitfinex/public'
     | '/api/bitget/public'
     | '/api/bitstamp/public'
+    | '/api/cex/menu'
     | '/api/coinbase/market'
     | '/api/crypto-com/public'
     | '/api/desk/csrf'
     | '/api/desk/login'
     | '/api/desk/logout'
     | '/api/desk/session'
+    | '/api/dex/plan'
     | '/api/dex/search'
     | '/api/gate/public'
     | '/api/gemini/public'
@@ -280,15 +313,18 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/api/view-state'
+    | '/api/binance/intelligence'
     | '/api/bitfinex/public'
     | '/api/bitget/public'
     | '/api/bitstamp/public'
+    | '/api/cex/menu'
     | '/api/coinbase/market'
     | '/api/crypto-com/public'
     | '/api/desk/csrf'
     | '/api/desk/login'
     | '/api/desk/logout'
     | '/api/desk/session'
+    | '/api/dex/plan'
     | '/api/dex/search'
     | '/api/gate/public'
     | '/api/gemini/public'
@@ -306,15 +342,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiViewStateRoute: typeof ApiViewStateRoute
+  ApiBinanceIntelligenceRoute: typeof ApiBinanceIntelligenceRoute
   ApiBitfinexPublicRoute: typeof ApiBitfinexPublicRoute
   ApiBitgetPublicRoute: typeof ApiBitgetPublicRoute
   ApiBitstampPublicRoute: typeof ApiBitstampPublicRoute
+  ApiCexMenuRoute: typeof ApiCexMenuRoute
   ApiCoinbaseMarketRoute: typeof ApiCoinbaseMarketRoute
   ApiCryptoComPublicRoute: typeof ApiCryptoComPublicRoute
   ApiDeskCsrfRoute: typeof ApiDeskCsrfRoute
   ApiDeskLoginRoute: typeof ApiDeskLoginRoute
   ApiDeskLogoutRoute: typeof ApiDeskLogoutRoute
   ApiDeskSessionRoute: typeof ApiDeskSessionRoute
+  ApiDexPlanRoute: typeof ApiDexPlanRoute
   ApiDexSearchRoute: typeof ApiDexSearchRoute
   ApiGatePublicRoute: typeof ApiGatePublicRoute
   ApiGeminiPublicRoute: typeof ApiGeminiPublicRoute
@@ -345,6 +384,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiViewStateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/binance/intelligence': {
+      id: '/api/binance/intelligence'
+      path: '/api/binance/intelligence'
+      fullPath: '/api/binance/intelligence'
+      preLoaderRoute: typeof ApiBinanceIntelligenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/bitfinex/public': {
       id: '/api/bitfinex/public'
       path: '/api/bitfinex/public'
@@ -364,6 +410,13 @@ declare module '@tanstack/react-router' {
       path: '/api/bitstamp/public'
       fullPath: '/api/bitstamp/public'
       preLoaderRoute: typeof ApiBitstampPublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/cex/menu': {
+      id: '/api/cex/menu'
+      path: '/api/cex/menu'
+      fullPath: '/api/cex/menu'
+      preLoaderRoute: typeof ApiCexMenuRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/coinbase/market': {
@@ -406,6 +459,13 @@ declare module '@tanstack/react-router' {
       path: '/api/desk/session'
       fullPath: '/api/desk/session'
       preLoaderRoute: typeof ApiDeskSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/dex/plan': {
+      id: '/api/dex/plan'
+      path: '/api/dex/plan'
+      fullPath: '/api/dex/plan'
+      preLoaderRoute: typeof ApiDexPlanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/dex/search': {
@@ -498,15 +558,18 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiViewStateRoute: ApiViewStateRoute,
+  ApiBinanceIntelligenceRoute: ApiBinanceIntelligenceRoute,
   ApiBitfinexPublicRoute: ApiBitfinexPublicRoute,
   ApiBitgetPublicRoute: ApiBitgetPublicRoute,
   ApiBitstampPublicRoute: ApiBitstampPublicRoute,
+  ApiCexMenuRoute: ApiCexMenuRoute,
   ApiCoinbaseMarketRoute: ApiCoinbaseMarketRoute,
   ApiCryptoComPublicRoute: ApiCryptoComPublicRoute,
   ApiDeskCsrfRoute: ApiDeskCsrfRoute,
   ApiDeskLoginRoute: ApiDeskLoginRoute,
   ApiDeskLogoutRoute: ApiDeskLogoutRoute,
   ApiDeskSessionRoute: ApiDeskSessionRoute,
+  ApiDexPlanRoute: ApiDexPlanRoute,
   ApiDexSearchRoute: ApiDexSearchRoute,
   ApiGatePublicRoute: ApiGatePublicRoute,
   ApiGeminiPublicRoute: ApiGeminiPublicRoute,
