@@ -1,0 +1,121 @@
+COMMAND: node --test tests/authz-matrix.mjs tests/identity-schema.mjs tests/access-policy.mjs tests/privileged-access.mjs tests/role-definitions.mjs
+WHEN: 2026-10-07
+TAP version 13
+# Subtest: unauthenticated checklist requests are rejected consistently
+ok 1 - unauthenticated checklist requests are rejected consistently
+  ---
+  duration_ms: 415.380282
+  type: 'test'
+  ...
+# Subtest: a client role id does not grant checklist.write
+ok 2 - a client role id does not grant checklist.write
+  ---
+  duration_ms: 574.653207
+  type: 'test'
+  ...
+# Subtest: a same-tenant admin write is blocked when no MFA provider is configured
+ok 3 - a same-tenant admin write is blocked when no MFA provider is configured
+  ---
+  duration_ms: 502.094813
+  type: 'test'
+  ...
+# Subtest: cross-tenant and unknown records deny
+ok 4 - cross-tenant and unknown records deny
+  ---
+  duration_ms: 1099.977217
+  type: 'test'
+  ...
+# Subtest: direct-object reads follow the owner subject
+ok 5 - direct-object reads follow the owner subject
+  ---
+  duration_ms: 1688.614427
+  type: 'test'
+  ...
+# Subtest: expired and revoked sessions stay unauthenticated
+ok 6 - expired and revoked sessions stay unauthenticated
+  ---
+  duration_ms: 1173.563001
+  type: 'test'
+  ...
+# Subtest: unbound principals and non-editor roles deny both actions
+ok 7 - unbound principals and non-editor roles deny both actions
+  ---
+  duration_ms: 2542.563827
+  type: 'test'
+  ...
+# Subtest: principal binding rejects client-shaped roles and omits secrets from the access log
+ok 8 - principal binding rejects client-shaped roles and omits secrets from the access log
+  ---
+  duration_ms: 268.496537
+  type: 'test'
+  ...
+# Subtest: subtree walk stays on the parent chain
+ok 9 - subtree walk stays on the parent chain
+  ---
+  duration_ms: 5.197615
+  type: 'test'
+  ...
+# Subtest: authorization matrix denies escalation, cross-tenant access, revoked roles, and forged UI requests
+ok 10 - authorization matrix denies escalation, cross-tenant access, revoked roles, and forged UI requests
+  ---
+  duration_ms: 186.837111
+  type: 'test'
+  ...
+# Subtest: deny-by-default merge unions only held roles and an explicit deny wins
+ok 11 - deny-by-default merge unions only held roles and an explicit deny wins
+  ---
+  duration_ms: 4.548229
+  type: 'test'
+  ...
+# Subtest: migration rejects a cross-tenant parent and any combined pair except Retailer and Customer
+ok 12 - migration rejects a cross-tenant parent and any combined pair except Retailer and Customer
+  ---
+  duration_ms: 12879.384601
+  type: 'test'
+  ...
+# Subtest: no identity provider blocks the privileged write and records a searchable audit
+ok 13 - no identity provider blocks the privileged write and records a searchable audit
+  ---
+  duration_ms: 899.491154
+  type: 'test'
+  ...
+# Subtest: a configured provider requires MFA before the privileged write
+ok 14 - a configured provider requires MFA before the privileged write
+  ---
+  duration_ms: 647.868966
+  type: 'test'
+  ...
+# Subtest: an unauthorized write and a customer read do not become privileged audits
+ok 15 - an unauthorized write and a customer read do not become privileged audits
+  ---
+  duration_ms: 609.634328
+  type: 'test'
+  ...
+# Subtest: the privileged audit migration is append-only and has no secret column
+ok 16 - the privileged audit migration is append-only and has no secret column
+  ---
+  duration_ms: 9.385576
+  type: 'test'
+  ...
+# Subtest: role names match in the contract, the shell, and the migration
+ok 17 - role names match in the contract, the shell, and the migration
+  ---
+  duration_ms: 4.654739
+  type: 'test'
+  ...
+# Subtest: the default role is Customer and every catalog grant list is empty
+ok 18 - the default role is Customer and every catalog grant list is empty
+  ---
+  duration_ms: 352.453237
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13987.391141
+EXIT:0

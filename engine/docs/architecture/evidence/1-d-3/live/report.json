@@ -1,0 +1,28 @@
+{
+  "capturedAt": "2026-10-07T13:00:09.564Z",
+  "consoleErrors": [],
+  "pills": [
+    "Signed out",
+    "Signed out",
+    "LIVE · wss://data-stream.binance.vision:443/stream?streams=btcusdt@trade/btcusdt@bookTicker · 2026-10-07T12:59:56.869Z",
+    "LIVE · wss://fstream.binance.com/market/stream?streams=btcusdt@markPrice@1s · 2026-10-07T12:59:56.618Z"
+  ],
+  "coin": "1334 coins · type in Symbol to search",
+  "lockExact": 1,
+  "fit": {
+    "scroll": 1280,
+    "client": 1280
+  },
+  "mobileFit": {
+    "scroll": 375,
+    "client": 375
+  },
+  "mobile390Fit": {
+    "scroll": 390,
+    "client": 390
+  },
+  "dashboardAxe": [],
+  "marketAxe": [],
+  "mobileAxe": [],
+  "mobile390Axe": []
+}

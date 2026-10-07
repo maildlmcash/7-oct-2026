@@ -24,7 +24,7 @@ test("each section keeps one pathname and does not reload the document", async (
     await page.getByRole("button", { name, exact: true }).click();
     await expect(page.getByRole("heading", { level: 1, name })).toBeVisible();
     expect(new URL(page.url()).pathname).toBe(pathname);
-    if (navigationUrls.length !== before) {
+    if (navigationUrls.slice(before).some((url) => new URL(url).pathname !== "/app")) {
       navigationLog.push(`${name} ${navigationUrls.slice(before).join(" ")}`);
     }
     if (name === "Checklist") {
@@ -33,24 +33,27 @@ test("each section keeps one pathname and does not reload the document", async (
   }
 
   expect(navigationLog).toEqual([]);
-  expect(await page.evaluate(() => history.length)).toBe(historyLength);
+  expect(new URL(page.url()).pathname).toBe("/app");
+  expect(await page.evaluate(() => history.length)).toBe(historyLength + SECTIONS.length - 1);
   expect(await page.evaluate(() => (window as unknown as { __shellMarker: number }).__shellMarker)).toBe(1);
 });
 
-test("back leaves the document, forward returns to the root, and reload shows Dashboard", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
+test("back and forward restore the section on /app, and reload shows Dashboard", async ({ page }) => {
+  await page.goto("/app", { waitUntil: "networkidle" });
   const historyBefore = await page.evaluate(() => history.length);
   await page.getByRole("button", { name: "Market", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Market" })).toBeVisible();
   const pathname = new URL(page.url()).pathname;
-  expect(await page.evaluate(() => history.length)).toBe(historyBefore);
+  expect(pathname).toBe("/app");
+  expect(await page.evaluate(() => history.length)).toBe(historyBefore + 1);
 
   await page.goBack();
-  expect(page.url()).toBe("about:blank");
+  expect(new URL(page.url()).pathname).toBe("/app");
+  await expect(page.getByRole("heading", { level: 1, name: "Dashboard" })).toBeVisible();
 
   await page.goForward();
   expect(new URL(page.url()).pathname).toBe(pathname);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Dashboard");
+  await expect(page.getByRole("heading", { level: 1, name: "Market" })).toBeVisible();
 
   await page.getByRole("button", { name: "Market", exact: true }).click();
   await page.reload();

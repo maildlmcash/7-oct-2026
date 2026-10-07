@@ -1,0 +1,55 @@
+{
+  "pathname": "/app",
+  "trace": [
+    {
+      "section": "Dashboard",
+      "pathname": "/app",
+      "heading": "Dashboard"
+    },
+    {
+      "section": "Market",
+      "pathname": "/app",
+      "heading": "Market"
+    },
+    {
+      "section": "DEX",
+      "pathname": "/app",
+      "heading": "DEX"
+    },
+    {
+      "section": "Wallets",
+      "pathname": "/app",
+      "heading": "Wallets"
+    },
+    {
+      "section": "Predictions",
+      "pathname": "/app",
+      "heading": "Predictions"
+    },
+    {
+      "section": "Paper",
+      "pathname": "/app",
+      "heading": "Paper"
+    },
+    {
+      "section": "Search",
+      "pathname": "/app",
+      "heading": "Search"
+    },
+    {
+      "section": "Checklist",
+      "pathname": "/app",
+      "heading": "Checklist"
+    },
+    {
+      "section": "Bugs",
+      "pathname": "/app",
+      "heading": "Bugs"
+    },
+    {
+      "section": "Admin",
+      "pathname": "/app",
+      "heading": "Admin"
+    }
+  ]
+}

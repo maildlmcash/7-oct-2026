@@ -1,6 +1,6 @@
 # 0002 — Single URL shell
 
-Status: accepted for the root application shell.
+Status: accepted for one pathname and a Dashboard reload. Task 1.A.2 supersedes the "no history" sentence. Section changes now call `history.pushState` on the same pathname. See `docs/adr/0002-spa-shell.md`.
 
 ## Context
 

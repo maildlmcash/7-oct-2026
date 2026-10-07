@@ -45,7 +45,7 @@ export function Panel({ labelledBy, children }: { labelledBy?: string; children:
 
 export function EmptyState({ children }: { children: ReactNode }) {
   return (
-    <p className="layout-state" role="status">
+    <p className="layout-state ui-state ui-state-empty" role="status">
       {children}
     </p>
   );
@@ -53,7 +53,7 @@ export function EmptyState({ children }: { children: ReactNode }) {
 
 export function LoadingState({ children }: { children: ReactNode }) {
   return (
-    <p className="layout-state" role="status" aria-busy="true">
+    <p className="layout-state ui-state ui-state-loading" role="status" aria-busy="true">
       {children}
     </p>
   );
@@ -61,9 +61,105 @@ export function LoadingState({ children }: { children: ReactNode }) {
 
 export function ErrorState({ children }: { children: ReactNode }) {
   return (
-    <p className="layout-state" role="alert">
+    <p className="layout-state ui-state ui-state-error" role="alert">
       {children}
     </p>
+  );
+}
+
+export function StaleState({ children }: { children: ReactNode }) {
+  return (
+    <p className="layout-state ui-state ui-state-stale" role="status">
+      {children}
+    </p>
+  );
+}
+
+export function RestrictedState({ children }: { children: ReactNode }) {
+  return (
+    <p className="layout-state ui-state ui-state-restricted" role="status">
+      {children}
+    </p>
+  );
+}
+
+export const STATUS_TONES = ["loading", "empty", "stale", "error", "restricted"] as const;
+export type StatusTone = (typeof STATUS_TONES)[number];
+
+const STATUS_TEXT: Record<StatusTone, string> = {
+  loading: "Loading",
+  empty: "Empty",
+  stale: "Stale",
+  error: "Error",
+  restricted: "Restricted",
+};
+
+export function StatusBadge({ tone }: { tone: StatusTone }) {
+  return (
+    <span className={`ui-badge ui-badge-${tone}`} data-status={tone}>
+      {STATUS_TEXT[tone]}
+    </span>
+  );
+}
+
+export function Card({ title, children }: { title: string; children: ReactNode }) {
+  const titleId = useId();
+  return (
+    <article className="ui-card" aria-labelledby={titleId}>
+      <h3 id={titleId} className="ui-card-title">
+        {title}
+      </h3>
+      <div className="ui-card-body">{children}</div>
+    </article>
+  );
+}
+
+export function TextField({
+  label,
+  name,
+  value,
+  onChange,
+  hint,
+}: {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (value: string) => void;
+  hint: string;
+}) {
+  const inputId = useId();
+  const hintId = useId();
+  return (
+    <div className="ui-field">
+      <label htmlFor={inputId}>{label}</label>
+      <input
+        id={inputId}
+        name={name}
+        type="text"
+        autoComplete="off"
+        value={value}
+        aria-describedby={hintId}
+        onChange={(event) => onChange(event.target.value)}
+      />
+      <p id={hintId} className="ui-hint">
+        {hint}
+      </p>
+    </div>
+  );
+}
+
+export function ChartFrame({ title, tone, detail }: { title: string; tone: StatusTone; detail: string }) {
+  const titleId = useId();
+  return (
+    <section className="ui-chart layout-charts" aria-labelledby={titleId}>
+      <div className="ui-chart-head">
+        <h3 id={titleId}>{title}</h3>
+        <StatusBadge tone={tone} />
+      </div>
+      <div className="ui-chart-plot">
+        <p>{detail}</p>
+      </div>
+    </section>
   );
 }
 
@@ -210,6 +306,10 @@ export function Modal({
     if (!dialog) return;
     if (open) {
       if (!dialog.open) dialog.showModal();
+      const first = [...dialog.querySelectorAll<HTMLElement>("button, a[href], input, select, textarea")].find(
+        (element) => !element.hasAttribute("disabled"),
+      );
+      first?.focus();
       return;
     }
     if (dialog.open) dialog.close();

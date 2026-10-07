@@ -1,0 +1,84 @@
+{
+  "task": "1.D.2",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "deployment": "PAPER",
+  "write": "not enabled",
+  "material": "masked",
+  "retrievable": false,
+  "logFields": [
+    "actor",
+    "action",
+    "target",
+    "decision",
+    "reason"
+  ],
+  "telemetryFields": [
+    "action",
+    "decision",
+    "reason",
+    "source",
+    "target"
+  ],
+  "logContainsMaterial": false,
+  "telemetryContainsMaterial": false,
+  "readContainsMaterial": false,
+  "scopes": [
+    {
+      "scope": "metadata.read",
+      "state": "visible"
+    },
+    {
+      "scope": "trade",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "scope": "withdrawal",
+      "state": "BLOCKED"
+    }
+  ],
+  "checks": [
+    {
+      "text": "Secret material is masked",
+      "state": "enforced"
+    },
+    {
+      "text": "Secret material is not retrievable",
+      "state": "enforced"
+    },
+    {
+      "text": "Secret material is excluded from logs",
+      "state": "enforced"
+    },
+    {
+      "text": "Secret material is excluded from telemetry",
+      "state": "enforced"
+    },
+    {
+      "text": "Secret write is not enabled",
+      "state": "enforced"
+    },
+    {
+      "text": "Trade scope is unavailable",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "text": "Withdrawal permission is blocked",
+      "state": "BLOCKED"
+    },
+    {
+      "text": "KMS key is not configured",
+      "state": "not configured"
+    },
+    {
+      "text": "Rotation is not enabled",
+      "state": "not enabled"
+    },
+    {
+      "text": "Audit keeps actor, action, target, decision, and reason",
+      "state": "enforced"
+    }
+  ],
+  "threatModel": "docs/security/secret-reference-threat-model.md",
+  "checklist": "docs/security/key-permission-checklist.md"
+}

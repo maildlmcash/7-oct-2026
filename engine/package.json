@@ -93,5 +93,8 @@
     "test:privileged-access": "node --test tests/privileged-access.mjs",
     "test:privileged-migration": "node --test tests/privileged-migration.mjs",
     "typecheck": "pnpm --filter web typecheck"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8"
   }
 }

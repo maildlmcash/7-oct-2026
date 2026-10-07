@@ -1,0 +1,101 @@
+{
+  "task": "1.B.3",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "denial": "role scope denied",
+  "roles": {
+    "Super Admin": {
+      "screens": [
+        "Dashboard",
+        "Checklist",
+        "Admin"
+      ],
+      "disabled": [
+        "Read exchange secrets",
+        "Impersonate user",
+        "Override audit trail"
+      ],
+      "canPreview": true,
+      "impersonation": false
+    },
+    "Admin": {
+      "screens": [
+        "Dashboard",
+        "Checklist",
+        "Admin"
+      ],
+      "disabled": [
+        "Open another tenant",
+        "Assign a higher role"
+      ],
+      "canPreview": false,
+      "impersonation": false
+    },
+    "Super Distributor": {
+      "screens": [
+        "Dashboard"
+      ],
+      "disabled": [
+        "Change global policy",
+        "Open another tenant"
+      ],
+      "canPreview": false,
+      "impersonation": false
+    },
+    "Distributor": {
+      "screens": [
+        "Dashboard"
+      ],
+      "disabled": [
+        "Create a Super Distributor",
+        "Change global rates"
+      ],
+      "canPreview": false,
+      "impersonation": false
+    },
+    "Retailer": {
+      "screens": [
+        "Dashboard",
+        "Paper"
+      ],
+      "disabled": [
+        "Create a distributor role",
+        "View another retailer"
+      ],
+      "canPreview": false,
+      "impersonation": false
+    },
+    "Customer": {
+      "screens": [
+        "Dashboard",
+        "Market",
+        "Paper",
+        "Checklist"
+      ],
+      "disabled": [
+        "Edit provider registry",
+        "Edit roles",
+        "Edit commissions"
+      ],
+      "canPreview": false,
+      "impersonation": false
+    },
+    "Retailer and Customer": {
+      "screens": [
+        "Dashboard",
+        "Market",
+        "Paper",
+        "Checklist"
+      ],
+      "disabled": [
+        "Create a distributor role",
+        "View another retailer",
+        "Edit provider registry",
+        "Edit roles",
+        "Edit commissions"
+      ],
+      "canPreview": false,
+      "impersonation": false
+    }
+  }
+}

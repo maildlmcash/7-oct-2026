@@ -29,6 +29,8 @@ The default role is Customer. Its catalog grant list is empty, which is the mini
 
 This catalog does not change `authorizeShell` or `authorizeRequest`. A same-tenant Admin can still edit a checklist. A same-tenant Customer can still read an owned checklist and see the user checklist and market views. The other four roles still receive neither. Login does not assign the default role.
 
+Task 1.B.1 adds principal, assignment, parent, status, and capability-name tables in `data/migrations/0014_identity_role_tenant.sql`. The catalog grant lists in this decision stay empty. An allow outside a role ceiling is not a grant. An explicit deny wins. See `docs/adr/0004-identity-role-tenant.md`.
+
 ## Evidence
 
 `pnpm test:roles` compares the contract, the migration text, the decision table, and the empty grant lists. `pnpm test:shell-capabilities` and `pnpm test:access-policy` cover the existing checks. Applying `0006_role_definitions.sql` needs `psql`, which this environment does not have.

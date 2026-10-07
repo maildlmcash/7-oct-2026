@@ -1,0 +1,987 @@
+{
+  "changedAt": "2026-10-07T13:02:44.254Z",
+  "rowCount": 140,
+  "granted": 0,
+  "rows": [
+    {
+      "role": "Super Admin",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Super Admin",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Admin",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Super Distributor",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Distributor",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Retailer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Customer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "desk",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-alpha",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-beta",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "capability": "checklist.read"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "trade"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "wallet"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "live-order"
+    },
+    {
+      "role": "Retailer+Customer",
+      "tenantId": "tenant-gamma",
+      "decision": "denied",
+      "reason": "capability denied",
+      "capability": "withdrawal"
+    }
+  ]
+}

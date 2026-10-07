@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useObservedStatus } from "./feed-evidence";
+import { observationLabel } from "./feed-evidence.mjs";
 import { BYBIT_LINEAR, BYBIT_SPOT, parseBybitBook } from "../../../services/bybit-public.mjs";
 import { SocketDetails } from "./socket-details";
 
@@ -8,7 +10,7 @@ type Book = { bid: string; bidQty: string; ask: string; askQty: string; updateId
 
 export function BybitBook({ book }: { book: "spot" | "linear" }) {
   const spec = book === "spot" ? BYBIT_SPOT : BYBIT_LINEAR;
-  const [status, setStatus] = useState<"connecting" | "live" | "error">("connecting");
+  const { status, setStatus, seenAt } = useObservedStatus();
   const [value, setValue] = useState<Book | null>(null);
   const [error, setError] = useState("");
 
@@ -88,7 +90,7 @@ export function BybitBook({ book }: { book: "spot" | "linear" }) {
         { label: "Stale", value: "Error if no book arrives for 10 seconds" },
         { label: "Reconnect", value: "5 seconds after the socket closes" },
       ]} />
-      <div className="stat-line"><span>Socket</span><b className={status === "live" ? "status-implemented" : "status-blocked"}>{status === "live" ? "LIVE" : `ERROR · ${status}`}</b></div>
+      <div className="stat-line"><span>Socket</span><b className={status === "live" ? "status-implemented" : "status-blocked"}>{observationLabel(status, spec.origin, seenAt).text}</b></div>
       {error ? <p className="notice notice-error">{error}</p> : null}
       <div className="stat-line"><span>Bid / ask</span><b>{value ? `${value.bid} × ${value.bidQty} / ${value.ask} × ${value.askQty}` : "—"}</b></div>
       <div className="stat-line"><span>Update id</span><b>{value?.updateId ?? "—"}</b></div>

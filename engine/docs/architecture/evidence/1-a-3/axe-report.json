@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": "360",
+    "theme": "light",
+    "dialog": false,
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "viewport": "360",
+    "theme": "dark",
+    "dialog": false,
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "viewport": "768",
+    "theme": "light",
+    "dialog": false,
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "viewport": "768",
+    "theme": "dark",
+    "dialog": false,
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "viewport": "1280",
+    "theme": "light",
+    "dialog": true,
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "viewport": "1280",
+    "theme": "light",
+    "dialog": false,
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "viewport": "1280",
+    "theme": "dark",
+    "dialog": false,
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "viewport": "360",
+    "theme": "light",
+    "density": "compact",
+    "violations": [],
+    "incomplete": []
+  }
+]

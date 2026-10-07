@@ -1,0 +1,111 @@
+
+Running 4 tests using 1 worker
+
+[1A[2K(node:47453) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:47453) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/4] layout.spec.ts:15:7 › mobile dashboard and market monitor fit the viewport
+[1A[2K  1) layout.spec.ts:15:7 › mobile dashboard and market monitor fit the viewport ────────────────────
+
+    Error: [31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: getByRole('heading', { name: 'BTCUSDT · Top of book', level: 3 })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+    [2m  - expect.toBeVisible with timeout 5000ms[22m
+    [2m  - waiting for getByRole('heading', { name: 'BTCUSDT · Top of book', level: 3 })[22m
+
+
+      21 |     await page.getByRole("button", { name: "Market", exact: true }).click();
+      22 |     await expect(page.getByRole("heading", { level: 2, name: "Live market monitor" })).toBeVisible();
+    > 23 |     await expect(page.getByRole("heading", { level: 3, name: "BTCUSDT · Top of book" })).toBeVisible();
+         |                                                                                          ^
+      24 |     await expect.poll(async () => await page.getByRole("img", { name: "Recent trade price trace from live exchange events" }).count() + await page.getByText("Price trace appears after live trade events arrive.").count()).toBe(1);
+      25 |     await expect(page.getByText("LIVE ORDERS LOCKED")).toBeVisible();
+      26 |     await expectNoOverflow(page);
+        at /Users/kumar/.grok/worktrees/projects-my-app/7-oct-cgpt-4-pahse/engine/apps/web/tests/layout.spec.ts:23:90
+
+
+[1A[2K(node:47460) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:47460) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[2/4] layout.spec.ts:15:7 › tablet dashboard and market monitor fit the viewport
+[1A[2K  2) layout.spec.ts:15:7 › tablet dashboard and market monitor fit the viewport ────────────────────
+
+    Error: [31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: getByRole('heading', { name: 'BTCUSDT · Top of book', level: 3 })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+    [2m  - expect.toBeVisible with timeout 5000ms[22m
+    [2m  - waiting for getByRole('heading', { name: 'BTCUSDT · Top of book', level: 3 })[22m
+
+
+      21 |     await page.getByRole("button", { name: "Market", exact: true }).click();
+      22 |     await expect(page.getByRole("heading", { level: 2, name: "Live market monitor" })).toBeVisible();
+    > 23 |     await expect(page.getByRole("heading", { level: 3, name: "BTCUSDT · Top of book" })).toBeVisible();
+         |                                                                                          ^
+      24 |     await expect.poll(async () => await page.getByRole("img", { name: "Recent trade price trace from live exchange events" }).count() + await page.getByText("Price trace appears after live trade events arrive.").count()).toBe(1);
+      25 |     await expect(page.getByText("LIVE ORDERS LOCKED")).toBeVisible();
+      26 |     await expectNoOverflow(page);
+        at /Users/kumar/.grok/worktrees/projects-my-app/7-oct-cgpt-4-pahse/engine/apps/web/tests/layout.spec.ts:23:90
+
+
+[1A[2K(node:47465) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:47465) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[3/4] layout.spec.ts:15:7 › desktop dashboard and market monitor fit the viewport
+[1A[2K  3) layout.spec.ts:15:7 › desktop dashboard and market monitor fit the viewport ───────────────────
+
+    Error: [31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: getByRole('heading', { name: 'BTCUSDT · Top of book', level: 3 })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+    [2m  - expect.toBeVisible with timeout 5000ms[22m
+    [2m  - waiting for getByRole('heading', { name: 'BTCUSDT · Top of book', level: 3 })[22m
+
+
+      21 |     await page.getByRole("button", { name: "Market", exact: true }).click();
+      22 |     await expect(page.getByRole("heading", { level: 2, name: "Live market monitor" })).toBeVisible();
+    > 23 |     await expect(page.getByRole("heading", { level: 3, name: "BTCUSDT · Top of book" })).toBeVisible();
+         |                                                                                          ^
+      24 |     await expect.poll(async () => await page.getByRole("img", { name: "Recent trade price trace from live exchange events" }).count() + await page.getByText("Price trace appears after live trade events arrive.").count()).toBe(1);
+      25 |     await expect(page.getByText("LIVE ORDERS LOCKED")).toBeVisible();
+      26 |     await expectNoOverflow(page);
+        at /Users/kumar/.grok/worktrees/projects-my-app/7-oct-cgpt-4-pahse/engine/apps/web/tests/layout.spec.ts:23:90
+
+
+[1A[2K(node:47471) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:47471) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[4/4] layout.spec.ts:30:5 › DEX search and wallet activity render source responses without labelling addresses as whales
+[1A[2K  3 failed
+    layout.spec.ts:15:7 › mobile dashboard and market monitor fit the viewport ─────────────────────
+    layout.spec.ts:15:7 › tablet dashboard and market monitor fit the viewport ─────────────────────
+    layout.spec.ts:15:7 › desktop dashboard and market monitor fit the viewport ────────────────────
+  1 passed (43.8s)
+EXIT:1

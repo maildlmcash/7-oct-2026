@@ -1,0 +1,79 @@
+COMMAND: node --test tests/role-navigation.mjs tests/shell-capabilities.mjs tests/role-definitions.mjs tests/search-recovery.mjs tests/authz-matrix.mjs
+WHEN: 2026-10-07
+TAP version 13
+# Subtest: subtree walk stays on the parent chain
+ok 1 - subtree walk stays on the parent chain
+  ---
+  duration_ms: 2.780005
+  type: 'test'
+  ...
+# Subtest: authorization matrix denies escalation, cross-tenant access, revoked roles, and forged UI requests
+ok 2 - authorization matrix denies escalation, cross-tenant access, revoked roles, and forged UI requests
+  ---
+  duration_ms: 49.960876
+  type: 'test'
+  ...
+# Subtest: role names match in the contract, the shell, and the migration
+ok 3 - role names match in the contract, the shell, and the migration
+  ---
+  duration_ms: 5.014822
+  type: 'test'
+  ...
+# Subtest: the default role is Customer and every catalog grant list is empty
+ok 4 - the default role is Customer and every catalog grant list is empty
+  ---
+  duration_ms: 393.17108
+  type: 'test'
+  ...
+# Subtest: six roles and the combined account render only their screens
+ok 5 - six roles and the combined account render only their screens
+  ---
+  duration_ms: 132.590008
+  type: 'test'
+  ...
+# Subtest: the action API denies direct unauthorized calls and ignores preview
+ok 6 - the action API denies direct unauthorized calls and ignores preview
+  ---
+  duration_ms: 391.507813
+  type: 'test'
+  ...
+# Subtest: recovery drill restores the test index and the runbook names owner and date
+ok 7 - recovery drill restores the test index and the runbook names owner and date
+  ---
+  duration_ms: 34.353505
+  type: 'test'
+  ...
+# Subtest: a missing owner, a bad date, and a tick field fail closed
+ok 8 - a missing owner, a bad date, and a tick field fail closed
+  ---
+  duration_ms: 0.51112
+  type: 'test'
+  ...
+# Subtest: paper mode stays locked and the module does not export an order
+ok 9 - paper mode stays locked and the module does not export an order
+  ---
+  duration_ms: 0.474458
+  type: 'test'
+  ...
+# Subtest: each role gets only its server-authorized controls
+ok 10 - each role gets only its server-authorized controls
+  ---
+  duration_ms: 3.341631
+  type: 'test'
+  ...
+# Subtest: direct writes reject unauthorized actors even when the client claims edit
+ok 11 - direct writes reject unauthorized actors even when the client claims edit
+  ---
+  duration_ms: 9.634906
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2143.160477
+EXIT:0

@@ -1,0 +1,25 @@
+{
+  "task": "1.D.3",
+  "tenantId": "desk",
+  "actor": {
+    "role": "Admin",
+    "tenantId": "desk"
+  },
+  "changedAt": "2026-10-07T13:02:44.254Z",
+  "result": "PASS",
+  "p2Activation": true,
+  "reason": "phase 1 closeout passed",
+  "firstFailure": null,
+  "alsoUnresolved": [],
+  "deployment": {
+    "mode": "PAPER",
+    "liveTrading": "OFF",
+    "liveOrdersLocked": true,
+    "walletAccess": false,
+    "realOrders": false
+  },
+  "edited": false,
+  "deployed": false,
+  "method": "recorded checklist attestation; no private key; not a deploy signature",
+  "contentChecksum": "cbdb1d88f22b50e9fd9c41ea8e59eb6f49335c808434bbcfb712373ed5bed34d"
+}

@@ -1,0 +1,150 @@
+diff --git a/engine/data/migrations/0014_identity_role_tenant.sql b/engine/data/migrations/0014_identity_role_tenant.sql
+new file mode 100644
+index 0000000..f468824
+--- /dev/null
++++ b/engine/data/migrations/0014_identity_role_tenant.sql
+@@ -0,0 +1,144 @@
++-- Tenant-scoped principal, role assignment, parent subtree, and status.
++-- Depends on tenant from 0001 and role_definition from 0006.
++-- Capability rows are names only. No allow row is inserted.
++-- No secret, order, or wallet column is stored.
++
++BEGIN;
++
++ALTER TABLE tenant
++  ADD COLUMN parent_id bigint,
++  ADD COLUMN status text NOT NULL DEFAULT 'active',
++  ADD CONSTRAINT tenant_parent_fk FOREIGN KEY (parent_id) REFERENCES tenant (id),
++  ADD CONSTRAINT tenant_status_known CHECK (status IN ('active', 'suspended', 'closed')),
++  ADD CONSTRAINT tenant_parent_not_self CHECK (parent_id IS NULL OR parent_id <> id);
++
++CREATE FUNCTION identity_reject_tenant_cycle()
++RETURNS trigger
++LANGUAGE plpgsql
++AS $$
++DECLARE
++  hop bigint := NEW.parent_id;
++BEGIN
++  WHILE hop IS NOT NULL LOOP
++    IF hop = NEW.id THEN
++      RAISE EXCEPTION 'parent cycle';
++    END IF;
++    SELECT parent_id INTO hop FROM tenant WHERE id = hop;
++  END LOOP;
++  RETURN NEW;
++END;
++$$;
++
++CREATE TRIGGER tenant_parent_cycle
++BEFORE INSERT OR UPDATE OF parent_id ON tenant
++FOR EACH ROW
++EXECUTE FUNCTION identity_reject_tenant_cycle();
++
++CREATE TABLE identity_principal (
++  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
++  tenant_id bigint NOT NULL,
++  subject_key text NOT NULL,
++  status text NOT NULL,
++  UNIQUE (id, tenant_id),
++  UNIQUE (tenant_id, subject_key),
++  FOREIGN KEY (tenant_id) REFERENCES tenant (id),
++  CONSTRAINT identity_principal_subject_present CHECK (length(btrim(subject_key)) > 0),
++  CONSTRAINT identity_principal_status_known CHECK (status IN ('active', 'suspended', 'closed'))
++);
++
++CREATE TABLE identity_role_assignment (
++  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
++  tenant_id bigint NOT NULL,
++  principal_id bigint NOT NULL,
++  role_name text NOT NULL REFERENCES role_definition (name),
++  parent_principal_id bigint,
++  status text NOT NULL,
++  UNIQUE (principal_id, role_name),
++  FOREIGN KEY (principal_id, tenant_id) REFERENCES identity_principal (id, tenant_id),
++  FOREIGN KEY (parent_principal_id, tenant_id) REFERENCES identity_principal (id, tenant_id),
++  CONSTRAINT identity_assignment_status_known CHECK (status IN ('active', 'suspended', 'closed')),
++  CONSTRAINT identity_assignment_parent_not_self CHECK (
++    parent_principal_id IS NULL OR parent_principal_id <> principal_id
++  )
++);
++
++CREATE FUNCTION identity_combined_roles()
++RETURNS trigger
++LANGUAGE plpgsql
++AS $$
++DECLARE
++  names text[];
++BEGIN
++  SELECT array_agg(role_name ORDER BY role_name)
++  INTO names
++  FROM identity_role_assignment
++  WHERE principal_id = NEW.principal_id;
++  IF names IS NULL OR cardinality(names) <= 1 THEN
++    RETURN NEW;
++  END IF;
++  IF cardinality(names) = 2 AND names = ARRAY['Customer', 'Retailer']::text[] THEN
++    RETURN NEW;
++  END IF;
++  RAISE EXCEPTION 'profile is not combined';
++END;
++$$;
++
++CREATE TRIGGER identity_role_assignment_combined
++AFTER INSERT OR UPDATE OF role_name ON identity_role_assignment
++FOR EACH ROW
++EXECUTE FUNCTION identity_combined_roles();
++
++CREATE FUNCTION identity_reject_assignment_cycle()
++RETURNS trigger
++LANGUAGE plpgsql
++AS $$
++DECLARE
++  hop bigint := NEW.parent_principal_id;
++BEGIN
++  WHILE hop IS NOT NULL LOOP
++    IF hop = NEW.principal_id THEN
++      RAISE EXCEPTION 'parent cycle';
++    END IF;
++    SELECT parent_principal_id
++    INTO hop
++    FROM identity_role_assignment
++    WHERE principal_id = hop
++      AND tenant_id = NEW.tenant_id
++    ORDER BY id
++    LIMIT 1;
++  END LOOP;
++  RETURN NEW;
++END;
++$$;
++
++CREATE TRIGGER identity_role_assignment_cycle
++BEFORE INSERT OR UPDATE OF parent_principal_id ON identity_role_assignment
++FOR EACH ROW
++EXECUTE FUNCTION identity_reject_assignment_cycle();
++
++CREATE TABLE identity_capability (
++  name text PRIMARY KEY,
++  CONSTRAINT identity_capability_name_present CHECK (length(btrim(name)) > 0)
++);
++
++CREATE TABLE identity_capability_rule (
++  tenant_id bigint NOT NULL,
++  principal_id bigint NOT NULL,
++  capability_name text NOT NULL REFERENCES identity_capability (name),
++  effect text NOT NULL,
++  PRIMARY KEY (tenant_id, principal_id, capability_name),
++  FOREIGN KEY (principal_id, tenant_id) REFERENCES identity_principal (id, tenant_id),
++  CONSTRAINT identity_capability_effect_known CHECK (effect IN ('allow', 'deny'))
++);
++
++INSERT INTO identity_capability (name) VALUES
++  ('checklist.read'),
++  ('checklist.write'),
++  ('global.policy'),
++  ('tenant.admin'),
++  ('subtree.delegate'),
++  ('commission.manage'),
++  ('other-user.read'),
++  ('connector.secret');
++
++COMMIT;

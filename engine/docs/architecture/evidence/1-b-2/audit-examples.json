@@ -1,0 +1,85 @@
+{
+  "task": "1.B.2",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "fields": [
+    "actor",
+    "action",
+    "target",
+    "decision",
+    "reason"
+  ],
+  "containsSecrets": false,
+  "rows": [
+    {
+      "actor": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "action": "checklist.write",
+      "target": "tenant:11111111-1111-4111-8111-111111111111",
+      "decision": "denied",
+      "reason": "privilege escalation"
+    },
+    {
+      "actor": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "action": "checklist.write",
+      "target": "tenant:33333333-3333-4333-8333-333333333333",
+      "decision": "denied",
+      "reason": "cross-tenant"
+    },
+    {
+      "actor": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "action": "checklist.write",
+      "target": "tenant:11111111-1111-4111-8111-111111111111",
+      "decision": "denied",
+      "reason": "role revoked"
+    },
+    {
+      "actor": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "action": "checklist.write",
+      "target": "tenant:11111111-1111-4111-8111-111111111111",
+      "decision": "denied",
+      "reason": "capability denied"
+    },
+    {
+      "actor": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "action": "tenant.admin",
+      "target": "tenant:22222222-2222-4222-8222-222222222222",
+      "decision": "granted",
+      "reason": "granted"
+    },
+    {
+      "actor": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "action": "checklist.write",
+      "target": "tenant:11111111-1111-4111-8111-111111111111",
+      "decision": "denied",
+      "reason": "capability denied"
+    },
+    {
+      "actor": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "action": "checklist.write",
+      "target": "tenant:11111111-1111-4111-8111-111111111111",
+      "decision": "granted",
+      "reason": "granted"
+    },
+    {
+      "actor": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "action": "checklist.write",
+      "target": "tenant:11111111-1111-4111-8111-111111111111",
+      "decision": "denied",
+      "reason": "capability denied"
+    },
+    {
+      "actor": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+      "action": "subtree.delegate",
+      "target": "tenant:11111111-1111-4111-8111-111111111111/principal:bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+      "decision": "granted",
+      "reason": "granted"
+    },
+    {
+      "actor": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+      "action": "subtree.delegate",
+      "target": "tenant:11111111-1111-4111-8111-111111111111/principal:cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+      "decision": "denied",
+      "reason": "privilege escalation"
+    }
+  ]
+}

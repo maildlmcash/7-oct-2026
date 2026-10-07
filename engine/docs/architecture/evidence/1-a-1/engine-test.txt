@@ -1,0 +1,11 @@
+command: corepack pnpm test
+cwd: engine
+exit: 0
+This run is the baseline, before tests/baseline-inventory.mjs existed.
+# tests 268
+# pass 267
+# fail 0
+# skipped 1
+# duration_ms 28144.957116
+skipped test: one bounded public book ticker smoke parses and does not place an order # SKIP set RUN_LIVE_MARKET_SMOKE=1 to verify outbound market connectivity
+The skip is not a live-market pass. No LIVE status is claimed.

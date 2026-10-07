@@ -22,7 +22,7 @@ for (const viewport of VIEWPORTS) {
     await expect(page.getByRole("heading", { level: 2, name: "Live market monitor" })).toBeVisible();
     await expect(page.getByRole("heading", { level: 3, name: "BTCUSDT · Top of book" })).toBeVisible();
     await expect.poll(async () => await page.getByRole("img", { name: "Recent trade price trace from live exchange events" }).count() + await page.getByText("Price trace appears after live trade events arrive.").count()).toBe(1);
-    await expect(page.getByText("LIVE ORDERS LOCKED")).toBeVisible();
+    await expect(page.getByText("LIVE ORDERS LOCKED", { exact: true })).toBeVisible();
     await expectNoOverflow(page);
   });
 }

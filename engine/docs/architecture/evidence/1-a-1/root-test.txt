@@ -1,0 +1,10 @@
+command: npm test
+cwd: repository root
+exit: 1
+script suite (node --test scripts/**/*.test.mjs): tests 197, pass 197, fail 0, duration_ms 9495.756882
+app suite (node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts): tests 8, pass 6, fail 2
+not ok: src/lib/app-data/app-data.test.ts
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@tanstack/react-start' imported from src/lib/app-data/client.server.ts
+not ok: src/lib/auth/gate-identity.test.ts
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jose' imported from src/lib/auth/gate-identity.test.ts
+readiness-schedule.test.ts and sign-in-gate.test.ts passed inside that same process.

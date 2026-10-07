@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [{ source: "/", destination: "/app", permanent: false }];
+  },
   // Playwright opens the dev server through localhost and 127.0.0.1.
   // Next.js blocks the dev resource unless this host is named.
   allowedDevOrigins: [

@@ -1,0 +1,8 @@
+command: corepack pnpm install --frozen-lockfile
+cwd: engine
+exit: 0
+Scope: all 4 workspace projects
+Lockfile is up to date, resolution step is skipped
+Packages: +33
+Done in 24.4s using pnpm v10.17.1
+corepack also printed: Update available! 10.17.1 → 12.9.1. The pinned packageManager stayed 10.17.1.

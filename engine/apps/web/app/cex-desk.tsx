@@ -27,6 +27,7 @@ import { MexcFeed } from "./mexc-feed";
 import { KrakenFeed } from "./kraken-feed";
 import { KucoinFeed } from "./kucoin-feed";
 import { OkxFeed } from "./okx-feed";
+import { observationLabel } from "./feed-evidence.mjs";
 import { parseFuture, parseSpot, useSocketFeed, type FutureValue, type SpotValue } from "./market-feed";
 import { SpotApiV3 } from "./spot-api-v3";
 import { UpbitFeed } from "./upbit-feed";
@@ -58,7 +59,7 @@ function SpotLive() {
         { label: "Stale", value: "Reconnecting if no frame arrives for 10 seconds" },
         { label: "Reconnect", value: "Starts at 1 second and doubles, capped at 15 seconds" },
       ]} />
-      <div className="stat-line"><span>Socket</span><b className={down ? "status-blocked" : "status-implemented"}>{down ? `ERROR · ${feed.status}` : "LIVE"}</b></div>
+      <div className="stat-line"><span>Socket</span><b className={down ? "status-blocked" : "status-implemented"}>{observationLabel(feed.status, `${BINANCE_SPOT_SOCKET.origin}/stream?streams=btcusdt@trade/btcusdt@bookTicker`, feed.seenAt).text}</b></div>
       <div className="stat-line"><span>Book update</span><b>{feed.value?.bookUpdateId ?? "—"}</b></div>
       <div className="stat-line"><span>Bid / ask</span><b>{feed.value?.bid ?? "—"} / {feed.value?.ask ?? "—"}</b></div>
       <div className="stat-line"><span>Last trade</span><b>{last ? `${last.tradeId ?? "—"} · ${last.price} · ${last.qty}` : "—"}</b></div>
@@ -84,7 +85,7 @@ function FuturesLive() {
         { label: "Stale", value: "Reconnecting if no frame arrives for 10 seconds" },
         { label: "Reconnect", value: "Starts at 1 second and doubles, capped at 15 seconds" },
       ]} />
-      <div className="stat-line"><span>Socket</span><b className={down ? "status-blocked" : "status-implemented"}>{down ? `ERROR · ${feed.status}` : "LIVE"}</b></div>
+      <div className="stat-line"><span>Socket</span><b className={down ? "status-blocked" : "status-implemented"}>{observationLabel(feed.status, `${BINANCE_FUTURES_SOCKET.origin}/stream?streams=btcusdt@markPrice@1s`, feed.seenAt).text}</b></div>
       <div className="stat-line"><span>Mark / index</span><b>{value?.mark ?? "—"} / {value?.index ?? "—"}</b></div>
       <div className="stat-line"><span>Funding / average</span><b>{value?.funding ?? "—"} / {value?.markAverage ?? "—"}</b></div>
       <div className="stat-line"><span>Settle estimate</span><b>{value?.settle ?? "—"}</b></div>
@@ -106,7 +107,7 @@ function BookDetail({ venue, book }: { venue: Venue; book: BookName }) {
           : { conditions: [], fields: [] };
   const title = book === "spot" ? "SPOT" : "FUTURES";
   const complete = doneCount(plan);
-  const live = plan.state === "live";
+  const planReady = plan.state === "live";
   return (
     <article className="card" aria-live="polite">
       <header className="card-head">
@@ -114,7 +115,7 @@ function BookDetail({ venue, book }: { venue: Venue; book: BookName }) {
           <span className="eyebrow">{venue.name} · {title} ONLY</span>
           <h3>{venue.name} {book} API</h3>
         </div>
-        <span className={live ? "pill pill-live" : "pill pill-warn"}>{live ? "LIVE" : "ERROR"}</span>
+        <span className="pill pill-warn">{planReady ? "PLAN READY" : "ERROR"}</span>
       </header>
       <p className="muted tiny">Plan {complete}/{plan.steps.length}. Another exchange's fields are not shown here.</p>
       {plan.error ? <div className="notice notice-error"><b>{venue.name} {book}</b><span>{plan.error}</span></div> : null}
@@ -125,7 +126,7 @@ function BookDetail({ venue, book }: { venue: Venue; book: BookName }) {
       </ul>
       <h4>Used on this website</h4>
       {plan.uses.length === 0 ? <p className="notice notice-error">Nowhere. This API is not wired into Market, DEX, Wallets, or Paper.</p> : (
-        <ul className="cex-limits">{plan.uses.map((place) => <li key={place}>{place}</li>)}</ul>
+        <ul className="cex-limits">{plan.uses.map((place: string) => <li key={place}>{place}</li>)}</ul>
       )}
       {plan.feed === "okx-spot" || plan.feed === "okx-swap" ? <OkxFeed book={plan.feed === "okx-spot" ? "spot" : "swap"} /> : plan.feed === "coinbase-spot" || plan.feed === "coinbase-futures" ? <CoinbaseFeed book={plan.feed === "coinbase-spot" ? "spot" : "futures"} /> : plan.feed === "kraken-spot" || plan.feed === "kraken-futures" ? <KrakenFeed book={plan.feed === "kraken-spot" ? "spot" : "futures"} /> : plan.feed === "kucoin-spot" || plan.feed === "kucoin-futures" ? <KucoinFeed book={plan.feed === "kucoin-spot" ? "spot" : "futures"} /> : plan.feed === "gate-spot" || plan.feed === "gate-futures" ? <GateFeed book={plan.feed === "gate-spot" ? "spot" : "futures"} /> : plan.feed === "bitget-spot" || plan.feed === "bitget-futures" ? <BitgetFeed book={plan.feed === "bitget-spot" ? "spot" : "futures"} /> : plan.feed === "mexc-spot" || plan.feed === "mexc-futures" ? <MexcFeed book={plan.feed === "mexc-spot" ? "spot" : "futures"} /> : plan.feed === "htx-spot" || plan.feed === "htx-futures" ? <HtxFeed book={plan.feed === "htx-spot" ? "spot" : "futures"} /> : plan.feed === "bitfinex-spot" || plan.feed === "bitfinex-futures" ? <BitfinexFeed book={plan.feed === "bitfinex-spot" ? "spot" : "futures"} /> : plan.feed === "bitstamp-spot" || plan.feed === "bitstamp-futures" ? <BitstampFeed book={plan.feed === "bitstamp-spot" ? "spot" : "futures"} /> : plan.feed === "crypto-spot" || plan.feed === "crypto-futures" ? <CryptoComFeed book={plan.feed === "crypto-spot" ? "spot" : "futures"} /> : plan.feed === "upbit-spot" ? <UpbitFeed /> : plan.feed === "gemini-spot" || plan.feed === "gemini-futures" ? <GeminiFeed book={plan.feed === "gemini-spot" ? "spot" : "futures"} /> : spec.conditions.length > 0 ? (
         <>
@@ -192,7 +193,7 @@ export function CexDesk() {
               {CEX_VENUES.map((item) => (
                 <button key={item.id} type="button" aria-pressed={item.id === venueId} onClick={() => chooseVenue(item.id)}>
                   <b>{item.rank}. {item.name}</b>
-                  <small>{item.spot.state === "live" ? "Spot live" : "Spot error"} · {item.futures.state === "live" ? "Futures live" : "Futures error"}</small>
+                  <small>{item.spot.state === "live" ? "Spot plan ready" : "Spot error"} · {item.futures.state === "live" ? "Futures plan ready" : "Futures error"}</small>
                 </button>
               ))}
             </div>

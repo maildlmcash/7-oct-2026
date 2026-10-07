@@ -1,0 +1,32 @@
+{
+  "task": "1.C.3",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "samples": [
+    10,
+    20,
+    30,
+    40,
+    100
+  ],
+  "searchReport": {
+    "p50": 30,
+    "p95": 100,
+    "p99": 100,
+    "freshness": 4,
+    "p50TargetConfigured": false,
+    "breach": "UNKNOWN"
+  },
+  "callerThreshold": {
+    "p95": 40,
+    "p95Breach": "BREACH",
+    "p50Breach": "UNKNOWN"
+  },
+  "rateLimit": {
+    "note": "rate limit is not configured",
+    "breach": "UNKNOWN"
+  },
+  "syntheticPassRejected": "missing telemetry is UNKNOWN",
+  "greenCatalog": [],
+  "greenTestEvent": []
+}

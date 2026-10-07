@@ -12,7 +12,7 @@ The source does not list color, type, or spacing tokens. The source names the th
 
 ## Decision
 
-`packages/ui-kit` exports structural primitives: section navigation, a level-1 heading, a panel, a paginated table, a native dialog, and empty, loading, and error states. The stylesheet sets wrapping, fixed table layout, and dialog bounds. It does not invent a brand palette.
+`packages/ui-kit` exports structural primitives: section navigation, a level-1 heading, a panel, a paginated table, a native dialog, and empty, loading, and error states. The stylesheet sets wrapping, fixed table layout, and dialog bounds. It does not invent a brand palette. Task 1.A.3 adds tokenized gallery primitives in `src/tokens.css` (stale, restricted, badges, cards, fields, and a chart container). Those tokens do not replace this file or `apps/web/app/styles.css`.
 
 The shell keeps one pathname and the seven section buttons. The published page still has no actor, so it still has no checklist edit control and no market view. The Market section renders the paginated table with layout-fixture labels. Those labels are not prices. The page size is a caller argument. This shell passes 2 so the fixture can prove that later rows stay out of the document. A non-positive page size renders no body rows.
 

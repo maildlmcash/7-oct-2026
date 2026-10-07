@@ -3,7 +3,8 @@
   "private": true,
   "exports": {
     ".": "./src/index.ts",
-    "./layout.css": "./src/layout.css"
+    "./layout.css": "./src/layout.css",
+    "./tokens.css": "./src/tokens.css"
   },
   "peerDependencies": {
     "react": "^19.3.0"

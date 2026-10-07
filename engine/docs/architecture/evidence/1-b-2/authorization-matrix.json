@@ -1,0 +1,294 @@
+{
+  "task": "1.B.2",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/api/checklist-owner",
+      "capability": "checklist.read",
+      "privileged": false,
+      "httpMounted": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/checklist-owner",
+      "capability": "checklist.write",
+      "privileged": true,
+      "httpMounted": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/control/policy",
+      "capability": "global.policy",
+      "privileged": true,
+      "httpMounted": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/control/tenant",
+      "capability": "tenant.admin",
+      "privileged": true,
+      "httpMounted": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/control/subtree",
+      "capability": "subtree.delegate",
+      "privileged": true,
+      "httpMounted": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/control/commission",
+      "capability": "commission.manage",
+      "privileged": true,
+      "httpMounted": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/control/principals",
+      "capability": "other-user.read",
+      "privileged": true,
+      "httpMounted": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/control/connector",
+      "capability": "connector.secret",
+      "privileged": true,
+      "httpMounted": false
+    }
+  ],
+  "cases": [
+    {
+      "route": "GET /api/checklist-owner",
+      "case": "privilege escalation",
+      "decision": "denied",
+      "reason": "privilege escalation",
+      "audited": false
+    },
+    {
+      "route": "GET /api/checklist-owner",
+      "case": "cross-tenant",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "audited": false
+    },
+    {
+      "route": "GET /api/checklist-owner",
+      "case": "revoked role",
+      "decision": "denied",
+      "reason": "role revoked",
+      "audited": false
+    },
+    {
+      "route": "GET /api/checklist-owner",
+      "case": "forged UI",
+      "decision": "denied",
+      "reason": "capability denied",
+      "audited": false
+    },
+    {
+      "route": "POST /api/checklist-owner",
+      "case": "privilege escalation",
+      "decision": "denied",
+      "reason": "privilege escalation",
+      "audited": true
+    },
+    {
+      "route": "POST /api/checklist-owner",
+      "case": "cross-tenant",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "audited": true
+    },
+    {
+      "route": "POST /api/checklist-owner",
+      "case": "revoked role",
+      "decision": "denied",
+      "reason": "role revoked",
+      "audited": true
+    },
+    {
+      "route": "POST /api/checklist-owner",
+      "case": "forged UI",
+      "decision": "denied",
+      "reason": "capability denied",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/policy",
+      "case": "privilege escalation",
+      "decision": "denied",
+      "reason": "privilege escalation",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/policy",
+      "case": "cross-tenant",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/policy",
+      "case": "revoked role",
+      "decision": "denied",
+      "reason": "role revoked",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/policy",
+      "case": "forged UI",
+      "decision": "denied",
+      "reason": "capability denied",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/tenant",
+      "case": "privilege escalation",
+      "decision": "denied",
+      "reason": "privilege escalation",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/tenant",
+      "case": "cross-tenant",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/tenant",
+      "case": "revoked role",
+      "decision": "denied",
+      "reason": "role revoked",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/tenant",
+      "case": "forged UI",
+      "decision": "denied",
+      "reason": "capability denied",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/subtree",
+      "case": "privilege escalation",
+      "decision": "denied",
+      "reason": "privilege escalation",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/subtree",
+      "case": "cross-tenant",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/subtree",
+      "case": "revoked role",
+      "decision": "denied",
+      "reason": "role revoked",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/subtree",
+      "case": "forged UI",
+      "decision": "denied",
+      "reason": "capability denied",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/commission",
+      "case": "privilege escalation",
+      "decision": "denied",
+      "reason": "privilege escalation",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/commission",
+      "case": "cross-tenant",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/commission",
+      "case": "revoked role",
+      "decision": "denied",
+      "reason": "role revoked",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/commission",
+      "case": "forged UI",
+      "decision": "denied",
+      "reason": "capability denied",
+      "audited": true
+    },
+    {
+      "route": "GET /api/control/principals",
+      "case": "privilege escalation",
+      "decision": "denied",
+      "reason": "privilege escalation",
+      "audited": true
+    },
+    {
+      "route": "GET /api/control/principals",
+      "case": "cross-tenant",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "audited": true
+    },
+    {
+      "route": "GET /api/control/principals",
+      "case": "revoked role",
+      "decision": "denied",
+      "reason": "role revoked",
+      "audited": true
+    },
+    {
+      "route": "GET /api/control/principals",
+      "case": "forged UI",
+      "decision": "denied",
+      "reason": "capability denied",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/connector",
+      "case": "privilege escalation",
+      "decision": "denied",
+      "reason": "privilege escalation",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/connector",
+      "case": "cross-tenant",
+      "decision": "denied",
+      "reason": "cross-tenant",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/connector",
+      "case": "revoked role",
+      "decision": "denied",
+      "reason": "role revoked",
+      "audited": true
+    },
+    {
+      "route": "POST /api/control/connector",
+      "case": "forged UI",
+      "decision": "denied",
+      "reason": "capability denied",
+      "audited": true
+    }
+  ],
+  "totals": {
+    "cases": 32,
+    "denied": 32,
+    "granted": 0
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "task": "1.C.3",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "before": "UNKNOWN",
+  "testEvent": {
+    "p50": "30 · test-event",
+    "p95": "100 · test-event",
+    "p99": "100 · test-event",
+    "breach": "UNKNOWN",
+    "layout": "FAIL",
+    "page": "UNKNOWN",
+    "login": "UNKNOWN",
+    "resendPassword": "UNKNOWN"
+  },
+  "withinCount": 0,
+  "overflow360": 0,
+  "liveWordInPanel": false
+}

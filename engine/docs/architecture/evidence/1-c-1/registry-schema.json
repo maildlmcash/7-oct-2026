@@ -1,0 +1,159 @@
+{
+  "task": "1.C.1",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "schema": {
+    "lists": [
+      "CEX",
+      "DEX",
+      "data vendor",
+      "wallet-monitoring"
+    ],
+    "columns": [
+      "status",
+      "product",
+      "version",
+      "lastVerified",
+      "sourceUrl"
+    ],
+    "statuses": [
+      "NOT_CONFIGURED",
+      "NOT_TESTED"
+    ],
+    "tabs": [
+      "REST",
+      "WebSocket",
+      "chain/RPC",
+      "fields",
+      "calculations",
+      "permissions"
+    ],
+    "capabilityLabels": [
+      "public-read-only",
+      "account-read",
+      "trade"
+    ],
+    "editable": [
+      "product",
+      "version",
+      "sourceUrl"
+    ],
+    "lastVerified": null,
+    "connectionTest": "NOT_TESTED",
+    "secrets": false,
+    "orders": false,
+    "walletAccess": false
+  },
+  "rows": [
+    {
+      "id": "cex-binance-spot",
+      "list": "CEX",
+      "product": "Binance Spot",
+      "version": "2026-09-18",
+      "sourceUrl": "https://data-api.binance.vision/",
+      "status": "NOT_TESTED",
+      "lastVerified": null,
+      "capabilities": {
+        "public-read-only": "declared",
+        "account-read": "unavailable",
+        "trade": "unavailable"
+      },
+      "tabs": [
+        "REST",
+        "WebSocket",
+        "chain/RPC",
+        "fields",
+        "calculations",
+        "permissions"
+      ]
+    },
+    {
+      "id": "cex-unnamed",
+      "list": "CEX",
+      "product": "CEX adapter not named",
+      "version": "none",
+      "sourceUrl": null,
+      "status": "NOT_CONFIGURED",
+      "lastVerified": null,
+      "capabilities": {
+        "public-read-only": "NOT_CONFIGURED",
+        "account-read": "unavailable",
+        "trade": "unavailable"
+      },
+      "tabs": [
+        "REST",
+        "WebSocket",
+        "chain/RPC",
+        "fields",
+        "calculations",
+        "permissions"
+      ]
+    },
+    {
+      "id": "dex-unnamed",
+      "list": "DEX",
+      "product": "DEX adapter not named",
+      "version": "none",
+      "sourceUrl": null,
+      "status": "NOT_CONFIGURED",
+      "lastVerified": null,
+      "capabilities": {
+        "public-read-only": "NOT_CONFIGURED",
+        "account-read": "unavailable",
+        "trade": "unavailable"
+      },
+      "tabs": [
+        "REST",
+        "WebSocket",
+        "chain/RPC",
+        "fields",
+        "calculations",
+        "permissions"
+      ]
+    },
+    {
+      "id": "vendor-unnamed",
+      "list": "data vendor",
+      "product": "Data vendor not named",
+      "version": "none",
+      "sourceUrl": null,
+      "status": "NOT_CONFIGURED",
+      "lastVerified": null,
+      "capabilities": {
+        "public-read-only": "NOT_CONFIGURED",
+        "account-read": "unavailable",
+        "trade": "unavailable"
+      },
+      "tabs": [
+        "REST",
+        "WebSocket",
+        "chain/RPC",
+        "fields",
+        "calculations",
+        "permissions"
+      ]
+    },
+    {
+      "id": "wallet-monitor",
+      "list": "wallet-monitoring",
+      "product": "Wallet monitor not named",
+      "version": "none",
+      "sourceUrl": null,
+      "status": "NOT_CONFIGURED",
+      "lastVerified": null,
+      "capabilities": {
+        "public-read-only": "NOT_CONFIGURED",
+        "account-read": "unavailable",
+        "trade": "unavailable"
+      },
+      "tabs": [
+        "REST",
+        "WebSocket",
+        "chain/RPC",
+        "fields",
+        "calculations",
+        "permissions"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+COMMAND: corepack pnpm exec playwright test tests/role-nav.spec.ts tests/shell.spec.ts --reporter=line
+WHERE: engine/apps/web
+WHEN: 2026-10-07
+
+Running 4 tests using 1 worker
+[1/4] role-nav.spec.ts:5:5 › signed-out shell has no role preview and a forged navigation call is denied
+[2/4] shell.spec.ts:5:5 › each section keeps one pathname and does not reload the document
+[3/4] shell.spec.ts:41:5 › back and forward restore the section on /app, and reload shows Dashboard
+[4/4] shell.spec.ts:64:5 › default server capability does not render admin edit controls
+  4 passed (56.7s)
+EXIT:0

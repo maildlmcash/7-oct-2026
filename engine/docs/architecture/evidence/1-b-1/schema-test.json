@@ -1,0 +1,30 @@
+{
+  "engine": "pglite",
+  "allowRules": 0,
+  "cases": [
+    {
+      "case": "same-tenant parent",
+      "ok": true
+    },
+    {
+      "case": "cross-tenant parent",
+      "rejected": true
+    },
+    {
+      "case": "cross-tenant child",
+      "rejected": true
+    },
+    {
+      "case": "retailer and customer",
+      "ok": true
+    },
+    {
+      "case": "admin plus customer",
+      "rejected": true
+    },
+    {
+      "case": "rollback",
+      "ok": true
+    }
+  ]
+}

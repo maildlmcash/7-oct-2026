@@ -21,24 +21,35 @@ const POLICY = Object.freeze({
   windowMs: 15 * 60 * 1000,
 });
 
-export const deskRuntime = {
-  store: createSessionStore(),
-  policy: POLICY,
-  log: [],
-  now: () => Date.now(),
-};
+const DESK_STATE_KEY = Symbol.for("crypto-prediction-engine.desk-state");
 
-const actors = new Map();
-const csrfBySubject = new Map();
-
-for (const account of DESK_ACCOUNTS) {
-  const created = createAccount(deskRuntime.store, {
-    loginId: account.loginId,
-    password: account.password,
-  });
-  if (!created.ok) throw new Error(created.error);
-  actors.set(created.subjectId, { loginId: account.loginId, role: account.role });
+function deskState() {
+  if (!globalThis[DESK_STATE_KEY]) {
+    const runtime = {
+      store: createSessionStore(),
+      policy: POLICY,
+      log: [],
+      now: () => Date.now(),
+    };
+    const roleBySubject = new Map();
+    const csrfBySubject = new Map();
+    for (const account of DESK_ACCOUNTS) {
+      const created = createAccount(runtime.store, {
+        loginId: account.loginId,
+        password: account.password,
+      });
+      if (!created.ok) throw new Error(created.error);
+      roleBySubject.set(created.subjectId, { loginId: account.loginId, role: account.role });
+    }
+    globalThis[DESK_STATE_KEY] = { runtime, roleBySubject, csrfBySubject };
+  }
+  return globalThis[DESK_STATE_KEY];
 }
+
+// One process store. Separate route bundles must see the same desk login.
+export const deskRuntime = deskState().runtime;
+const actors = deskState().roleBySubject;
+const csrfBySubject = deskState().csrfBySubject;
 
 function actorFor(subjectId) {
   const actor = actors.get(subjectId);
@@ -82,6 +93,24 @@ export function deskLogin(input) {
     liveTrading: result.liveTrading,
     liveOrdersLocked: result.liveOrdersLocked,
   };
+}
+
+export function deskActorForCsrf(csrfToken) {
+  if (typeof csrfToken !== "string" || csrfToken.length === 0) return { ok: false, error: "login denied" };
+  let subjectId = null;
+  for (const [id, csrf] of csrfBySubject) {
+    if (csrf === csrfToken) subjectId = id;
+  }
+  if (!subjectId) return { ok: false, error: "csrf denied" };
+  const now = deskRuntime.now();
+  let live = false;
+  for (const record of deskRuntime.store.sessions.values()) {
+    if (record.subjectId === subjectId && record.revokedAt == null && now < record.expiresAt) live = true;
+  }
+  if (!live) return { ok: false, error: "login denied" };
+  const actor = actorFor(subjectId);
+  if (!actor) return { ok: false, error: "login denied" };
+  return { ok: true, role: actor.role, loginId: actor.loginId };
 }
 
 export function deskRead(token) {

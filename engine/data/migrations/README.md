@@ -36,7 +36,15 @@ Every checklist row carries `tenant_id`. Child rows use a foreign key on `(paren
 
 `0013_provider_documentation.sql` stores the official documentation URL, checked-at time, supported products, verification owner, enabled flag, and stale flag. An enabled row needs a documentation URL and a checked-at time. The source names no review age, so stale is stored and not calculated. Rows cannot be updated, deleted, or truncated. The migration opens no connection and stores no secret.
 
+`0014_identity_role_tenant.sql` adds `tenant.parent_id` and `tenant.status`, then `identity_principal`, `identity_role_assignment`, `identity_capability`, and `identity_capability_rule`. A parent principal must share the child row's tenant. Retailer and Customer are the only two roles one principal may hold. Capability names are inserted. No allow rule is inserted. The file stores no secret, order, or wallet column.
+
+`0015_project_checklist.sql` adds `project_check_template`, `project_check`, and `project_check_issue`. Templates are web, API, data, scoring, paper engine, iOS, and Android. Status values are `TODO`, `IN_PROGRESS`, `PASS`, `FAIL`, and `BLOCKED`. A new edit is a new version. `PASS` needs an evidence link, a reviewer, and `reviewed_at`. A downstream `IN_PROGRESS` or `PASS` is rejected while the dependency's latest status is `BLOCKED`. An issue row stays `TODO` and needs an HTTP status of 400 or higher. This table does not change `checklist_item`.
+
 ## Rollback
+
+`0015_project_checklist_rollback.sql` drops the project checklist tables and functions. Apply it before `0001_checklist_entities_rollback.sql`. It does not drop `tenant` or `checklist_item`.
+
+`0014_identity_role_tenant_rollback.sql` drops the identity tables and the tenant parent and status columns. Apply it before `0006_role_definitions_rollback.sql` and before `0001_checklist_entities_rollback.sql`. It does not drop `privileged_audit`.
 
 `0013_provider_documentation_rollback.sql` drops `provider_documentation`. Apply it before `0012_provider_review_rollback.sql`.
 
@@ -82,6 +90,10 @@ psql -v ON_ERROR_STOP=1 -f data/migrations/0010_provider_actions.sql
 psql -v ON_ERROR_STOP=1 -f data/migrations/0011_provider_health.sql
 psql -v ON_ERROR_STOP=1 -f data/migrations/0012_provider_review.sql
 psql -v ON_ERROR_STOP=1 -f data/migrations/0013_provider_documentation.sql
+psql -v ON_ERROR_STOP=1 -f data/migrations/0014_identity_role_tenant.sql
+psql -v ON_ERROR_STOP=1 -f data/migrations/0015_project_checklist.sql
+psql -v ON_ERROR_STOP=1 -f data/migrations/0015_project_checklist_rollback.sql
+psql -v ON_ERROR_STOP=1 -f data/migrations/0014_identity_role_tenant_rollback.sql
 psql -v ON_ERROR_STOP=1 -f data/migrations/0013_provider_documentation_rollback.sql
 psql -v ON_ERROR_STOP=1 -f data/migrations/0012_provider_review_rollback.sql
 psql -v ON_ERROR_STOP=1 -f data/migrations/0011_provider_health_rollback.sql
@@ -112,5 +124,7 @@ Design section 20 lists statuses `NOT_STARTED`, `READY`, `RUNNING`, `PASS`, `FAI
 Which role may be an authorized approver is NOT IN SOURCE. The service requires a non-blank approver and does not check a role.
 
 The shared rules that are enforced now: `NOT_APPLICABLE` needs a reason and an approver, `PASS` needs `pass_expiry`, and `FAIL` or `BLOCKED` needs a finding in the same tenant. No expiry duration is in the source, so the column has no default interval.
+
+Task 1.C.2 does not add `TODO` to `checklist_item`. That word lives only on `project_check`.
 
 Design section 20 lists technology inventory statuses `planned`, `installed`, `active`, `missing`, and `deprecated`. Task 02.B.02 accepts `FAIL`, `PASS`, and `UNKNOWN/STALE` for required-versus-detected usage. Migration 0004 follows the task list. The design statuses are not stored and are not aliased. This is conflict C006. Checklist item statuses are unchanged.

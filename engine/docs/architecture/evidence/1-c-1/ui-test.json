@@ -1,0 +1,14 @@
+{
+  "task": "1.C.1",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "viewports": [
+    1280,
+    360
+  ],
+  "registryOverflowAt360": 0,
+  "statuses": [
+    "NOT_CONFIGURED",
+    "NOT_TESTED"
+  ]
+}

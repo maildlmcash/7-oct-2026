@@ -1,0 +1,48 @@
+{
+  "task": "1.C.2",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "database": "pglite",
+  "statuses": [
+    "TODO",
+    "IN_PROGRESS",
+    "PASS",
+    "FAIL",
+    "BLOCKED"
+  ],
+  "templates": [
+    "web",
+    "api",
+    "data",
+    "scoring",
+    "paper-engine",
+    "ios",
+    "android"
+  ],
+  "cases": [
+    {
+      "case": "seven templates",
+      "ok": true
+    },
+    {
+      "case": "first version assigned",
+      "ok": true
+    },
+    {
+      "case": "PASS without evidence",
+      "rejected": true
+    },
+    {
+      "case": "blocked dependency",
+      "rejected": true
+    },
+    {
+      "case": "issue opens once from an error",
+      "ok": true
+    },
+    {
+      "case": "rollback drops project checklist tables",
+      "ok": true
+    }
+  ]
+}

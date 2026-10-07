@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { EvidencePill, useObservedStatus } from "./feed-evidence";
 import {
   MEXC_FUTURE_CONDITIONS,
   MEXC_FUTURE_CONNECTIONS,
@@ -19,7 +20,7 @@ export function MexcFeed({ book }: { book: "spot" | "futures" }) {
   const [selected, setSelected] = useState(connections[0].id);
   const spec = connections.find((item) => item.id === selected) ?? connections[0];
   const [rows, setRows] = useState<Row[]>([]);
-  const [status, setStatus] = useState<"connecting" | "live" | "error">("connecting");
+  const { status, setStatus, seenAt } = useObservedStatus();
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export function MexcFeed({ book }: { book: "spot" | "futures" }) {
         if (ping) clearInterval(ping);
         ping = null;
         if (stopped) return;
-        setStatus((current) => (current === "error" ? current : "error"));
+        setStatus("error");
         setError((current) => current || "MEXC websocket closed.");
         retry = setTimeout(connect, 5_000);
       };
@@ -120,7 +121,7 @@ export function MexcFeed({ book }: { book: "spot" | "futures" }) {
             <span className="eyebrow">HOW THIS DATA ARRIVES</span>
             <h3>{spec.kind === "rest" ? "REST API" : "WebSocket"} · {spec.channel}</h3>
           </div>
-          <span className={status === "live" ? "pill pill-live" : "pill pill-warn"}>{status === "live" ? "LIVE" : "ERROR"}</span>
+          <EvidencePill status={status} source={spec.address} seenAt={seenAt} />
         </header>
         <div className="stat-line"><span>Address</span><b className="mono">{spec.address}</b></div>
         <div className="stat-line"><span>Request</span><b className="mono">{spec.request}</b></div>

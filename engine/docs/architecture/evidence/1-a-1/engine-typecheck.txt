@@ -1,0 +1,14 @@
+command: corepack pnpm typecheck
+cwd: engine
+exit: 1
+
+> web@ typecheck
+> next typegen && tsc --noEmit --incremental false
+
+Generating route types...
+✓ Types generated successfully
+app/cex-desk.tsx(128,52): error TS7006: Parameter 'place' implicitly has an 'any' type.
+ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL web@ typecheck: `next typegen && tsc --noEmit --incremental false`
+Exit status 1
+
+Side effect: next typegen modified engine/apps/web/next-env.d.ts. That file was restored with git checkout before any task document was written. It is not part of this change.

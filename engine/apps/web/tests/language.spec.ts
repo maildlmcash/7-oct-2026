@@ -175,11 +175,11 @@ test("keyboard reaches each control, keeps focus visible, and leaves section log
   await expect(page.getByRole("heading", { level: 1, name: "Market" })).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "Live market monitor" })).toBeVisible();
   expect(new URL(page.url()).pathname).toBe(pathname);
-  expect(await page.evaluate(() => history.length)).toBe(historyBefore);
+  expect(await page.evaluate(() => history.length)).toBe(historyBefore + 1);
 
   await page.getByRole("button", { name: "Dashboard", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Dashboard" })).toBeVisible();
-  expect(await page.evaluate(() => history.length)).toBe(historyBefore);
+  expect(await page.evaluate(() => history.length)).toBe(historyBefore + 2);
 });
 
 test("language matrix keeps direction, contrast, and section behavior", async ({ page }) => {

@@ -1,0 +1,12 @@
+{
+  "task": "1.D.2",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "pathname": "/app",
+  "materialShown": false,
+  "write": "secret write is not enabled",
+  "revocation": "metadata only",
+  "trade": "UNAVAILABLE",
+  "withdrawal": "BLOCKED",
+  "overflow360": 0
+}

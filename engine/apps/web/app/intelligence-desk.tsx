@@ -1,17 +1,14 @@
 "use client";
 
 import { BINANCE_INTELLIGENCE } from "../../../services/cex-catalog.mjs";
+import { observationLabel } from "./feed-evidence.mjs";
 import { parseFuture, parseSpot, useSocketFeed, type FutureValue, type SpotValue } from "./market-feed";
 
 function DeskBrief() {
-  const spot = useSocketFeed<SpotValue>(
-    "wss://data-stream.binance.vision:443/stream?streams=btcusdt@trade/btcusdt@bookTicker",
-    parseSpot,
-  );
-  const future = useSocketFeed<FutureValue>(
-    "wss://fstream.binance.com/market/stream?streams=btcusdt@markPrice@1s",
-    parseFuture,
-  );
+  const spotSource = "wss://data-stream.binance.vision:443/stream?streams=btcusdt@trade/btcusdt@bookTicker";
+  const futureSource = "wss://fstream.binance.com/market/stream?streams=btcusdt@markPrice@1s";
+  const spot = useSocketFeed<SpotValue>(spotSource, parseSpot);
+  const future = useSocketFeed<FutureValue>(futureSource, parseFuture);
   const last = spot.value?.trades[0];
   const spotDown = spot.status !== "live";
   const futureDown = future.status !== "live";
@@ -25,10 +22,10 @@ function DeskBrief() {
         <span className="pill pill-warn">ORDERS LOCKED</span>
       </header>
       <p>यह Binance की नई ऐप नहीं है। यह उसी public Binance socket का छोटा ब्रीफ है जो Market पेज पहले से पढ़ता है। कोई रणनीति नहीं चलती।</p>
-      <div className="stat-line"><span>Spot socket</span><b className={spotDown ? "status-blocked" : "status-implemented"}>{spotDown ? `ERROR · ${spot.status}` : "LIVE"}</b></div>
+      <div className="stat-line"><span>Spot socket</span><b className={spotDown ? "status-blocked" : "status-implemented"}>{observationLabel(spot.status, spotSource, spot.seenAt).text}</b></div>
       <div className="stat-line"><span>Last trade</span><b>{last ? `${last.price} · ${last.qty}` : "—"}</b></div>
       <div className="stat-line"><span>Bid / ask</span><b>{spot.value?.bid ?? "—"} / {spot.value?.ask ?? "—"}</b></div>
-      <div className="stat-line"><span>Futures socket</span><b className={futureDown ? "status-blocked" : "status-implemented"}>{futureDown ? `ERROR · ${future.status}` : "LIVE"}</b></div>
+      <div className="stat-line"><span>Futures socket</span><b className={futureDown ? "status-blocked" : "status-implemented"}>{observationLabel(future.status, futureSource, future.seenAt).text}</b></div>
       <div className="stat-line"><span>Mark / funding</span><b>{future.value?.mark ?? "—"} / {future.value?.funding ?? "—"}</b></div>
       <p className="muted tiny">Used on Market only. Not sent to Binance AI, AI Pro, or Agent OS.</p>
     </article>

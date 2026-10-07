@@ -2,11 +2,17 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { CexDesk } from "./cex-desk";
+import { ProjectChecklist } from "./features/checklists/project-checklist";
+import { SecretReferences } from "./features/credentials/secret-references";
+import { ReadinessMetrics } from "./features/health/readiness-metrics";
+import { ProviderRegistry } from "./features/providers/provider-registry";
+import { observationLabel } from "./feed-evidence.mjs";
 import { parseFuture, parseSpot, useSocketFeed, type SpotValue } from "./market-feed";
 import { SpotApiV3 } from "./spot-api-v3";
 
-function StatusPill({ status, age }: { status: string; age: number | null }) {
-  return <span className={`pill ${status === "live" ? "pill-live" : "pill-warn"}`}><i />{status === "live" ? `LIVE · ${age ?? 0}s` : status.toUpperCase()}</span>;
+function StatusPill({ status, source, seenAt }: { status: string; source: string; seenAt: number | null }) {
+  const evidence = observationLabel(status, source, seenAt);
+  return <span className={`pill ${evidence.verified ? "pill-live" : "pill-warn"}`}><i />{evidence.text}</span>;
 }
 
 function PriceSparkline({ trades }: { trades: SpotValue["trades"] }) {
@@ -139,7 +145,7 @@ function MarketView() {
       </div>
       <div className="grid grid-2">
         <article className="card market-card">
-          <header className="card-head"><div><span className="eyebrow">BINANCE SPOT</span><h3>{symbol} · {spotSource === "stream" ? "WebSocket stream" : "Spot API v3"}</h3></div><StatusPill status={spot.status} age={spot.ageSeconds} /></header>
+          <header className="card-head"><div><span className="eyebrow">BINANCE SPOT</span><h3>{symbol} · Top of book</h3></div>{spotSource === "stream" ? <StatusPill status={spot.status} source={spotUrl} seenAt={spot.seenAt} /> : null}</header>
           <div className="cex-books" role="group" aria-label="Binance spot web connections">
             <button type="button" className="button button-dark" aria-pressed={spotSource === "stream"} onClick={() => setSpotSource("stream")}>WebSocket · trade + bookTicker</button>
             <button type="button" className="button button-dark" aria-pressed={spotSource === "v3"} onClick={() => setSpotSource("v3")}>REST · /api/v3 bookTicker</button>
@@ -180,7 +186,7 @@ function MarketView() {
           ) : <SpotApiV3 symbol={symbol} />}
         </article>
         <article className="card">
-          <header className="card-head"><div><span className="eyebrow">BINANCE USDⓈ-M FUTURES</span><h3>{symbol} · Mark & funding</h3></div><StatusPill status={future.status} age={future.ageSeconds} /></header>
+          <header className="card-head"><div><span className="eyebrow">BINANCE USDⓈ-M FUTURES</span><h3>{symbol} · Mark & funding</h3></div><StatusPill status={future.status} source={futuresUrl} seenAt={future.seenAt} /></header>
           <p className="muted tiny">HOW THIS DATA ARRIVES · {futuresUrl} · public markPrice@1s. No API key. No order route.</p>
           <div className="metric-grid">
             <div className="metric"><small>MARK PRICE</small><strong>{future.value?.mark ?? "—"}</strong></div>
@@ -376,20 +382,34 @@ function ReleaseChecklist() {
 function AdminView() {
   return (
     <>
+      <ProviderRegistry canEdit />
+      <ReadinessMetrics />
+      <SecretReferences canEdit />
       <CexDesk />
       <ReleaseChecklist />
     </>
   );
 }
 
-export function EngineWorkspace({ section, onNavigate }: { section: string; onNavigate: (section: string) => void }) {
+export function EngineWorkspace({
+  section,
+  onNavigate,
+  canEditChecklist = false,
+  checklistCsrf = null,
+}: {
+  section: string;
+  onNavigate: (section: string) => void;
+  canEditChecklist?: boolean;
+  checklistCsrf?: string | null;
+}) {
   if (section === "Market") return <MarketView />;
   if (section === "DEX" || section === "Search") return <DexView />;
   if (section === "Wallets") return <WalletView />;
   if (section === "Predictions") return <PredictionsView />;
   if (section === "Paper") return <PaperView />;
   if (section === "Admin") return <AdminView />;
-  if (section === "Checklist" || section === "Bugs") return <ReleaseChecklist />;
+  if (section === "Checklist") return <><ProjectChecklist canEdit={canEditChecklist} csrfToken={checklistCsrf} /><ReleaseChecklist /></>;
+  if (section === "Bugs") return <ReleaseChecklist />;
   return (
     <>
       <div className="section-intro"><div><span className="eyebrow">CRYPTO RESEARCH WORKSPACE</span><h2>Read-only market intelligence</h2><p>Exchange streams, DEX discovery, reviewed address activity, guarded predictions, and paper-only execution.</p></div><span className="pill pill-warn">LIVE ORDERS LOCKED</span></div>

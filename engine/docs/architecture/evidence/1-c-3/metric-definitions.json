@@ -1,0 +1,147 @@
+{
+  "task": "1.C.3",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "fields": [
+    "target",
+    "measured",
+    "limit",
+    "source",
+    "sampleWindow",
+    "breach"
+  ],
+  "rule": "Missing telemetry is UNKNOWN. UNKNOWN is not a pass. Caller-supplied targets are not product defaults.",
+  "catalog": [
+    {
+      "metric": "latency",
+      "owner": "UNKNOWN",
+      "target": "not configured",
+      "measured": "not measured",
+      "measuredEvidence": null,
+      "limit": "not configured",
+      "source": "services/search-metrics.mjs",
+      "sampleWindow": "not configured",
+      "breach": "UNKNOWN"
+    },
+    {
+      "metric": "uptime",
+      "owner": "UNKNOWN",
+      "target": "not configured",
+      "measured": "not measured",
+      "measuredEvidence": null,
+      "limit": "not configured",
+      "source": "not measured",
+      "sampleWindow": "not configured",
+      "breach": "UNKNOWN"
+    },
+    {
+      "metric": "rate-limit",
+      "owner": "UNKNOWN",
+      "target": "not configured",
+      "measured": "not measured",
+      "measuredEvidence": null,
+      "limit": "not configured",
+      "source": "services/session.mjs",
+      "sampleWindow": "not configured",
+      "breach": "UNKNOWN"
+    },
+    {
+      "metric": "security",
+      "owner": "UNKNOWN",
+      "target": "not configured",
+      "measured": "not measured",
+      "measuredEvidence": null,
+      "limit": "not configured",
+      "source": "not measured",
+      "sampleWindow": "not configured",
+      "breach": "UNKNOWN"
+    },
+    {
+      "metric": "device-error",
+      "owner": "UNKNOWN",
+      "target": "not configured",
+      "measured": "not measured",
+      "measuredEvidence": null,
+      "limit": "not configured",
+      "source": "apps/web/page-health.mjs",
+      "sampleWindow": "not configured",
+      "breach": "UNKNOWN"
+    }
+  ],
+  "testEvent": [
+    {
+      "metric": "latency",
+      "owner": "UNKNOWN",
+      "target": "not configured",
+      "measured": "not measured",
+      "measuredEvidence": null,
+      "limit": "not configured",
+      "source": "services/search-metrics.mjs",
+      "sampleWindow": "not configured",
+      "breach": "UNKNOWN"
+    },
+    {
+      "metric": "uptime",
+      "owner": "UNKNOWN",
+      "target": "not configured",
+      "measured": "not measured",
+      "measuredEvidence": null,
+      "limit": "not configured",
+      "source": "not measured",
+      "sampleWindow": "not configured",
+      "breach": "UNKNOWN"
+    },
+    {
+      "metric": "rate-limit",
+      "owner": "UNKNOWN",
+      "target": "not configured",
+      "measured": "not measured",
+      "measuredEvidence": null,
+      "limit": "not configured",
+      "source": "services/session.mjs",
+      "sampleWindow": "not configured",
+      "breach": "UNKNOWN"
+    },
+    {
+      "metric": "security",
+      "owner": "UNKNOWN",
+      "target": "not configured",
+      "measured": "not measured",
+      "measuredEvidence": null,
+      "limit": "not configured",
+      "source": "not measured",
+      "sampleWindow": "not configured",
+      "breach": "UNKNOWN"
+    },
+    {
+      "metric": "device-error",
+      "owner": "UNKNOWN",
+      "target": "not configured",
+      "measured": "1",
+      "measuredEvidence": "test-event:layout",
+      "limit": "not configured",
+      "source": "apps/web/page-health.mjs",
+      "sampleWindow": "not configured",
+      "breach": "UNKNOWN"
+    }
+  ],
+  "callerSupplied": {
+    "productDefault": false,
+    "within": {
+      "family": "latency",
+      "target": 50,
+      "measured": 30,
+      "evidence": "caller-supplied",
+      "breach": "WITHIN"
+    },
+    "breach": {
+      "family": "latency",
+      "target": 20,
+      "measured": 30,
+      "evidence": "caller-supplied",
+      "breach": "BREACH"
+    },
+    "measuredWithoutTarget": "UNKNOWN",
+    "targetWithoutMeasured": "UNKNOWN"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "task": "1.C.2",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "cases": [
+    {
+      "case": "csrf without the secure cookie",
+      "admin": 200,
+      "user": 403
+    },
+    {
+      "case": "signed out write",
+      "status": 401
+    },
+    {
+      "case": "user write",
+      "status": 403
+    },
+    {
+      "case": "PASS without evidence",
+      "status": 400
+    },
+    {
+      "case": "blocked dependency",
+      "status": 400
+    },
+    {
+      "case": "reload keeps the saved version",
+      "version": 2
+    },
+    {
+      "case": "one issue from the monitored event",
+      "issues": 1
+    }
+  ]
+}

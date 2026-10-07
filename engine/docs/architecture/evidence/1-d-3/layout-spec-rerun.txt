@@ -1,0 +1,18 @@
+
+Running 6 tests using 1 worker
+
+(node:49352) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:49352) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/6] tests/layout.spec.ts:15:7 › mobile dashboard and market monitor fit the viewport
+[2/6] tests/layout.spec.ts:15:7 › tablet dashboard and market monitor fit the viewport
+[3/6] tests/layout.spec.ts:15:7 › desktop dashboard and market monitor fit the viewport
+[4/6] tests/layout.spec.ts:30:5 › DEX search and wallet activity render source responses without labelling addresses as whales
+[5/6] tests/market-charts.spec.ts:3:5 › market monitor shows no fabricated price or chart values before actual exchange events
+[6/6] tests/shell-route.spec.ts:40:5 › every section stays on /app, back and forward keep that pathname, and mobile chrome does not overlap
+  6 passed (39.8s)

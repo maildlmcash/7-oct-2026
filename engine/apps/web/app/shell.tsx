@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Heading,
   LanguageChoice,
@@ -24,14 +24,47 @@ import { ModelHealthCharts } from "./model-health-charts";
 import { SectionErrorBoundary, SectionRequest } from "./section-boundary";
 import { DeskAuth, type DeskSession } from "./desk-auth";
 import { EngineWorkspace } from "./engine-workspace";
+import { RoleNav, type RoleNavigationModel } from "./navigation/role-nav";
+import { TenantBrand, type TenantResolution } from "./branding/tenant-brand";
 
 export { SHELL_SECTIONS };
 export type { ShellSection };
 
-// Design section 23: one pathname, client view state, no full-page reload.
-// History is not updated, so browser back and forward do not select a section.
-// A reload returns to Dashboard, the first named section.
+// Task 1.A.2: one pathname, client view state, no full-page reload.
+// Section changes call history.pushState with the current pathname.
+// Back and forward read shellSection and select that section.
+// A reload ignores history state and returns to Dashboard.
 // The view contract also resets filters, pagination, and user-visible status.
+
+const SHELL_HISTORY_KEY = "shellSection";
+
+// Next.js replaces window.history.pushState. Calling that copy reloads the
+// app route. An untouched History.prototype from a fresh frame writes the
+// same pathname without a document navigation.
+function nativeHistory() {
+  const frame = document.createElement("iframe");
+  frame.hidden = true;
+  document.documentElement.appendChild(frame);
+  const historyApi = frame.contentWindow?.history;
+  const pushState = historyApi?.pushState;
+  const replaceState = historyApi?.replaceState;
+  frame.remove();
+  const sameUrl = () => `${window.location.pathname}${window.location.search}`;
+  function tagged(section: string) {
+    const current = window.history.state;
+    const base = current && typeof current === "object" ? { ...current } : {};
+    base[SHELL_HISTORY_KEY] = section;
+    return base;
+  }
+  return {
+    push(section: string) {
+      pushState?.call(window.history, tagged(section), "", sameUrl());
+    },
+    replace(section: string) {
+      replaceState?.call(window.history, tagged(section), "", sameUrl());
+    },
+  };
+}
 
 export type ShellCapabilities = {
   editChecklist: boolean;
@@ -52,17 +85,25 @@ export default function Shell({
   capabilities,
   status,
   environment = null,
+  navigation = null,
+  branding,
+  previews,
 }: {
   checklistMarkup: string;
   capabilities: ShellCapabilities;
   status: ClientViewState["status"];
   environment?: string | null;
+  navigation?: RoleNavigationModel | null;
+  branding: TenantResolution;
+  previews: TenantResolution[];
 }) {
   const [view, setView] = useState(() => {
     const initial = initialClientViewState({ pageSize: 1, status });
     if (!initial.ok) throw new Error(initial.error);
     return initial.state;
   });
+  const viewRef = useRef(view);
+  viewRef.current = view;
   const [session, setSession] = useState<DeskSession | null>(null);
   const [languageId, setLanguageId] = useState<(typeof SHELL_LANGUAGES)[number]["id"]>("en");
   const language = SHELL_LANGUAGES.find((item) => item.id === languageId) ?? SHELL_LANGUAGES[0];
@@ -80,13 +121,36 @@ export default function Shell({
     : SHELL_SECTIONS;
   const adminLocked = (section === "Admin" || section === "Bugs") && signedRole !== "Admin";
 
-  function chooseSection(id: string) {
-    if (id === view.section) return;
-    const selected = selectSection(view, id);
-    if (!selected.ok) return;
+  function commitSection(id: string, record: boolean) {
+    const current = viewRef.current;
+    if (id === current.section) return false;
+    const selected = selectSection(current, id);
+    if (!selected.ok) return false;
     const paged = setPageIndex(selected.state, 0);
-    if (paged.ok) setView(paged.state);
+    if (!paged.ok) return false;
+    viewRef.current = paged.state;
+    setView(paged.state);
+    if (record) nativeHistory().push(id);
+    return true;
   }
+
+  function chooseSection(id: string) {
+    commitSection(id, true);
+  }
+
+  useEffect(() => {
+    const current = window.history.state as { shellSection?: string } | null;
+    if (!current || typeof current.shellSection !== "string") {
+      nativeHistory().replace("Dashboard");
+    }
+    function onPop(event: PopStateEvent) {
+      const state = event.state as { shellSection?: string } | null;
+      const next = state && typeof state.shellSection === "string" ? state.shellSection : "Dashboard";
+      commitSection(next, false);
+    }
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
 
   function applySession(next: DeskSession | null) {
     setSession(next);
@@ -101,9 +165,29 @@ export default function Shell({
     document.documentElement.dir = language.dir;
   }, [language.lang, language.dir]);
 
+  useEffect(() => {
+    const mark = () => {
+      for (const node of document.querySelectorAll(".table-scroll")) {
+        if (node instanceof HTMLElement && node.tabIndex < 0) node.tabIndex = 0;
+      }
+    };
+    mark();
+    const observer = new MutationObserver(mark);
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <main className="layout-shell">
-      <div className="app-masthead"><p className="layout-mark">crypto-prediction-engine</p><span className="safety-banner"><i />LIVE ORDERS LOCKED</span><span className={signedRole === "Admin" ? "pill pill-live" : "pill"}>{signedRole ? `${signedRole} role` : "Signed out"}</span></div>
+    <div className="layout-shell">
+      <header className="shell-header">
+        <div className="app-masthead"><p className="layout-mark">crypto-prediction-engine</p><span className="safety-banner"><i />LIVE ORDERS LOCKED</span><span className={signedRole === "Admin" ? "pill pill-live" : "pill"}>{signedRole ? `${signedRole} role` : "Signed out"}</span></div>
+        <nav aria-label="Breadcrumb">
+          <ol className="shell-crumbs">
+            <li>crypto-prediction-engine</li>
+            <li aria-current="page">{section}</li>
+          </ol>
+        </nav>
+      </header>
       <LanguageChoice
         label="Language"
         options={SHELL_LANGUAGES}
@@ -114,6 +198,7 @@ export default function Shell({
         }}
       />
       <LanguageSample label="Language sample" lang={language.lang} dir={language.dir} parts={language.parts} />
+      <TenantBrand applied={branding} previews={previews} />
       <SectionNav
         label="Sections"
         items={visibleSections.map((name) => ({
@@ -123,7 +208,9 @@ export default function Shell({
         }))}
         onSelect={chooseSection}
       />
+      <RoleNav model={navigation} onOpen={chooseSection} />
       <DeskAuth session={session} onSession={applySession} />
+      <main>
       <Panel labelledBy="section-title">
         <Heading id="section-title">{section}</Heading>
         <SectionErrorBoundary key={section} section={section} environment={environment}>
@@ -137,13 +224,14 @@ export default function Shell({
             ) : (
               <>
                 {sectionMarkup ? <div dangerouslySetInnerHTML={{ __html: sectionMarkup }} /> : null}
-                <EngineWorkspace section={section} onNavigate={chooseSection} />
+                <EngineWorkspace section={section} onNavigate={chooseSection} canEditChecklist={signedRole === "Admin"} checklistCsrf={session?.csrfToken ?? null} />
                 {section === "Predictions" ? <ModelHealthCharts bound={100} /> : null}
               </>
             )}
           </SectionRequest>
         </SectionErrorBoundary>
       </Panel>
-    </main>
+      </main>
+    </div>
   );
 }

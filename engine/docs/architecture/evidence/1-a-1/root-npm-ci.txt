@@ -1,0 +1,11 @@
+command: npm ci --no-audit --no-fund
+cwd: repository root
+exit: 1
+npm error code EUSAGE
+npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+npm error Invalid: lock file's ajv@6.15.0 does not satisfy ajv@8.20.0
+npm error Missing: ajv@6.15.0 from lock file
+npm error Missing: fast-uri@3.1.8 from lock file
+npm error Invalid: lock file's json-schema-traverse@0.4.1 does not satisfy json-schema-traverse@1.0.0
+npm error Missing: require-from-string@2.0.2 from lock file
+The lockfile was not rewritten. node_modules was not created at the repository root.

@@ -1,0 +1,9 @@
+command: node -v && npm -v && corepack --version && pnpm -v && git rev-parse HEAD && git log -1 --format='%an <%ae>'
+node: v22.23.3
+npm: 10.9.9
+corepack: 0.36.0
+pnpm: 10.17.1
+HEAD: 9efafef2ed5ffd1baea0d81eb06200c367d2713f
+author: DLM CASH <maildlm.cash@gmail.com>
+measured: 2026-10-07
+PATH prefix used: /Users/kumar/.local/node/bin

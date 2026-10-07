@@ -1,0 +1,13 @@
+{
+  "task": "1.C.2",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "viewports": [
+    1280,
+    360
+  ],
+  "checklistOverflowAt360": 0,
+  "survivedReload": true,
+  "passWithoutEvidence": "rejected",
+  "blockedDependency": "rejected"
+}

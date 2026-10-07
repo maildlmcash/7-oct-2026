@@ -1,0 +1,16 @@
+command: corepack pnpm audit --json
+cwd: engine
+exit: 1
+metadata.vulnerabilities: info 0, low 0, moderate 0, high 1, critical 0
+metadata.totalDependencies: 88
+advisory id: 1109208
+title: Playwright downloads and installs browsers without verifying the authenticity of the SSL certificate
+severity: high
+module_name: playwright
+vulnerable_versions: <1.55.1
+patched_versions: >=1.55.1
+cves: CVE-2025-59288
+github_advisory_id: GHSA-7mvr-c777-76hp
+installed via: apps/web devDependency @playwright/test 1.49.1, which depends on playwright
+recommendation: Upgrade to version 1.55.1 or later
+This task did not upgrade the package.

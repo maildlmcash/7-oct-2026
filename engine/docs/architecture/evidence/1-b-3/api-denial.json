@@ -1,0 +1,175 @@
+{
+  "task": "1.B.3",
+  "date": "2026-10-07",
+  "truth": "MOCK",
+  "cases": [
+    {
+      "role": "Super Admin",
+      "action": "screen.open",
+      "screen": "Market",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Super Admin",
+      "action": "screen.open",
+      "screen": "Paper",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Super Admin",
+      "action": "impersonate",
+      "screen": null,
+      "error": "role scope denied"
+    },
+    {
+      "role": "Admin",
+      "action": "screen.open",
+      "screen": "Market",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Admin",
+      "action": "screen.open",
+      "screen": "Paper",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Admin",
+      "action": "impersonate",
+      "screen": null,
+      "error": "role scope denied"
+    },
+    {
+      "role": "Super Distributor",
+      "action": "screen.open",
+      "screen": "Market",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Super Distributor",
+      "action": "screen.open",
+      "screen": "Paper",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Super Distributor",
+      "action": "screen.open",
+      "screen": "Checklist",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Super Distributor",
+      "action": "screen.open",
+      "screen": "Admin",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Super Distributor",
+      "action": "impersonate",
+      "screen": null,
+      "error": "role scope denied"
+    },
+    {
+      "role": "Distributor",
+      "action": "screen.open",
+      "screen": "Market",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Distributor",
+      "action": "screen.open",
+      "screen": "Paper",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Distributor",
+      "action": "screen.open",
+      "screen": "Checklist",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Distributor",
+      "action": "screen.open",
+      "screen": "Admin",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Distributor",
+      "action": "impersonate",
+      "screen": null,
+      "error": "role scope denied"
+    },
+    {
+      "role": "Retailer",
+      "action": "screen.open",
+      "screen": "Market",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Retailer",
+      "action": "screen.open",
+      "screen": "Checklist",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Retailer",
+      "action": "screen.open",
+      "screen": "Admin",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Retailer",
+      "action": "impersonate",
+      "screen": null,
+      "error": "role scope denied"
+    },
+    {
+      "role": "Customer",
+      "action": "screen.open",
+      "screen": "Admin",
+      "error": "role scope denied"
+    },
+    {
+      "role": "Customer",
+      "action": "impersonate",
+      "screen": null,
+      "error": "role scope denied"
+    },
+    {
+      "role": "Super Admin",
+      "action": "checklist.write",
+      "screen": null,
+      "error": "role scope denied"
+    },
+    {
+      "role": "Super Distributor",
+      "action": "checklist.write",
+      "screen": null,
+      "error": "role scope denied"
+    },
+    {
+      "role": "Distributor",
+      "action": "checklist.write",
+      "screen": null,
+      "error": "role scope denied"
+    },
+    {
+      "role": "Retailer",
+      "action": "checklist.write",
+      "screen": null,
+      "error": "role scope denied"
+    },
+    {
+      "role": "Customer",
+      "action": "checklist.write",
+      "screen": null,
+      "error": "role scope denied"
+    },
+    {
+      "role": "Retailer+Customer",
+      "action": "checklist.write",
+      "screen": null,
+      "error": "role scope denied"
+    }
+  ]
+}
